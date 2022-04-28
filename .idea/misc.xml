@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/albch/OneDrive/Zooseeker25/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19166666666666668" />
+        <entry key="app/src/main/res/layout/activity_search_display.xml" value="0.14336372847011145" />
+        <entry key="app/src/main/res/xml/searchable.xml" value="0.14336372847011145" />
       </map>
     </option>
   </component>
