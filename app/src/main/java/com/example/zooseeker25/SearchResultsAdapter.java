@@ -16,6 +16,7 @@ import java.util.List;
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
     private List<SearchResultsItem> searchResults = Collections.emptyList();
 
+    //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
         this.searchResults.clear();
         this.searchResults = newSearchResults;
@@ -24,6 +25,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @NonNull
     @Override
+    //im not gonna lie i dont quite understand the intricacies of this function
+    //i just know it somehow formats the recycler view to contain search_list_items
     public SearchResultsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
@@ -32,6 +35,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     @Override
+    //sets the values in the Viewholder(defined below) in the adapter
     public void onBindViewHolder(@NonNull SearchResultsAdapter.ViewHolder holder, int position) {
         holder.setSearchItem(searchResults.get(position));
     }
@@ -60,6 +64,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 //            });
         }
 
+        //gets the name of the searchResultsItems and set it as the
+        //text in the textView of an individual search_list_item
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
             this.textView.setText(searchResultsItem.name);

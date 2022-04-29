@@ -6,7 +6,7 @@ public class SearchResultsItem {
     public long id = 0;
     public String name;
     public boolean selected;
-    public int order;
+    public int order;   //used to order the results in the menu, currently unused
 
     SearchResultsItem(@NonNull String name, boolean selected, int order){
         this.name = name;
