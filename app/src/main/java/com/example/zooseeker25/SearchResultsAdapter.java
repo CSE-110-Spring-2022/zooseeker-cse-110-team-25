@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
     private List<SearchResultsItem> searchResults = Collections.emptyList();
@@ -22,6 +23,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         this.searchResults = newSearchResults;
         notifyDataSetChanged();
     }
+
+//    public void setOnAnimalClickedHandler(Consumer<AnimalItem> onAnimalItemClicked){
+//        this.onAnimalItemClicked = onAnimalItemClicked;
+//    }
 
     @NonNull
     @Override
@@ -54,14 +59,25 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
-            //non-functional onclick behavior for search results
-//            this.textView.setOnClickListener(view -> {
-//                if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-//                    textView.setBackgroundColor(Color.LTGRAY);
-//                } else {
-//                    textView.setBackgroundColor(Color.WHITE);
-//                }
+
+
+//            this.checkBox.setOnClickListener(view -> {
+//                if(onCheckBoxClicked == null) return;
+//                onCheckBoxClicked.accept(todoItem);
 //            });
+            //non-functional onclick behavior for search results
+            this.textView.setOnClickListener(view -> {
+
+                if(onAnimalItemClicked == null) return;
+                onCheckBoxClicked.accept(todoItem);
+
+
+                if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
+                    textView.setBackgroundColor(Color.LTGRAY);
+                } else {
+                    textView.setBackgroundColor(Color.WHITE);
+                }
+            });
         }
 
         //gets the name of the searchResultsItems and set it as the

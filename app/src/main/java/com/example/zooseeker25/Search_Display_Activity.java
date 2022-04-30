@@ -26,16 +26,21 @@ public class Search_Display_Activity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
 
+    private TextView animalItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_display);
+
+
 
         //getting all of the elements on the UI
         SearchView simpleSearchView = findViewById(R.id.searchView);
         TextView logoText = findViewById(R.id.title_text);
         TextView listCounter = findViewById(R.id.listCounterPlaceHolder);
         RecyclerView searchResults = findViewById(R.id.search_results);
+        this.animalItem = this.findViewById(R.id.search_item_text);
 
         //initializing the adapter
         SearchResultsAdapter adapter = new SearchResultsAdapter();
@@ -88,5 +93,12 @@ public class Search_Display_Activity extends AppCompatActivity {
                 return false;
             }
         });
+
+    }
+
+    void onAnimalItemClicked(View view){
+
+
+
     }
 }
