@@ -8,11 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.ViewHolder> {
-    private List<Route> routeList = Collections.emptyList();
+    private List<Route> routeList = new ArrayList();
 
     public void setRouteList(List<Route> routeList) {
         this.routeList = routeList;

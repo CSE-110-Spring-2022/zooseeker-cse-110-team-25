@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,20 +20,22 @@ public class RouteListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_list);
+        setContentView(R.layout.activity_route_list_view);
 
-        routeList = Collections.emptyList();
+        routeList = new ArrayList();
         recyclerView = findViewById(R.id.route_list_recycler);
 
+        if (recyclerView == null) {
+            Log.i("recycler view", "false");}
         setRouteListInfo();
         setAdapter();
     }
 
     private void setAdapter() {
         RouteListAdapter adapter = new RouteListAdapter();
+        adapter.setRouteList(routeList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
 
