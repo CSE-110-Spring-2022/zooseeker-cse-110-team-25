@@ -12,15 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
     private List<SearchResultsItem> searchResults = Collections.emptyList();
+    private Consumer<SearchResultsItem> onAnimalItemClicked;
 
     //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
         this.searchResults.clear();
         this.searchResults = newSearchResults;
         notifyDataSetChanged();
+    }
+
+    public void setOnAnimalClickedHandler(Consumer<SearchResultsItem> onAnimalItemClicked){
+        this.onAnimalItemClicked = onAnimalItemClicked;
     }
 
     @NonNull
@@ -54,9 +60,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
+//            this.checkBox.setOnClickListener(view -> {
+//                if(onCheckBoxClicked == null) return;
+//                onCheckBoxClicked.accept(todoItem);
+//            });
             //non-functional onclick behavior for search results
             this.textView.setOnClickListener(view -> {
-                textView.setBackgroundColor(Color.BLUE);
+                if(onAnimalItemClicked == null) return;
+                onAnimalItemClicked.accept(searchResultsItem);
+                setSearchItem(searchResultsItem);
             });
         }
 
@@ -65,6 +77,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
             this.textView.setText(searchResultsItem.name);
+
+            if (searchResultsItem.selected) {
+                textView.setBackgroundColor(Color.LTGRAY);
+            }
         }
 
     }

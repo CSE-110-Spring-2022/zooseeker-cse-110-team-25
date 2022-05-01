@@ -1,6 +1,7 @@
 package com.example.zooseeker25;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,8 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.view.View;
@@ -23,13 +26,18 @@ import java.util.List;
 public class Search_Display_Activity extends AppCompatActivity {
     String[] mockData = {"Gorillas", "Alligators", "Lions", "Elephant Odyssey", "Arctic Foxes"};
     List<SearchResultsItem> suggestions = new ArrayList<>();
-
+    private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
+
+    private TextView animalItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_display);
+
+        viewModel = new ViewModelProvider(this)
+                .get(SearchResultsViewModel.class);
 
         //getting all of the elements on the UI
         SearchView simpleSearchView = findViewById(R.id.searchView);
@@ -41,6 +49,7 @@ public class Search_Display_Activity extends AppCompatActivity {
         //initializing the adapter
         SearchResultsAdapter adapter = new SearchResultsAdapter();
         adapter.setHasStableIds(true);
+        adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
 
         //getting the search results and assigning it to the adapter
         recyclerView = findViewById(R.id.search_results);
@@ -92,5 +101,18 @@ public class Search_Display_Activity extends AppCompatActivity {
                 return false;
             }
         });
+
+        this.animalItem = this.findViewById(R.id.search_item_text);
+
+    }
+
+
+
+    void onAnimalItemClicked(View view){
+//        if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
+//            textView.setBackgroundColor(Color.LTGRAY);
+//        } else {
+//            textView.setBackgroundColor(Color.WHITE);
+//        }
     }
 }
