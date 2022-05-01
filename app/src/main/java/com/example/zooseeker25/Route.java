@@ -15,3 +15,5 @@ public class Route {
         this.totalDistance = totalDistance;
         this.directions = directions;
         this.intro = intro;
+    }
+}
