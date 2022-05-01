@@ -55,13 +55,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             textView = itemView.findViewById(R.id.search_item_text);
 
             //non-functional onclick behavior for search results
-//            this.textView.setOnClickListener(view -> {
-//                if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-//                    textView.setBackgroundColor(Color.LTGRAY);
-//                } else {
-//                    textView.setBackgroundColor(Color.WHITE);
-//                }
-//            });
+            this.textView.setOnClickListener(view -> {
+                textView.setBackgroundColor(Color.BLUE);
+            });
         }
 
         //gets the name of the searchResultsItems and set it as the

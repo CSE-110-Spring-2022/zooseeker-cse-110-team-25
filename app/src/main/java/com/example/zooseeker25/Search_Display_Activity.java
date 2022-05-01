@@ -33,6 +33,7 @@ public class Search_Display_Activity extends AppCompatActivity {
 
         //getting all of the elements on the UI
         SearchView simpleSearchView = findViewById(R.id.searchView);
+        simpleSearchView.setBottom(300);
         TextView logoText = findViewById(R.id.title_text);
         TextView listCounter = findViewById(R.id.listCounterPlaceHolder);
         RecyclerView searchResults = findViewById(R.id.search_results);
@@ -65,6 +66,9 @@ public class Search_Display_Activity extends AppCompatActivity {
             @Override
             //called every time you press "enter" inside the search bar
             public boolean onQueryTextSubmit(String s) {
+                simpleSearchView.setBottom(300);
+                logoText.setVisibility(View.VISIBLE);
+                searchResults.setVisibility(View.INVISIBLE);
                 return false;
             }
 
@@ -74,9 +78,9 @@ public class Search_Display_Activity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
                     //if it is empty, reset everything
-                    simpleSearchView.setBottom(300);
-                    logoText.setVisibility(View.VISIBLE);
-                    searchResults.setVisibility(View.INVISIBLE);
+//                    simpleSearchView.setBottom(300);
+//                    logoText.setVisibility(View.VISIBLE);
+//                    searchResults.setVisibility(View.INVISIBLE);
                 } else {
                     //when the text updates to anything that not empty,
                     //removes the logo and displays the results
