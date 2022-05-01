@@ -14,15 +14,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        List<String> exhibits = new ArrayList<>();
-        exhibits.add("lions");
-        exhibits.add("elephant_odyssey");
-        exhibits.add("arctic_foxes");
-        exhibits.add("gorillas");
-
-
-        RouteGenerator.generateFullRoute(this, exhibits);
-        Log.i("ee", "dee");
     }
 }

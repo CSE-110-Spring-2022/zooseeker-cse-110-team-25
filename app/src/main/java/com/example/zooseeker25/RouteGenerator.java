@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +17,49 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 public class RouteGenerator {
-    public static List<Route> generateFullRoute(Context context, List<String> exhibits) {
+    public static Map<Integer, String> nodeLookup = new HashMap<>();
+    public static Map<String, Integer> integerLookup = new HashMap<>();
+    public static List<List<Route>> routeData = new ArrayList<List<Route>>();
+
+    public static void populateRouteData (List<String> exhibits, Context context) {
+        int i = 1;
+        RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
+        RouteGenerator.integerLookup.put("entrance_exit_gate", 0);
+        for (String exhibit: exhibits) {
+            RouteGenerator.nodeLookup.put(i, exhibit);
+            RouteGenerator.integerLookup.put(exhibit, i);
+            i++;
+        }
+
+        for (int row = 0; row < nodeLookup.size(); row++) {
+            List<Route> routeList = new ArrayList<Route>();
+
+            for (int col = 0; col < nodeLookup.size(); col++) {
+                if (row == col) {
+                    routeList.add(null);
+                    continue;
+                }
+                Route route = RouteGenerator.generateRoute(context, nodeLookup.get(row), nodeLookup.get(col));
+                routeList.add(route);
+            }
+
+            routeData.add(routeList);
+        }
+    }
+
+    public static List<Route> generateFullRoute(List<String> exhibits, List<List<Route>> routeData, Map<String, Integer> node_lookup) {
         Set<String> visitedExhibits = new HashSet<String>();
         List<Route> fullRoute = new ArrayList<>();
         visitedExhibits.add("entrance_exit_gate");
         String currentExhibit = "entrance_exit_gate";
 
-        while (visitedExhibits.size() != exhibits.size()) {
+        while (visitedExhibits.size() != exhibits.size()+1) {
             Route closestExhibit = null;
 
             for (String exhibit: exhibits) {
                 if (currentExhibit.compareTo(exhibit) == 0) { continue; }
                 if (visitedExhibits.contains(exhibit)) { continue; }
-                Route route = RouteGenerator.generateRoute(context, currentExhibit, exhibit);
-
+                Route route = routeData.get(node_lookup.get(currentExhibit)).get(node_lookup.get(exhibit));
                 if (closestExhibit == null) {
                     closestExhibit = route;
                 } else if (closestExhibit.totalDistance > route.totalDistance) {
@@ -54,8 +84,6 @@ public class RouteGenerator {
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
 
         String intro = String.format("The shortest path from '%s' to '%s' is:\n", start, end);
-        Log.i("", intro);
-        int i = 1;
 
         List<String> directions = new ArrayList<>();
         double totalDistance = 0;
@@ -70,11 +98,8 @@ public class RouteGenerator {
             );
             directions.add(direction);
             totalDistance += edgeWeight;
-
-            Log.i(String.format("  Step %d", i), direction);
-            i++;
         }
 
-        return new Route(start, end, totalDistance, directions);
+        return new Route(start, end, totalDistance, directions, intro);
     }
 }
