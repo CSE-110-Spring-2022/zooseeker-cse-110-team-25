@@ -2,7 +2,9 @@ package com.example.zooseeker25;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,22 +27,26 @@ public class NodeItem {
         @SerializedName("exhibit") EXHIBIT,
         @SerializedName("intersection") INTERSECTION
     }
-
+    @PrimaryKey(autoGenerate = true)
     public String id;
+
+    @NonNull
     public Kind kind;
     public String name;
-    // tags in a string format
-    public String tags;
+    public List<String> tags;
+    public String tagString;
 
-    NodeItem(String id, Kind kind, String name, List<String> tags){
+    NodeItem(@NonNull String id, Kind kind, String name, List<String> tags){
         this.id = id;
         this.kind = kind;
         this.name = name;
+        //this.tags = tags;
+        this.tagString = "";
         for (int i = 0; i < tags.size() - 1; i++){
-            this.tags += tags.get(i);
-            this.tags += ",";
+            this.tagString += tags.get(i);
+            this.tagString += ",";
         }
-        this.tags += tags.get(tags.size() - 1);
+        this.tagString += tags.get(tags.size() - 1);
     }
 
     public static List<NodeItem> loadJSON(Context context, String path){
@@ -63,7 +69,7 @@ public class NodeItem {
                 "id=" + this.id +
                 ", kind='" + this.kind + '\'' +
                 ", name=" + this.name +
-                ", tags=" + this.tags +
+                ", tagString=" + this.tagString +
                 '}';
     }
 }
