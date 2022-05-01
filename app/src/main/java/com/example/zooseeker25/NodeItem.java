@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,26 +28,29 @@ public class NodeItem {
         @SerializedName("exhibit") EXHIBIT,
         @SerializedName("intersection") INTERSECTION
     }
-    @PrimaryKey(autoGenerate = true)
-    public String id;
+    @PrimaryKey
+
 
     @NonNull
+    public String id;
     public Kind kind;
     public String name;
     public List<String> tags;
-    public String tagString;
+
 
     NodeItem(@NonNull String id, Kind kind, String name, List<String> tags){
         this.id = id;
         this.kind = kind;
         this.name = name;
-        //this.tags = tags;
-        this.tagString = "";
-        for (int i = 0; i < tags.size() - 1; i++){
-            this.tagString += tags.get(i);
-            this.tagString += ",";
-        }
-        this.tagString += tags.get(tags.size() - 1);
+        this.tags = tags;
+    }
+
+    public List<String> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public static List<NodeItem> loadJSON(Context context, String path){
@@ -69,7 +73,7 @@ public class NodeItem {
                 "id=" + this.id +
                 ", kind='" + this.kind + '\'' +
                 ", name=" + this.name +
-                ", tagString=" + this.tagString +
+                ", tagString=" + this.tags +
                 '}';
     }
 }
