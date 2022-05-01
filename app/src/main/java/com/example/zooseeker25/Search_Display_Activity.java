@@ -41,8 +41,7 @@ public class Search_Display_Activity extends AppCompatActivity {
 
         //getting all of the elements on the UI
         SearchView simpleSearchView = findViewById(R.id.searchView);
-        simpleSearchView.setBottom(300);
-        TextView logoText = findViewById(R.id.title_text);
+        TextView titleText = findViewById(R.id.title_text);
         TextView listCounter = findViewById(R.id.listCounterPlaceHolder);
         RecyclerView searchResults = findViewById(R.id.search_results);
 
@@ -64,20 +63,10 @@ public class Search_Display_Activity extends AppCompatActivity {
         //transfers the data into the recycler view
         adapter.setSearchListItems(suggestions);
 
-        simpleSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //called every time you press "enter" inside the search bar
             public boolean onQueryTextSubmit(String s) {
-                simpleSearchView.setBottom(300);
-                logoText.setVisibility(View.VISIBLE);
-                searchResults.setVisibility(View.INVISIBLE);
                 return false;
             }
 
@@ -86,27 +75,30 @@ public class Search_Display_Activity extends AppCompatActivity {
             //with newText being the query
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
-                    //if it is empty, reset everything
-//                    simpleSearchView.setBottom(300);
-//                    logoText.setVisibility(View.VISIBLE);
-//                    searchResults.setVisibility(View.INVISIBLE);
+                    //simpleSearchView.setTop(titleText.getBottom());
+                    titleText.setVisibility(View.VISIBLE);
+                    searchResults.setVisibility(View.INVISIBLE);
                 } else {
-                    //when the text updates to anything that not empty,
-                    //removes the logo and displays the results
-                    //and locks the searchbar under the counter
-                    simpleSearchView.setTop(listCounter.getBottom());
-                    logoText.setVisibility(View.INVISIBLE);
+                    //simpleSearchView.setTop(listCounter.getBottom());
+                    titleText.setVisibility(View.INVISIBLE);
                     searchResults.setVisibility(View.VISIBLE);
                 }
-                return false;
+                return true;
+            }
+        });
+
+        simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                titleText.setVisibility(View.VISIBLE);
+                searchResults.setVisibility(View.INVISIBLE);
+                return true;
             }
         });
 
         this.animalItem = this.findViewById(R.id.search_item_text);
 
     }
-
-
 
     void onAnimalItemClicked(View view){
 //        if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {

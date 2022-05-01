@@ -1,7 +1,6 @@
 package com.example.zooseeker25;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,10 +59,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
-//            this.checkBox.setOnClickListener(view -> {
-//                if(onCheckBoxClicked == null) return;
-//                onCheckBoxClicked.accept(todoItem);
-//            });
             //non-functional onclick behavior for search results
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
@@ -77,7 +72,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
             this.textView.setText(searchResultsItem.name);
-
             if (searchResultsItem.selected) {
                 textView.setBackgroundColor(Color.LTGRAY);
             }
