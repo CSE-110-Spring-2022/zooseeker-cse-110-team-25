@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
     private List<SearchResultsItem> searchResults = Collections.emptyList();
+    private Consumer<SearchResultsItem> onAnimalItemClicked;
 
     //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
@@ -24,9 +25,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyDataSetChanged();
     }
 
-//    public void setOnAnimalClickedHandler(Consumer<AnimalItem> onAnimalItemClicked){
-//        this.onAnimalItemClicked = onAnimalItemClicked;
-//    }
+    public void setOnAnimalClickedHandler(Consumer<SearchResultsItem> onAnimalItemClicked){
+        this.onAnimalItemClicked = onAnimalItemClicked;
+    }
 
     @NonNull
     @Override
@@ -59,24 +60,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
-
-
 //            this.checkBox.setOnClickListener(view -> {
 //                if(onCheckBoxClicked == null) return;
 //                onCheckBoxClicked.accept(todoItem);
 //            });
             //non-functional onclick behavior for search results
             this.textView.setOnClickListener(view -> {
-
                 if(onAnimalItemClicked == null) return;
-                onCheckBoxClicked.accept(todoItem);
-
-
-                if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-                    textView.setBackgroundColor(Color.LTGRAY);
-                } else {
-                    textView.setBackgroundColor(Color.WHITE);
-                }
+                onAnimalItemClicked.accept(searchResultsItem);
+                setSearchItem(searchResultsItem);
             });
         }
 
@@ -85,6 +77,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
             this.textView.setText(searchResultsItem.name);
+
+            if (searchResultsItem.selected) {
+                textView.setBackgroundColor(Color.LTGRAY);
+            }
         }
 
     }
