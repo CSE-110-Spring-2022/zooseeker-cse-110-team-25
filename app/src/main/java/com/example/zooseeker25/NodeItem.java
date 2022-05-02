@@ -28,8 +28,6 @@ public class NodeItem {
         @SerializedName("exhibit") EXHIBIT,
         @SerializedName("intersection") INTERSECTION
     }
-    @PrimaryKey
-
 
     @NonNull
     public String id;
