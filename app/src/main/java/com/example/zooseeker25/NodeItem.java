@@ -30,7 +30,10 @@ public class NodeItem {
     }
 
     @NonNull
+    @PrimaryKey
     public String id;
+
+    @NonNull
     public Kind kind;
     public String name;
     public List<String> tags;

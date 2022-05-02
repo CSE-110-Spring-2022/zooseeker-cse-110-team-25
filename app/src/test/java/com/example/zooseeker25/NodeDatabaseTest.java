@@ -22,7 +22,7 @@ public class NodeDatabaseTest {
     private NodeInfoDao dao;
     private ItemDatabase db;
 
-    @Before
+    /*@Before
     public void createDb(){
         Context context = ApplicationProvider.getApplicationContext();
         db =
@@ -30,10 +30,25 @@ public class NodeDatabaseTest {
                 .allowMainThreadQueries()
                 .build();
         dao = db.nodeInfoDao();
+    }*/
+
+    @Before
+    public void resetDatabase(){
+        Context context = ApplicationProvider.getApplicationContext();
+        db = Room.inMemoryDatabaseBuilder(context, ItemDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        ItemDatabase.injectTestDatabase(db);
+
+        List<NodeItem> todos = NodeItem.loadJSON(context, "demo_todos.json");
+        dao = db.nodeInfoDao();
+        dao.insertAll(todos);
     }
 
     @Test
     public void testid() {
+        Search s = new Search("elephant_odyssey");
+
         List<NodeItem> res = dao.findId("elephant_odyssey");
         List<String> tags = new ArrayList<>();
         tags.add("elephant");
@@ -55,7 +70,7 @@ public class NodeDatabaseTest {
         assertEquals(res, expected);
     }
 
-    @Test
+    /*@Test
     public void testFindKind(){
         List<NodeItem> res = dao.findKind(NodeItem.Kind.GATE);
         List<String> tags = new ArrayList<>();
@@ -89,7 +104,7 @@ public class NodeDatabaseTest {
         expected.add(expectedLion);
         expected.add(expectedElephant);
         assertEquals(res, expected);
-    }
+    }*/
 
     @After
     public void closeDb() throws IOException {

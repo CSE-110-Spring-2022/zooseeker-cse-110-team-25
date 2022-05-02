@@ -1,5 +1,9 @@
 package com.example.zooseeker25;
 
+import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +15,8 @@ public class Search {
     Search(String keyword){
         this.keyword = keyword;
         this.animalNames = new ArrayList<String>();
-        this.nodedao = ItemDatabase.getSingleton(this).nodeInfoDao();
+        Context context = ApplicationProvider.getApplicationContext();
+        this.nodedao = ItemDatabase.getSingleton(context).nodeInfoDao();
     }
 
     private void searchID(){
@@ -50,7 +55,7 @@ public class Search {
         }
     }
 
-    public List<String> searchAllCatagory(){
+    public List<String> searchAllCategory(){
         this.searchName();
         this.searchID();
         this.searchTag();
