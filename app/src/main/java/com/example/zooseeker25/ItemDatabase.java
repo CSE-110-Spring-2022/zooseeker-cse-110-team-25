@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-@Database(entities = {NodeItem.class}, version = 1)
+@Database(entities = {NodeItem.class}, version = 1, exportSchema=false)
 @TypeConverters({Converters.class})
 public abstract class ItemDatabase extends RoomDatabase {
     private static ItemDatabase singleton = null;

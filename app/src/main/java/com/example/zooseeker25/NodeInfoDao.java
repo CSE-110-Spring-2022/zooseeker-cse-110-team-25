@@ -24,4 +24,5 @@ public interface NodeInfoDao {
 
     @Insert
     List<Long> insertAll(List<NodeItem> nodeItems);
+
 }

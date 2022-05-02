@@ -40,71 +40,66 @@ public class NodeDatabaseTest {
                 .build();
         ItemDatabase.injectTestDatabase(db);
 
-        List<NodeItem> todos = NodeItem.loadJSON(context, "demo_todos.json");
+        List<NodeItem> todos = NodeItem.loadJSON(context, "sample_node_info.json");
         dao = db.nodeInfoDao();
         dao.insertAll(todos);
     }
 
     @Test
     public void testid() {
-        Search s = new Search("elephant_odyssey");
+        Search s = new Search("elephant_odyssey", dao);
 
-        List<NodeItem> res = dao.findId("elephant_odyssey");
-        List<String> tags = new ArrayList<>();
-        tags.add("elephant");
-        tags.add("mammal");
-        tags.add("africa");
-        NodeItem expected = new NodeItem("elephant_odyssey", NodeItem.Kind.EXHIBIT, "Elephant Odyssey", tags);
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Elephant Odyssey");
+
         assertEquals(expected, res);
     }
 
     @Test
-    public void testFindName(){
-        List<NodeItem> res = dao.findName("Lions");
-        List<String> tags = new ArrayList<>();
-        tags.add("lions");
-        tags.add("cats");
-        tags.add("mammal");
-        tags.add("africa");
-        NodeItem expected = new NodeItem("lions", NodeItem.Kind.EXHIBIT,"Lions", tags);
-        assertEquals(res, expected);
-    }
+    public void testidsubstring() {
+        Search s = new Search("elephant", dao);
 
-    /*@Test
-    public void testFindKind(){
-        List<NodeItem> res = dao.findKind(NodeItem.Kind.GATE);
-        List<String> tags = new ArrayList<>();
-        tags.add("enter");
-        tags.add("leave");
-        tags.add("start");
-        tags.add("begin");
-        tags.add("entrance");
-        tags.add("exit");
-        List<NodeItem> expected = new ArrayList<>();
-        NodeItem nodeExpected = new NodeItem("entrance_exit_gate", NodeItem.Kind.GATE,"Entrance and Exit Gate", tags);
-        expected.add(nodeExpected);
-        assertEquals(res, expected);
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Elephant Odyssey");
+
+        assertEquals(expected, res);
     }
 
     @Test
-    public void testFindTag(){
-        List<NodeItem> res = dao.findTag("africa");
-        List<NodeItem> expected = new ArrayList<>();
-        List<String> tagsLion = new ArrayList<>();
-        tagsLion.add("lions");
-        tagsLion.add("cats");
-        tagsLion.add("mammal");
-        tagsLion.add("africa");
-        NodeItem expectedLion = new NodeItem("lions", NodeItem.Kind.EXHIBIT,"Lions", tagsLion);
-        List<String> tagsElephant = new ArrayList<>();
-        tagsElephant.add("elephant");
-        tagsElephant.add("mammal");
-        tagsElephant.add("africa");
-        NodeItem expectedElephant = new NodeItem("elephant_odyssey", NodeItem.Kind.EXHIBIT, "Elephant Odyssey", tagsElephant);
-        expected.add(expectedLion);
-        expected.add(expectedElephant);
-        assertEquals(res, expected);
-    }*/
+    public void testmm() {
+        Search s = new Search("mm", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Gorillas");
+        expected.add("Lions");
+        expected.add("Elephant Odyssey");
+        expected.add("Arctic Foxes");
+
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testKind(){
+        Search s = new Search("exhibit", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Gorillas");
+        expected.add("Alligators");
+        expected.add("Lions");
+        expected.add("Elephant Odyssey");
+        expected.add("Arctic Foxes");
+        assertEquals(expected, res);
+    }
+
+
 
     @After
     public void closeDb() throws IOException {
