@@ -10,19 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Intent intent = new Intent(this, Search_Display_Activity.class);
         startActivity(intent);
     }
-
-
-
-
-
 }
