@@ -16,6 +16,11 @@ import java.util.function.Consumer;
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
     private List<SearchResultsItem> searchResults = Collections.emptyList();
     private Consumer<SearchResultsItem> onAnimalItemClicked;
+    private SearchStorage searchStorage;
+
+    public SearchResultsAdapter(SearchStorage searchStorage) {
+        this.searchStorage = searchStorage;
+    }
 
     //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
@@ -64,6 +69,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 if(onAnimalItemClicked == null) return;
                 onAnimalItemClicked.accept(searchResultsItem);
                 setSearchItem(searchResultsItem);
+                searchStorage.addSelectedAnimal((String) textView.getText());
             });
         }
 

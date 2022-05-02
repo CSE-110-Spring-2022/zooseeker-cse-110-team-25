@@ -22,14 +22,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Search_Display_Activity extends AppCompatActivity {
-    String[] mockData = {"Gorillas", "Alligators", "Lions", "Elephant Odyssey", "Arctic Foxes"};
-    List<SearchResultsItem> suggestions = new ArrayList<>();
+public class Search_Display_Activity extends AppCompatActivity implements Observer {
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
-
-    private TextView animalItem;
+    private SearchStorage searchStorage;
+    SearchView simpleSearchView;
+    TextView titleText;
+    TextView listCounter;
+    RecyclerView searchResults;
+    TextView animalItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,16 @@ public class Search_Display_Activity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(SearchResultsViewModel.class);
 
+        searchStorage = new SearchStorage(this);
+
         //getting all of the elements on the UI
-        SearchView simpleSearchView = findViewById(R.id.searchView);
-        TextView titleText = findViewById(R.id.title_text);
-        TextView listCounter = findViewById(R.id.listCounterPlaceHolder);
-        RecyclerView searchResults = findViewById(R.id.search_results);
+        simpleSearchView = findViewById(R.id.searchView);
+        titleText = findViewById(R.id.title_text);
+        listCounter = findViewById(R.id.listCounterPlaceHolder);
+        searchResults = findViewById(R.id.search_results);
 
         //initializing the adapter
-        SearchResultsAdapter adapter = new SearchResultsAdapter();
+        SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage);
         adapter.setHasStableIds(true);
         adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
 
@@ -55,13 +61,7 @@ public class Search_Display_Activity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        //converting the mock data into SearchResultsItems
-        for (String s : mockData) {
-            suggestions.add(new SearchResultsItem(s, false, 0));
-        }
-        //inserting the converted data into the adapter which then
-        //transfers the data into the recycler view
-        adapter.setSearchListItems(suggestions);
+        adapter.setSearchListItems(searchStorage.getResultsList());
 
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -97,7 +97,7 @@ public class Search_Display_Activity extends AppCompatActivity {
         });
 
         this.animalItem = this.findViewById(R.id.search_item_text);
-
+        listCounter.setText("0");
     }
 
     void onAnimalItemClicked(View view){
@@ -106,5 +106,10 @@ public class Search_Display_Activity extends AppCompatActivity {
 //        } else {
 //            textView.setBackgroundColor(Color.WHITE);
 //        }
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        listCounter.setText((String)o);
     }
 }
