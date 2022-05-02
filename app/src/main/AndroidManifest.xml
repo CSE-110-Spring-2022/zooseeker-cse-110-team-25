@@ -18,6 +18,9 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
+            android:name=".RouteListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

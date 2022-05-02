@@ -33,11 +33,16 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.test:core:1.4.0'
+    implementation 'jgraph:jgraph:5.13.0.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
     def gson_version = "2.9.0"
-    def room_version = "2.4.2"
+    def jgrapht_version = "1.5.0"
 
     implementation "com.google.code.gson:gson:$gson_version"
+    implementation "org.jgrapht:jgrapht-core:$jgrapht_version"
+    implementation "org.jgrapht:jgrapht-io:$jgrapht_version"
+    def room_version = "2.4.2"
+
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
