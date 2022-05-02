@@ -2,8 +2,6 @@ package com.example.zooseeker25;
 
 import android.content.Context;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 
