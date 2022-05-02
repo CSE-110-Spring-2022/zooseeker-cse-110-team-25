@@ -25,8 +25,6 @@ public class RouteListActivity extends AppCompatActivity {
         routeList = new ArrayList();
         recyclerView = findViewById(R.id.route_list_recycler);
 
-        if (recyclerView == null) {
-            Log.i("recycler view", "false");}
         setRouteListInfo();
         setAdapter();
     }
@@ -40,8 +38,12 @@ public class RouteListActivity extends AppCompatActivity {
     }
 
     private void setRouteListInfo() {
-        routeList.add(new Route("p", "left 100 ft"));
-        routeList.add(new Route("p", "left 100 ft"));
-        routeList.add(new Route("p", "left 100 ft"));
+        List<String> exhibits = new ArrayList<>();
+        exhibits.add("gorillas");
+        exhibits.add("lions");
+        exhibits.add("gators");
+
+        RouteGenerator.populateRouteData(exhibits, this);
+        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
     }
 }
