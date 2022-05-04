@@ -25,21 +25,12 @@ public class SearchStorage extends Observable {
     }
 
     public void updateResultsList(List<String> newList) {
-        //if the current results list has results not present in the new list
-        //remove them
-        ArrayList<SearchResultsItem> toRemove = new ArrayList<>();
-        for (SearchResultsItem item : resultsList) {
-            if (!newList.contains(item)) {
-                toRemove.add(item);
-            }
-        }
-        resultsList.removeAll(toRemove);
-        //if the new list has results not present in the current results list
-        //add them and check to see if they have been selected previously
+        //clear previous resultsList
+        resultsList.removeAll(resultsList);
+        //add items fro newList and check to see if they have been selected previously
         for (String item : newList) {
-            if (!resultsList.contains(item)) {
-                resultsList.add(new SearchResultsItem(item, selectedAnimals.contains(item), 0));
-            }
+            Boolean selected = selectedAnimals.contains(item);
+            resultsList.add(new SearchResultsItem(item, selected, 0));
         }
     }
 

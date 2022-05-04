@@ -79,8 +79,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             this.textView.setText(searchResultsItem.name);
             if (searchResultsItem.selected) {
                 textView.setBackgroundColor(Color.LTGRAY);
+            } else {
+                textView.setBackgroundColor(Color.WHITE);
             }
         }
-
     }
 }
