@@ -93,7 +93,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             @Override
             public boolean onClose() {
                 titleText.setVisibility(View.VISIBLE);
-                //searchResults.setVisibility(View.INVISIBLE);
+                searchResults.setVisibility(View.INVISIBLE);
                 return true;
             }
         });
