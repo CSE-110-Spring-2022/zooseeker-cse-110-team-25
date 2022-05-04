@@ -24,7 +24,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
-        this.searchResults.clear();
         this.searchResults = newSearchResults;
         notifyDataSetChanged();
     }

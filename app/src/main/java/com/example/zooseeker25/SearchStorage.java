@@ -14,25 +14,33 @@ public class SearchStorage extends Observable {
     private Set<String> selectedAnimals;
     private Observer observer;
 
-    //temp
-    String[] mockData = {"Gorillas", "Alligators", "Lions", "Elephant Odyssey", "Arctic Foxes"};
-
     public SearchStorage(Observer observer) {
         this.observer = observer;
         selectedAnimals = new TreeSet<>();
-        //temporary
         resultsList = new ArrayList<>();
-        for (String s : mockData) {
-            resultsList.add(new SearchResultsItem(s, false, 0));
-        }
     }
 
     public List<SearchResultsItem> getResultsList() {
         return resultsList;
     }
 
-    public void setResultsList(List<SearchResultsItem> newList) {
-        resultsList = newList;
+    public void updateResultsList(List<String> newList) {
+        //if the current results list has results not present in the new list
+        //remove them
+        ArrayList<SearchResultsItem> toRemove = new ArrayList<>();
+        for (SearchResultsItem item : resultsList) {
+            if (!newList.contains(item)) {
+                toRemove.add(item);
+            }
+        }
+        resultsList.removeAll(toRemove);
+        //if the new list has results not present in the current results list
+        //add them and check to see if they have been selected previously
+        for (String item : newList) {
+            if (!resultsList.contains(item)) {
+                resultsList.add(new SearchResultsItem(item, selectedAnimals.contains(item), 0));
+            }
+        }
     }
 
     public void addSelectedAnimal(String s) {
