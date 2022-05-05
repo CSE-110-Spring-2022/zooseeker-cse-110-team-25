@@ -12,23 +12,8 @@ public class Search {
 
     Search(String keyword, NodeInfoDao dao){
         this.keyword = keyword;
-        this.animalNames = new ArrayList<String>();
+        this.animalNames = new ArrayList<>();
         this.nodedao = dao;
-
-        //Context context = ApplicationProvider.getApplicationContext();
-
-        /*Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, ItemDatabase.class)
-                .allowMainThreadQueries()
-                .build();
-        ItemDatabase.injectTestDatabase(db);
-
-        List<NodeItem> todos = NodeItem.loadJSON(context, "sample_node_info.json");
-        dao = db.nodeInfoDao();
-        dao.insertAll(todos);
-         */
-
-
     }
 
     private void searchID(){

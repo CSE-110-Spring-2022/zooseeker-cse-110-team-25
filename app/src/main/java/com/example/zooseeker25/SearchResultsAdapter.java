@@ -24,7 +24,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     //sets the list of results to be displayed
     public void setSearchListItems(List<SearchResultsItem> newSearchResults) {
-        this.searchResults.clear();
         this.searchResults = newSearchResults;
         notifyDataSetChanged();
     }
@@ -80,8 +79,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             this.textView.setText(searchResultsItem.name);
             if (searchResultsItem.selected) {
                 textView.setBackgroundColor(Color.LTGRAY);
+            } else {
+                textView.setBackgroundColor(Color.WHITE);
             }
         }
-
     }
 }

@@ -4,31 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
-import android.app.ListActivity;
-import android.app.SearchManager;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 public class Search_Display_Activity extends AppCompatActivity implements Observer {
+    private final static String DATA_PATH = "sample_node_info.json";
+
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
     private SearchStorage searchStorage;
+    private NodeInfoDao dao;
+    private ItemDatabase db;
+    private Search search;
     SearchView simpleSearchView;
     TextView titleText;
     TextView listCounter;
@@ -39,10 +34,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_display);
-
         viewModel = new ViewModelProvider(this)
                 .get(SearchResultsViewModel.class);
-
         searchStorage = new SearchStorage(this);
 
         //getting all of the elements on the UI
@@ -61,8 +54,16 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        adapter.setSearchListItems(searchStorage.getResultsList());
+        //initializing database?
+        db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        ItemDatabase.injectTestDatabase(db);
+        List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
+        dao = db.nodeInfoDao();
+        dao.insertAll(todos);
 
+        //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //called every time you press "enter" inside the search bar
@@ -74,12 +75,14 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             //called every time the query inside the search bar changes
             //with newText being the query
             public boolean onQueryTextChange(String newText) {
+                search = new Search(newText, dao);
+                searchStorage.updateResultsList(search.searchAllCategory());
+                adapter.setSearchListItems(searchStorage.getResultsList());
+
                 if (newText.equals("")) {
-                    //simpleSearchView.setTop(titleText.getBottom());
                     titleText.setVisibility(View.VISIBLE);
                     searchResults.setVisibility(View.INVISIBLE);
                 } else {
-                    //simpleSearchView.setTop(listCounter.getBottom());
                     titleText.setVisibility(View.INVISIBLE);
                     searchResults.setVisibility(View.VISIBLE);
                 }
@@ -87,6 +90,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             }
         });
 
+        //called every time you close the search bar through the "x" button
         simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -98,14 +102,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
-    }
-
-    void onAnimalItemClicked(View view){
-//        if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-//            textView.setBackgroundColor(Color.LTGRAY);
-//        } else {
-//            textView.setBackgroundColor(Color.WHITE);
-//        }
     }
 
     @Override
