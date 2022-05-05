@@ -14,12 +14,9 @@ public class SearchResultsViewModel extends AndroidViewModel {
 
     public SearchResultsViewModel(@NonNull Application application) {
         super(application);
-        //Context??
     }
 
     public void selectAnimal(SearchResultsItem searchResultItem) {
         searchResultItem.selected = true;
-        //update something ? Maybe db or list...
-        //need to talk to stephen and william.
     }
 }

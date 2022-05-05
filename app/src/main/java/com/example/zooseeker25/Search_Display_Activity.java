@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -49,6 +48,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage);
         adapter.setHasStableIds(true);
         adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
+
         //getting the search results and assigning it to the adapter
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,6 +63,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         dao = db.nodeInfoDao();
         dao.insertAll(todos);
 
+        //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //called every time you press "enter" inside the search bar
@@ -89,6 +90,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             }
         });
 
+        //called every time you close the search bar through the "x" button
         simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -100,14 +102,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
-    }
-
-    void onAnimalItemClicked(View view){
-//        if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-//            textView.setBackgroundColor(Color.LTGRAY);
-//        } else {
-//            textView.setBackgroundColor(Color.WHITE);
-//        }
     }
 
     @Override
