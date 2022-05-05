@@ -13,12 +13,13 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
+    public SearchStorage selectedAnimals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
-
+        selectedAnimals = (SearchStorage) getIntent().getSerializableExtra("selected_list");
         //loadContent();
     }
 

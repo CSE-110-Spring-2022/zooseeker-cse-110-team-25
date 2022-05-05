@@ -105,6 +105,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
+        intent.putExtra("selected_list", searchStorage);
         startActivity(intent);
     }
 
