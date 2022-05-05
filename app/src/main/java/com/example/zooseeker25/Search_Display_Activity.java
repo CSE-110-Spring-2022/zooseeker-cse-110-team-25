@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -102,12 +103,9 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         listCounter.setText("0");
     }
 
-    void onAnimalItemClicked(View view){
-//        if (((ColorDrawable)textView.getBackground()).getColor() != Color.WHITE) {
-//            textView.setBackgroundColor(Color.LTGRAY);
-//        } else {
-//            textView.setBackgroundColor(Color.WHITE);
-//        }
+    public void onViewRouteClicked(View view) {
+        Intent intent = new Intent(this, ListOfAnimalsActivity.class);
+        startActivity(intent);
     }
 
     @Override
