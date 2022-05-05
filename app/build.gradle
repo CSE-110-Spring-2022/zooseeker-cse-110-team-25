@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdk 32
-    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.example.zooseeker25"
