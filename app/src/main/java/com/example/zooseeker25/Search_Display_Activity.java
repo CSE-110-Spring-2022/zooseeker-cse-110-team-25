@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -102,6 +105,13 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
+    }
+
+    public void onViewRouteClicked(View view) {
+        Intent intent = new Intent(this, ListOfAnimalsActivity.class);
+        ArrayList<String> temp = new ArrayList<>(searchStorage.getSelectedAnimals());
+        intent.putExtra("selected_list", temp.toArray());
+        startActivity(intent);
     }
 
     @Override

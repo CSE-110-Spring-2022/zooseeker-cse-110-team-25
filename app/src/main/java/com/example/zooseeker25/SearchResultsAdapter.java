@@ -63,7 +63,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
-            //non-functional onclick behavior for search results
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
                 onAnimalItemClicked.accept(searchResultsItem);
