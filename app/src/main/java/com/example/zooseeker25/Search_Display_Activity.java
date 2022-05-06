@@ -51,6 +51,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage);
         adapter.setHasStableIds(true);
         adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
+
         //getting the search results and assigning it to the adapter
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,6 +66,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         dao = db.nodeInfoDao();
         dao.insertAll(todos);
 
+        //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //called every time you press "enter" inside the search bar
@@ -91,6 +93,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             }
         });
 
+        //called every time you close the search bar through the "x" button
         simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
