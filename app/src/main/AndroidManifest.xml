@@ -9,13 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Zooseeker25">
-        <activity android:name=".Search_Display_Activity"
+        <activity
+            android:name=".DirectionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Search_Display_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".RouteListActivity"

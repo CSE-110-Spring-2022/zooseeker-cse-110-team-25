@@ -1,8 +1,9 @@
 package com.example.zooseeker25;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Route {
+public class Route implements Serializable {
     public String start;
     public String end;
     public String intro;

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -22,7 +23,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, Search_Display_Activity.class);
+//        Intent intent = new Intent(this, Search_Display_Activity.class);
+//        startActivity(intent);
+
+        List<Route> routeList;
+        List<String> exhibits = new ArrayList<>();
+        exhibits.add("lions");
+        exhibits.add("gators");
+        exhibits.add("arctic_foxes");
+
+        RouteGenerator.populateRouteData(exhibits, this);
+        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
+
+        Intent intent = new Intent(this, DirectionsActivity.class);
+        intent.putExtra("current_exhibit_counter", 0);
+        intent.putExtra("route_list", (Parcelable) routeList);
         startActivity(intent);
+
     }
 }
