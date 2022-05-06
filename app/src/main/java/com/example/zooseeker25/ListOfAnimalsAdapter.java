@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +19,8 @@ import java.util.List;
 public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdapter.ViewHolder>{
     private List<String> selectedAnimals = Collections.emptyList();
 
-    public ListOfAnimalsAdapter() {}
-
-    public void setSelectedAnimals (List<String> selectedAnimals) {
-        this.selectedAnimals = selectedAnimals;
-        notifyDataSetChanged();
+    public ListOfAnimalsAdapter(SearchStorage searchStorage) {
+        selectedAnimals = new ArrayList<>(searchStorage.getSelectedAnimals());
     }
 
     @NonNull
