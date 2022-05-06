@@ -20,19 +20,20 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
         selectedAnimals = (SearchStorage) getIntent().getSerializableExtra("selected_list");
-        //loadContent();
+        loadSelectedAnimalList();
     }
 
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-
         saveProfile();
-
     }
 
-    public void loadProfile(){
+    public void loadSelectedAnimalList(){
+
+
+
 
 
 
