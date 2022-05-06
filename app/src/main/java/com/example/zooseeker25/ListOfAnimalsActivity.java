@@ -1,6 +1,7 @@
 package com.example.zooseeker25;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -9,22 +10,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class ListOfAnimalsActivity extends AppCompatActivity {
 
     private SearchResultsViewModel viewModel;
-    public RecyclerView recyclerView;
-    public SearchStorage selectedAnimalsStorage;
+    private RecyclerView recyclerView;
+    private String[] selectedAnimalsStorage;
     ListOfAnimalsAdapter adapter;
-    private Set<String> selectedAnimals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
-        selectedAnimalsStorage = (SearchStorage) getIntent().getSerializableExtra("selected_list");
-        //adapter = new ListOfAnimalsAdapter(selectedAnimalsStorage);
+        Object[] temp = (Object[])getIntent().getSerializableExtra("selected_list");
+        selectedAnimalsStorage = Arrays.copyOf(temp, temp.length, String[].class);
+        adapter = new ListOfAnimalsAdapter(selectedAnimalsStorage);
+        adapter.setHasStableIds(true);
+
+        recyclerView = findViewById(R.id.search_results);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

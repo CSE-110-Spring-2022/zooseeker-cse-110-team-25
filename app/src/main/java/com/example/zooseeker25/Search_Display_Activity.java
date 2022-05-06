@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -105,7 +106,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
-        intent.putExtra("selected_list", searchStorage);
+        ArrayList<String> temp = new ArrayList<>(searchStorage.getSelectedAnimals());
+        intent.putExtra("selected_list", temp.toArray());
         startActivity(intent);
     }
 
