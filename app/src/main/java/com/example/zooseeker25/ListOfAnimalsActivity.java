@@ -9,17 +9,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Set;
+
 public class ListOfAnimalsActivity extends AppCompatActivity {
 
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
-    public SearchStorage selectedAnimals;
+    public SearchStorage selectedAnimalsStorage;
+    private Set<String> selectedAnimals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
-        selectedAnimals = (SearchStorage) getIntent().getSerializableExtra("selected_list");
+        selectedAnimalsStorage = (SearchStorage) getIntent().getSerializableExtra("selected_list");
         loadSelectedAnimalList();
     }
 
@@ -32,21 +35,11 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
     public void loadSelectedAnimalList(){
 
+        for(String animal:selectedAnimals){
 
+            //assign the animal to the selected animal item in the recycler view
 
-
-
-
-//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-//
-//        String s_name = preferences.getString("key_name", "User not found.");
-//        String s_status = preferences.getString("key_status", "Status not found.");
-//
-//        TextView nameView = (TextView) findViewById(R.id.name_textview);
-//        TextView statusView = (TextView) findViewById(R.id.status_textview);
-//
-//        nameView.setText(s_name);
-//        statusView.setText(s_status);
+        }
 
     }
 

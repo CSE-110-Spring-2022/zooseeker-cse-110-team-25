@@ -3,26 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/activity_list_of_animals.xml" value="0.2608695652173913" />
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/activity_main.xml" value="0.30117753623188404" />
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/activity_search_display.xml" value="0.30117753623188404" />
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/animal_list_item.xml" value="0.2608695652173913" />
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/route_list_item.xml" value="0.30117753623188404" />
-        <entry key="..\:/Android/Zooseeker/app/src/main/res/layout/search_list_item.xml" value="0.30117753623188404" />
         <entry key="..\:/Users/albch/OneDrive/Zooseeker25/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/albch/OneDrive/Zooseeker25/app/src/main/res/layout/activity_search_display.xml" value="0.10552536231884058" />
         <entry key="..\:/Users/albch/OneDrive/Zooseeker25/app/src/main/res/layout/search_list_item.xml" value="0.12273550724637682" />
+        <entry key="app/src/main/res/layout-w1240dp/content_scrolling.xml" value="0.1296875" />
+        <entry key="app/src/main/res/layout-w936dp/content_scrolling.xml" value="0.13465952563121653" />
+        <entry key="app/src/main/res/layout/activity_list_of_animals.xml" value="0.2513586956521739" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19166666666666668" />
-<<<<<<< HEAD
         <entry key="app/src/main/res/layout/activity_search_display.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_view_route.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_view_route2.xml" value="0.17831813576494426" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.3200759445411572" />
         <entry key="app/src/main/res/layout/route_list_item.xml" value="0.2513586956521739" />
-=======
-        <entry key="app/src/main/res/layout/activity_search_display.xml" value="0.14336372847011145" />
->>>>>>> 160682f7be62afa39c18aa3969ea1e823e29286a
         <entry key="app/src/main/res/layout/search_list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/selected_animal_item.xml" value="0.2513586956521739" />
         <entry key="app/src/main/res/xml/searchable.xml" value="0.14336372847011145" />
       </map>
     </option>
