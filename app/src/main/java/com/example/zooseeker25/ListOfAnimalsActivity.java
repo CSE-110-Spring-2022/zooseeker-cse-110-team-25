@@ -16,6 +16,7 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
     public SearchStorage selectedAnimalsStorage;
+    ListOfAnimalsAdapter adapter;
     private Set<String> selectedAnimals;
 
     @Override
@@ -23,9 +24,8 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
         selectedAnimalsStorage = (SearchStorage) getIntent().getSerializableExtra("selected_list");
-        loadSelectedAnimalList();
+        //adapter = new ListOfAnimalsAdapter(selectedAnimalsStorage);
     }
-
 
     @Override
     protected void onDestroy(){
@@ -33,15 +33,6 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         saveProfile();
     }
 
-    public void loadSelectedAnimalList(){
-
-        for(String animal:selectedAnimals){
-
-            //assign the animal to the selected animal item in the recycler view
-
-        }
-
-    }
 
     public void saveProfile(){
 
