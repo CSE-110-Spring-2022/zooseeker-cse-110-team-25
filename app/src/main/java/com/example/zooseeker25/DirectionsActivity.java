@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DirectionsActivity extends AppCompatActivity {
-    private List<Route> routeList;
+    private Route[] routeList;
     private int currentExhibitCounter;
     private Route currRoute;
 
@@ -29,20 +31,24 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        this.prevBtn = findViewById(R.id.prev_button);
-        this.nextBtn = findViewById(R.id.next_button);
-        this.exhibitCounterText = findViewById(R.id.direction_exhibit_counter);
-        this.exhibitTitleText = findViewById(R.id.direction_exhibit_title);
-        this.recyclerView = findViewById(R.id.directions_list_view);
+        this.prevBtn = (Button) findViewById(R.id.prev_button);
+        this.nextBtn = (Button) findViewById(R.id.next_button);
+        this.exhibitCounterText = (TextView) findViewById(R.id.direction_exhibit_counter);
+        this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
+        this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
 
-        Bundle extras = getIntent().getExtras();
-        this.currentExhibitCounter = extras.getInt("current_exhibit_counter");
-        this.routeList = (List<Route>) extras.getSerializable("route_list");
+        this.currentExhibitCounter = getIntent().getExtras().getInt("current_exhibit_counter");
+        Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
+        this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
 
-        this.currRoute = routeList.get(currentExhibitCounter);
+        updateUI();
+    }
 
-        this.exhibitCounterText.setText(routeList.size()-currentExhibitCounter-1);
-        this.exhibitTitleText.setText(this.currRoute.end);
+
+    private void updateUI() {
+        this.currRoute = routeList[currentExhibitCounter];
+        this.exhibitCounterText.setText(String.valueOf(routeList.length-currentExhibitCounter-1));
+        this.exhibitTitleText.setText(this.currRoute.exhibit);
 
         setPrevBtn();
         setNextBtn();
@@ -53,12 +59,17 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currentExhibitCounter != 0) {
             this.prevBtn.setVisibility(View.VISIBLE);
             this.prevBtn.setText("Previous");
+        } else {
+            this.prevBtn.setVisibility(View.INVISIBLE);
         }
     }
 
     private void setNextBtn() {
-        if (this.currentExhibitCounter+1 < this.routeList.size()-1) {
-            this.nextBtn.setText(this.routeList.get(this.currentExhibitCounter + 1).end);
+        if (this.currentExhibitCounter < this.routeList.length-1) {
+            Route nextExhibit = routeList[currentExhibitCounter+1];
+            String nextBtnText =
+                    nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+            this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
         }
@@ -66,21 +77,21 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private void setAdapter() {
         DirectionsAdapter adapter = new DirectionsAdapter();
-        adapter.setDirectionsList(this.routeList.get(this.currentExhibitCounter).directions);
+        adapter.setDirectionsList(this.currRoute.directions);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(adapter);
     }
 
     public void onNextExhibitClicked(View view) {
-        Intent intent = new Intent(this, DirectionsActivity.class);
-        intent.putExtra("current_exhibit_counter", currentExhibitCounter+1);
-        intent.putExtra("route_list", (Parcelable) routeList);
-
-        startActivity(intent);
+        if (this.currentExhibitCounter < this.routeList.length-1) {
+            this.currentExhibitCounter++;
+            updateUI();
+        }
     }
 
     public void onPrevExhibitClicked(View view) {
-        finish();
+        this.currentExhibitCounter--;
+        updateUI();
     }
 }

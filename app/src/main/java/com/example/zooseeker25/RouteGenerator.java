@@ -88,18 +88,25 @@ public class RouteGenerator {
         List<String> directions = new ArrayList<>();
         double totalDistance = 0;
 
+        String prevExhibit = "";
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
             double edgeWeight = g.getEdgeWeight(e);
+
+            String source = vInfo.get(g.getEdgeSource(e)).name;
+            String target = vInfo.get(g.getEdgeTarget(e)).name;
+
             String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
                     edgeWeight,
                     eInfo.get(e.getId()).street,
-                    vInfo.get(g.getEdgeSource(e)).name,
-                    vInfo.get(g.getEdgeTarget(e)).name
+                    source,
+                    target
             );
+
+
             directions.add(direction);
             totalDistance += edgeWeight;
         }
 
-        return new Route(start, end, totalDistance, directions, intro);
+        return new Route(start, end, totalDistance, directions, intro, vInfo.get(end).name);
     }
 }

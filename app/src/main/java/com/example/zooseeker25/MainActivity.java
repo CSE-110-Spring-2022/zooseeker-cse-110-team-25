@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, DirectionsActivity.class);
         intent.putExtra("current_exhibit_counter", 0);
-        intent.putExtra("route_list", (Parcelable) routeList);
+        intent.putExtra("route_list", routeList.toArray());
         startActivity(intent);
 
     }
