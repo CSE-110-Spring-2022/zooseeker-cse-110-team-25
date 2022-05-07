@@ -34,8 +34,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @NonNull
     @Override
-    //im not gonna lie i dont quite understand the intricacies of this function
-    //i just know it somehow formats the recycler view to contain search_list_items
     public SearchResultsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
