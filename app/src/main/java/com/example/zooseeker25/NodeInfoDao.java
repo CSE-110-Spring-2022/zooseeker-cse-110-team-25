@@ -6,7 +6,9 @@ import androidx.room.Query;
 
 import java.util.List;
 
-
+/**
+ * Uses SQL commands to select substrings from each column of the table
+ */
 @Dao
 public interface NodeInfoDao {
     @Query("SELECT * FROM `Zoo_node_item` WHERE `id` LIKE '%' || :id || '%'")

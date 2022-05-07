@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import android.content.Context;
 
 import androidx.room.Room;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -22,16 +23,6 @@ public class NodeDatabaseTest {
     private NodeInfoDao dao;
     private ItemDatabase db;
 
-    /*@Before
-    public void createDb(){
-        Context context = ApplicationProvider.getApplicationContext();
-        db =
-        db = Room.inMemoryDatabaseBuilder(context, ItemDatabase.class)
-                .allowMainThreadQueries()
-                .build();
-        dao = db.nodeInfoDao();
-    }*/
-
     @Before
     public void resetDatabase(){
         Context context = ApplicationProvider.getApplicationContext();
@@ -45,6 +36,16 @@ public class NodeDatabaseTest {
         dao.insertAll(todos);
     }
 
+    /*@Test
+    public void example() {
+        final ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+
+
+        scenario.onActivity(activity -> {
+
+        });
+    }*/
+
     @Test
     public void testid() {
         Search s = new Search("elephant_odyssey", dao);
@@ -53,7 +54,6 @@ public class NodeDatabaseTest {
 
         List<String> expected = new ArrayList<>();
         expected.add("Elephant Odyssey");
-
         assertEquals(expected, res);
     }
 
@@ -86,7 +86,7 @@ public class NodeDatabaseTest {
 
     @Test
     public void testKind(){
-        Search s = new Search("exhibit", dao);
+        Search s = new Search("exhibi", dao);
 
         List<String> res = s.searchAllCategory();
 
@@ -99,6 +99,16 @@ public class NodeDatabaseTest {
         assertEquals(expected, res);
     }
 
+    @Test
+    public void testNotExhibit(){
+        Search s = new Search("ga", dao);
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Alligators");
+        //expected.add("Elephant Odyssey");
+        assertEquals(expected, res);
+    }
 
 
     @After

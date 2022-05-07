@@ -19,6 +19,9 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * For each node in JSON, make it to a NodeItem object
+ */
 @Entity(tableName = "Zoo_node_item")
 public class NodeItem {
     public static enum Kind {
@@ -43,14 +46,6 @@ public class NodeItem {
         this.id = id;
         this.kind = kind;
         this.name = name;
-        this.tags = tags;
-    }
-
-    public List<String> getTags() {
-        return this.tags;
-    }
-
-    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
