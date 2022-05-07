@@ -1,0 +1,26 @@
+[
+  {
+    "id": "entrance_exit_gate",
+    "kind": "gate",
+    "name": "Entrance and Exit Gate",
+    "tags": [
+      "enter",
+      "leave",
+      "start",
+      "begin",
+      "entrance",
+      "exit"
+    ]
+  },
+  {
+    "id": "gorillas",
+    "kind": "exhibit",
+    "name": "Gorillas",
+    "tags": [
+      "gorilla",
+      "monkey",
+      "ape",
+      "mammal"
+    ]
+  }
+  ]
