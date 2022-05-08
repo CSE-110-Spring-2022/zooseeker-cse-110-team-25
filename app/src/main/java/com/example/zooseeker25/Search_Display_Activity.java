@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     TextView listCounter;
     RecyclerView searchResults;
     TextView animalItem;
+    Button viewRouteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         titleText = findViewById(R.id.title_text);
         listCounter = findViewById(R.id.listCounterPlaceHolder);
         searchResults = findViewById(R.id.search_results);
+        viewRouteBtn = findViewById(R.id.view_route_btn);
 
         //initializing the adapter
         SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage, dao);
@@ -120,5 +123,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     @Override
     public void update(Observable observable, Object o) {
         listCounter.setText((String)o);
+        if (!listCounter.getText().equals("0")) {
+            viewRouteBtn.setVisibility(View.VISIBLE);
+        }
     }
 }

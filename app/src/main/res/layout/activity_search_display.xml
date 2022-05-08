@@ -62,6 +62,7 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="269dp"
         android:onClick="onViewRouteClicked"
+        android:visibility="invisible"
         android:text="View Route"
         app:layout_constraintBottom_toTopOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
