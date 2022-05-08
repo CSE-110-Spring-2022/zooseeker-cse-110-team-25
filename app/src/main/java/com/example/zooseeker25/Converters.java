@@ -5,6 +5,11 @@ import androidx.room.TypeConverter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Converters class helping SQL to store list more efficiently
+ * convert list to string
+ * convert string to list
+ */
 public class Converters {
     @TypeConverter
     public static String listToString(List<String> tags) {

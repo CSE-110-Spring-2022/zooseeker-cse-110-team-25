@@ -34,8 +34,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @NonNull
     @Override
-    //im not gonna lie i dont quite understand the intricacies of this function
-    //i just know it somehow formats the recycler view to contain search_list_items
     public SearchResultsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
@@ -63,7 +61,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
-            //non-functional onclick behavior for search results
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
                 onAnimalItemClicked.accept(searchResultsItem);

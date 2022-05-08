@@ -10,12 +10,11 @@ import java.util.List;
 
 public class SearchResultsViewModel extends AndroidViewModel {
 
-    private LiveData<List<SearchResultsItem>> SearchResultsItem;
-
     public SearchResultsViewModel(@NonNull Application application) {
         super(application);
     }
 
+    //used to update the selected field on a SearchResultsItem when its clicked
     public void selectAnimal(SearchResultsItem searchResultItem) {
         searchResultItem.selected = true;
     }
