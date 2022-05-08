@@ -36,9 +36,8 @@ public class MainActivity extends AppCompatActivity {
         routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
 
         Intent intent = new Intent(this, DirectionsActivity.class);
-        intent.putExtra("current_exhibit_counter", 0);
         intent.putExtra("route_list", routeList.toArray());
         startActivity(intent);
-
     }
+
 }

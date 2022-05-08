@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DirectionsActivity extends AppCompatActivity {
     private Route[] routeList;
-    private int currentExhibitCounter;
+    private int currentExhibitCounter = 0;
     private Route currRoute;
 
     private RecyclerView recyclerView;
@@ -37,7 +37,6 @@ public class DirectionsActivity extends AppCompatActivity {
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
 
-        this.currentExhibitCounter = getIntent().getExtras().getInt("current_exhibit_counter");
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
 

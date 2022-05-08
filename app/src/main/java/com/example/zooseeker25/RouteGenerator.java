@@ -20,6 +20,7 @@ public class RouteGenerator {
     public static Map<Integer, String> nodeLookup = new HashMap<>();
     public static Map<String, Integer> integerLookup = new HashMap<>();
     public static List<List<Route>> routeData = new ArrayList<List<Route>>();
+    private static String prevExhibit = "";
 
     public static void populateRouteData (List<String> exhibits, Context context) {
         int i = 1;
@@ -88,12 +89,21 @@ public class RouteGenerator {
         List<String> directions = new ArrayList<>();
         double totalDistance = 0;
 
-        String prevExhibit = "";
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
             double edgeWeight = g.getEdgeWeight(e);
 
             String source = vInfo.get(g.getEdgeSource(e)).name;
             String target = vInfo.get(g.getEdgeTarget(e)).name;
+
+            if (prevExhibit.compareTo("") == 0) {
+                RouteGenerator.prevExhibit = target;
+            } else if (prevExhibit.compareTo(target) == 0) {
+                String temp = target;
+                target = source;
+                source = temp;
+            }
+
+            RouteGenerator.prevExhibit = target;
 
             String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
                     edgeWeight,
