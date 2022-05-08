@@ -52,4 +52,5 @@ public class RouteGeneratorTest {
             assertEquals("li", fullRoute.get(0).end);
             assertEquals("ga", fullRoute.get(1).end);
     }
+    
 }
