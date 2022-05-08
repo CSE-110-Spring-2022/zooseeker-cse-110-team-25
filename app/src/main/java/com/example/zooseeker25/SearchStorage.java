@@ -13,11 +13,13 @@ import java.util.TreeSet;
 public class SearchStorage extends Observable implements Serializable {
     private List<SearchResultsItem> resultsList;
     private Set<String> selectedAnimals;
+    private Set<String> selectedAnimalsIDs;
     private Observer observer;
 
     public SearchStorage(Observer observer) {
         this.observer = observer;
         selectedAnimals = new TreeSet<>();
+        selectedAnimalsIDs = new TreeSet<>();
         resultsList = new ArrayList<>();
     }
 
@@ -29,18 +31,23 @@ public class SearchStorage extends Observable implements Serializable {
         //clear previous resultsList
         resultsList.removeAll(resultsList);
         //add items fro newList and check to see if they have been selected previously
-        for (String item : newList) {
-            Boolean selected = selectedAnimals.contains(item);
-            resultsList.add(new SearchResultsItem(item, selected));
+        for (String id : newList) {
+            Boolean selected = selectedAnimals.contains(id);
+            resultsList.add(new SearchResultsItem(id, selected));
         }
     }
 
-    public Set<String> getSelectedAnimals(){
+    public Set<String> getSelectedAnimalsNames(){
         return selectedAnimals;
     }
 
-    public void addSelectedAnimal(String s) {
-        selectedAnimals.add(s);
+    public Set<String> getSelectedAnimalsIDs(){
+        return selectedAnimalsIDs;
+    }
+
+    public void addSelectedAnimal(String name, String id) {
+        selectedAnimals.add(name);
+        selectedAnimalsIDs.add(id);
         observer.update(this, Integer.toString(selectedAnimals.size()));
     }
 }

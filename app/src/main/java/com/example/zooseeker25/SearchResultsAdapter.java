@@ -17,9 +17,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     private List<SearchResultsItem> searchResults = Collections.emptyList();
     private Consumer<SearchResultsItem> onAnimalItemClicked;
     private SearchStorage searchStorage;
+    private NodeInfoDao dao;
 
-    public SearchResultsAdapter(SearchStorage searchStorage) {
+    public SearchResultsAdapter(SearchStorage searchStorage, NodeInfoDao dao) {
         this.searchStorage = searchStorage;
+        this.dao = dao;
     }
 
     //sets the list of results to be displayed
@@ -65,7 +67,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 if(onAnimalItemClicked == null) return;
                 onAnimalItemClicked.accept(searchResultsItem);
                 setSearchItem(searchResultsItem);
-                searchStorage.addSelectedAnimal((String) textView.getText());
+                searchStorage.addSelectedAnimal((String) textView.getText(), dao.getIDFromName((String) textView.getText()));
             });
         }
 
@@ -73,7 +75,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         //text in the textView of an individual search_list_item
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
-            this.textView.setText(searchResultsItem.name);
+            this.textView.setText(dao.getNameFromId(searchResultsItem.name));
             if (searchResultsItem.selected) {
                 textView.setBackgroundColor(Color.LTGRAY);
             } else {

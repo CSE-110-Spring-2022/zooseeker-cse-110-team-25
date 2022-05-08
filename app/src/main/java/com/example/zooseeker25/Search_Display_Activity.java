@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     TextView listCounter;
     RecyclerView searchResults;
     TextView animalItem;
+    Button viewRouteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +41,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         setContentView(R.layout.activity_search_display);
         viewModel = new ViewModelProvider(this)
                 .get(SearchResultsViewModel.class);
-        searchStorage = new SearchStorage(this);
 
-        //getting all of the elements on the UI
-        simpleSearchView = findViewById(R.id.searchView);
-        titleText = findViewById(R.id.title_text);
-        listCounter = findViewById(R.id.listCounterPlaceHolder);
-        searchResults = findViewById(R.id.search_results);
-
-        //initializing the adapter
-        SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage);
-        adapter.setHasStableIds(true);
-        adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
-
-        //getting the search results and assigning it to the adapter
-        recyclerView = findViewById(R.id.search_results);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        //initializing database?
+        //initializing dao
         db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
                 .allowMainThreadQueries()
                 .build();
@@ -65,6 +50,25 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
         dao = db.nodeInfoDao();
         dao.insertAll(todos);
+
+        searchStorage = new SearchStorage(this);
+
+        //getting all of the elements on the UI
+        simpleSearchView = findViewById(R.id.searchView);
+        titleText = findViewById(R.id.title_text);
+        listCounter = findViewById(R.id.listCounterPlaceHolder);
+        searchResults = findViewById(R.id.search_results);
+        viewRouteBtn = findViewById(R.id.view_route_btn);
+
+        //initializing the adapter
+        SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage, dao);
+        adapter.setHasStableIds(true);
+        adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
+
+        //getting the search results and assigning it to the adapter
+        recyclerView = findViewById(R.id.search_results);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -109,13 +113,18 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
-        ArrayList<String> temp = new ArrayList<>(searchStorage.getSelectedAnimals());
-        intent.putExtra("selected_list", temp.toArray());
+        ArrayList<String> tempNames = new ArrayList<>(searchStorage.getSelectedAnimalsNames());
+        intent.putExtra("selected_list_names", tempNames.toArray());
+        ArrayList<String> tempIDs = new ArrayList<>(searchStorage.getSelectedAnimalsIDs());
+        intent.putExtra("selected_list_ids", tempIDs.toArray());
         startActivity(intent);
     }
 
     @Override
     public void update(Observable observable, Object o) {
         listCounter.setText((String)o);
+        if (!listCounter.getText().equals("0")) {
+            viewRouteBtn.setVisibility(View.VISIBLE);
+        }
     }
 }
