@@ -31,7 +31,7 @@ public class SearchStorage extends Observable implements Serializable {
         //add items fro newList and check to see if they have been selected previously
         for (String item : newList) {
             Boolean selected = selectedAnimals.contains(item);
-            resultsList.add(new SearchResultsItem(item, selected, 0));
+            resultsList.add(new SearchResultsItem(item, selected));
         }
     }
 

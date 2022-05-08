@@ -42,7 +42,7 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
 
     public void saveProfile(){
-
+        //TODO - data persistence once app is closed
 //        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 //        SharedPreferences.Editor editor = preferences.edit();
 //
@@ -54,7 +54,6 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 //        editor.putString("key_status", statusView.getText().toString());
 //
 //        editor.apply();
-
     }
 
     public void onGoBackClicked(View view) {
@@ -62,6 +61,7 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     }
 
     public void onRouteGeneratedClicked(View view) {
+        //TODO - implement functionality for generate route button
         //generate route and move to trip overview activity
     }
 }
