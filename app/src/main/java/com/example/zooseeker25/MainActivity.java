@@ -23,20 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Intent intent = new Intent(this, Search_Display_Activity.class);
-//        startActivity(intent);
-
-        List<Route> routeList;
-        List<String> exhibits = new ArrayList<>();
-        exhibits.add("lions");
-        exhibits.add("gators");
-        exhibits.add("arctic_foxes");
-
-        RouteGenerator.populateRouteData(exhibits, this);
-        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
-
-        Intent intent = new Intent(this, DirectionsActivity.class);
-        intent.putExtra("route_list", routeList.toArray());
+        Intent intent = new Intent(this, Search_Display_Activity.class);
         startActivity(intent);
     }
 
