@@ -5,30 +5,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class ListOfAnimalsActivity extends AppCompatActivity {
 
     private SearchResultsViewModel viewModel;
     private RecyclerView recyclerView;
-    private String[] selectedAnimalsStorage;
+    private String[] selectedAnimalsNameStorage;
+    private List<Route> routeList;
+    private List<String> exhibits;
+    private String[] animalIds;
     ListOfAnimalsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
-        Object[] temp = (Object[])getIntent().getSerializableExtra("selected_list");
-        selectedAnimalsStorage = Arrays.copyOf(temp, temp.length, String[].class);
-        adapter = new ListOfAnimalsAdapter(selectedAnimalsStorage);
+        Object[] animalNames = (Object[])getIntent().getSerializableExtra("selected_list_names");
+        Object[] tempIds = (Object[])getIntent().getSerializableExtra("selected_list_ids");
+        selectedAnimalsNameStorage = Arrays.copyOf(animalNames, animalNames.length, String[].class);
+        adapter = new ListOfAnimalsAdapter(selectedAnimalsNameStorage);
         adapter.setHasStableIds(true);
-
+        animalIds = Arrays.copyOf(tempIds, tempIds.length, String[].class);
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -61,7 +68,11 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     }
 
     public void onRouteGeneratedClicked(View view) {
-        //TODO - implement functionality for generate route button
-        //generate route and move to trip overview activity
+        exhibits = new ArrayList<>(Arrays.asList(animalIds));
+        RouteGenerator.populateRouteData(exhibits, this);
+        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
+        Intent intent = new Intent(this, DirectionsActivity.class);
+        intent.putExtra("route_list", routeList.toArray());
+        startActivity(intent);
     }
 }

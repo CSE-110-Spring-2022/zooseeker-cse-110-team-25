@@ -23,6 +23,12 @@ public interface NodeInfoDao {
     @Query("SELECT * FROM `Zoo_node_item` WHERE `tags` LIKE '%' || :tag || '%'")
     List<NodeItem> findTag(String tag);
 
+    @Query("SELECT name FROM `Zoo_node_item` WHERE `id` IS :id")
+    String getNameFromId(String id);
+
+    @Query("SELECT id FROM `Zoo_node_item` WHERE `name` IS :name")
+    String getIDFromName(String name);
+
     @Insert
     List<Long> insertAll(List<NodeItem> nodeItems);
 

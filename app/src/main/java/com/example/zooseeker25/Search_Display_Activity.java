@@ -39,6 +39,16 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         setContentView(R.layout.activity_search_display);
         viewModel = new ViewModelProvider(this)
                 .get(SearchResultsViewModel.class);
+
+        //initializing dao
+        db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        ItemDatabase.injectTestDatabase(db);
+        List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
+        dao = db.nodeInfoDao();
+        dao.insertAll(todos);
+
         searchStorage = new SearchStorage(this);
 
         //getting all of the elements on the UI
@@ -48,7 +58,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         searchResults = findViewById(R.id.search_results);
 
         //initializing the adapter
-        SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage);
+        SearchResultsAdapter adapter = new SearchResultsAdapter(searchStorage, dao);
         adapter.setHasStableIds(true);
         adapter.setOnAnimalClickedHandler(viewModel::selectAnimal);
 
@@ -56,15 +66,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        //initializing database?
-        db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
-                .allowMainThreadQueries()
-                .build();
-        ItemDatabase.injectTestDatabase(db);
-        List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
-        dao = db.nodeInfoDao();
-        dao.insertAll(todos);
 
         //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -109,8 +110,10 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
-        ArrayList<String> temp = new ArrayList<>(searchStorage.getSelectedAnimals());
-        intent.putExtra("selected_list", temp.toArray());
+        ArrayList<String> tempNames = new ArrayList<>(searchStorage.getSelectedAnimalsNames());
+        intent.putExtra("selected_list_names", tempNames.toArray());
+        ArrayList<String> tempIDs = new ArrayList<>(searchStorage.getSelectedAnimalsIDs());
+        intent.putExtra("selected_list_ids", tempIDs.toArray());
         startActivity(intent);
     }
 
