@@ -100,13 +100,86 @@ public class NodeDatabaseTest {
     }
 
     @Test
+    public void testSearchLi(){
+        Search s = new Search("Li", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Alligators");
+        expected.add("Lions");
+        assertEquals(expected, res);
+    }
+    @Test
+    public void testSearchFox(){
+        Search s = new Search("fox", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Arctic Foxes");
+        assertEquals(expected, res);
+
+        s = new Search("foxes", dao);
+        res = s.searchAllCategory();
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testSearchByTypeCat(){
+        Search s = new Search("cat", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Lions");
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testSearchByTypeMonkey(){
+        Search s = new Search("mon", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Gorillas");
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testSearchByTypeReptile(){
+        Search s = new Search("rep", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Alligators");
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testInvalid(){
+        Search s = new Search("foxs", dao);
+
+        List<String> res = s.searchAllCategory();
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Search Not Found");
+        assertEquals(expected, res);
+
+        s = new Search("mmals", dao);
+        res = s.searchAllCategory();
+        assertEquals(expected, res);
+    }
+
+    @Test
     public void testNotExhibit(){
         Search s = new Search("ga", dao);
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
         expected.add("Alligators");
-        //expected.add("Elephant Odyssey");
         assertEquals(expected, res);
     }
 
