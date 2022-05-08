@@ -68,6 +68,7 @@ public class RouteGenerator {
                 }
             }
             fullRoute.add(closestExhibit);
+            closestExhibit.generateDirections();
             visitedExhibits.add(closestExhibit.end);
             currentExhibit = closestExhibit.end;
         }
@@ -86,37 +87,22 @@ public class RouteGenerator {
 
         String intro = String.format("The shortest path from '%s' to '%s' is:\n", start, end);
 
-        List<String> directions = new ArrayList<>();
+        List<List<String>> routeDirections = new ArrayList<List<String>>();
         double totalDistance = 0;
 
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
             double edgeWeight = g.getEdgeWeight(e);
+            List<String> route = new ArrayList<>();
 
-            String source = vInfo.get(g.getEdgeSource(e)).name;
-            String target = vInfo.get(g.getEdgeTarget(e)).name;
+            route.add(vInfo.get(g.getEdgeSource(e)).name);
+            route.add(vInfo.get(g.getEdgeTarget(e)).name);
+            route.add(String.valueOf(edgeWeight));
+            route.add(eInfo.get(e.getId()).street);
 
-            if (prevExhibit.compareTo("") == 0) {
-                RouteGenerator.prevExhibit = target;
-            } else if (prevExhibit.compareTo(target) == 0) {
-                String temp = target;
-                target = source;
-                source = temp;
-            }
-
-            RouteGenerator.prevExhibit = target;
-
-            String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
-                    edgeWeight,
-                    eInfo.get(e.getId()).street,
-                    source,
-                    target
-            );
-
-
-            directions.add(direction);
+            routeDirections.add(route);
             totalDistance += edgeWeight;
         }
 
-        return new Route(start, end, totalDistance, directions, intro, vInfo.get(end).name);
+        return new Route(start, end, totalDistance, routeDirections, intro, vInfo.get(end).name);
     }
 }
