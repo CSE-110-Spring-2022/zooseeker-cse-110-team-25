@@ -53,7 +53,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Elephant Odyssey");
+        expected.add("elephant_odyssey");
         assertEquals(expected, res);
     }
 
@@ -64,7 +64,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Elephant Odyssey");
+        expected.add("elephant_odyssey");
 
         assertEquals(expected, res);
     }
@@ -76,10 +76,10 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Gorillas");
-        expected.add("Lions");
-        expected.add("Elephant Odyssey");
-        expected.add("Arctic Foxes");
+        expected.add("gorillas");
+        expected.add("lions");
+        expected.add("elephant_odyssey");
+        expected.add("arctic_foxes");
 
         assertEquals(expected, res);
     }
@@ -91,11 +91,11 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Gorillas");
-        expected.add("Alligators");
-        expected.add("Lions");
-        expected.add("Elephant Odyssey");
-        expected.add("Arctic Foxes");
+        expected.add("gorillas");
+        expected.add("gators");
+        expected.add("lions");
+        expected.add("elephant_odyssey");
+        expected.add("arctic_foxes");
         assertEquals(expected, res);
     }
 
@@ -106,8 +106,8 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Alligators");
-        expected.add("Lions");
+        expected.add("gators");
+        expected.add("lions");
         assertEquals(expected, res);
     }
     @Test
@@ -117,7 +117,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Arctic Foxes");
+        expected.add("arctic_foxes");
         assertEquals(expected, res);
 
         s = new Search("foxes", dao);
@@ -132,7 +132,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Lions");
+        expected.add("lions");
         assertEquals(expected, res);
     }
 
@@ -143,7 +143,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Gorillas");
+        expected.add("gorillas");
         assertEquals(expected, res);
     }
 
@@ -154,7 +154,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Alligators");
+        expected.add("gators");
         assertEquals(expected, res);
     }
 
@@ -179,7 +179,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Alligators");
+        expected.add("gators");
         assertEquals(expected, res);
     }
 
