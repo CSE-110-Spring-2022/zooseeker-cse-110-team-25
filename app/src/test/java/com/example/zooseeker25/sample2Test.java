@@ -38,7 +38,7 @@ public class sample2Test {
         Search s = new Search("ori", dao);
         List<String> res = s.searchAllCategory();
         List<String> expected = new ArrayList<>();
-        expected.add("Gorillas");
+        expected.add("gorillas");
         assertEquals(expected, res);
     }
 }
