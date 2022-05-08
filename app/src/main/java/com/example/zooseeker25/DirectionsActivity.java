@@ -86,7 +86,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             this.currentExhibitCounter++;
             updateUI();
-        }
+        } else { finish(); }
     }
 
     public void onPrevExhibitClicked(View view) {
