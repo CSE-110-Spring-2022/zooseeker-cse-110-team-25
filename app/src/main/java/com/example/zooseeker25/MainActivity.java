@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -25,4 +26,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Search_Display_Activity.class);
         startActivity(intent);
     }
+
 }

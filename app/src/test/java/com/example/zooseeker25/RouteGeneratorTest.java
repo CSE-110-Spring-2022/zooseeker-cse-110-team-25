@@ -31,19 +31,19 @@ public class RouteGeneratorTest {
 
             List<Route> routeList = new ArrayList<>();
             routeList.add(null);
-            routeList.add(new Route("entrance_exit_gate", "li", 10,  new ArrayList<String>(Arrays.asList("g")), ""));
-            routeList.add(new Route("entrance_exit_gate", "ga", 30,  new ArrayList<String>(Arrays.asList("g")), ""));
+            routeList.add(new Route("entrance_exit_gate", "li", 10,  new ArrayList<String>(Arrays.asList("g")), "", ""));
+            routeList.add(new Route("entrance_exit_gate", "ga", 30,  new ArrayList<String>(Arrays.asList("g")), "", ""));
             routeData.add(routeList);
 
             List<Route> routeList2 = new ArrayList<>();
-            routeList2.add(new Route("li", "entrance_exit_gate", 10,  new ArrayList<String>(Arrays.asList("g")), ""));
+            routeList2.add(new Route("li", "entrance_exit_gate", 10,  new ArrayList<String>(Arrays.asList("g")), "", ""));
             routeList2.add(null);
-            routeList2.add(new Route("li", "ga", 20,  new ArrayList<String>(Arrays.asList("g")), ""));
+            routeList2.add(new Route("li", "ga", 20,  new ArrayList<String>(Arrays.asList("g")), "", ""));
             routeData.add(routeList2);
 
             List<Route> routeList3 = new ArrayList<>();
-            routeList3.add(new Route("ga", "entrance_exit_gate", 30,  new ArrayList<String>(Arrays.asList("g")), ""));
-            routeList3.add(new Route("ga", "li", 20,  new ArrayList<String>(Arrays.asList("g")), ""));
+            routeList3.add(new Route("ga", "entrance_exit_gate", 30,  new ArrayList<String>(Arrays.asList("g")), "", ""));
+            routeList3.add(new Route("ga", "li", 20,  new ArrayList<String>(Arrays.asList("g")), "", ""));
             routeList3.add(null);
             routeData.add(routeList3);
 

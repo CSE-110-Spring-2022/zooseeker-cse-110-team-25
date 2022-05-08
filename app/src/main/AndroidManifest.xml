@@ -13,6 +13,9 @@
             android:name=".ListOfAnimalsActivity"
             android:exported="false" />
         <activity
+            android:name=".DirectionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_Display_Activity"
             android:exported="true">
             <intent-filter>
