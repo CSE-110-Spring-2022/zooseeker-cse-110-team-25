@@ -25,6 +25,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private TextView exhibitCounterText;
     private Button prevBtn;
     private Button nextBtn;
+    private Button skipBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
+        this.skipBtn = (Button) findViewById(R.id.skip_next_button);
         this.exhibitCounterText = (TextView) findViewById(R.id.direction_exhibit_counter);
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
@@ -51,6 +53,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
         setPrevBtn();
         setNextBtn();
+        setSkipBtn();
         setAdapter();
     }
 
@@ -60,6 +63,14 @@ public class DirectionsActivity extends AppCompatActivity {
             this.prevBtn.setText("Previous");
         } else {
             this.prevBtn.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setSkipBtn() {
+        if (this.currentExhibitCounter == this.routeList.length-1) {
+            this.skipBtn.setVisibility(View.INVISIBLE);
+        } else {
+            this.skipBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -91,6 +102,21 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void onPrevExhibitClicked(View view) {
         this.currentExhibitCounter--;
+        updateUI();
+    }
+
+    public void onSkipNextBtnClicked(View view) {
+        // convert routeList array to a list
+        List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
+        // remove the next exhibit
+        list.remove(currentExhibitCounter+1);
+        // convert list back to array
+        this.routeList = list.toArray(new Route[0]);
+        // generate directions from current exhibit to next exhibit
+        this.routeList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, routeList[currentExhibitCounter].end, routeList[currentExhibitCounter+1].end);
+        Route.prevExhibit = currRoute.exhibit;
+        this.routeList[currentExhibitCounter+1].generateDirections();
+        // update UI
         updateUI();
     }
 }
