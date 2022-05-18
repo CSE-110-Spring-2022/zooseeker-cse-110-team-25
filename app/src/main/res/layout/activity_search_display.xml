@@ -63,7 +63,7 @@
         android:layout_marginEnd="269dp"
         android:onClick="onViewRouteClicked"
         android:visibility="invisible"
-        android:text="View Route"
+        android:text="View Selected"
         app:layout_constraintBottom_toTopOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
