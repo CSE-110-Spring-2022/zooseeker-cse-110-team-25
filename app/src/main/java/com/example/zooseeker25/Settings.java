@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Settings extends AppCompatActivity {
     TextView detailedBtn;
     TextView briefBtn;
-    int detailedDirections = 0;
+    private int detailedDirections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class Settings extends AppCompatActivity {
         detailedBtn = findViewById(R.id.directions_detailed);
         briefBtn = findViewById(R.id.directions_brief);
 
+        //gets currently selected detail option and highlights the correct button
         detailedDirections = (int) getIntent().getSerializableExtra("detailedDirections");
         if (detailedDirections == 0) {
             briefBtn.setBackgroundColor(Color.LTGRAY);
@@ -33,18 +34,21 @@ public class Settings extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //selects detailed directions option
     public void onDetailedClicked(View view) {
         briefBtn.setBackgroundColor(Color.WHITE);
         detailedBtn.setBackgroundColor(Color.LTGRAY);
         detailedDirections = 1;
     }
 
+    //selects brief directions option
     public void onBriefClicked(View view) {
         detailedBtn.setBackgroundColor(Color.WHITE);
         briefBtn.setBackgroundColor(Color.LTGRAY);
         detailedDirections = 0;
     }
 
+    //sets the currently selected details option as the result and finishes
     public void onExitClicked(View view) {
         setResult(detailedDirections);
         finish();

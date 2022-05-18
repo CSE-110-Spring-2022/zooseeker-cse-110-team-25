@@ -103,16 +103,22 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    //passes the currently selected detailedDirections value to the new activity
+    //and asks for a result
     public void onSettingsClicked(View view) {
         Intent intent = new Intent(this, Settings.class);
         intent.putExtra("detailedDirections", detailedDirections);
         startActivityForResult(intent, detailedDirections);
     }
 
+    //getting the result from the closed settings activity
+    //resultCode stores the new value for detailedDirections
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         detailedDirections = resultCode;
+
+        //temporary example for how to use the results
         if (resultCode == 0) {
             tempText.setText("Brief");
         } else {
