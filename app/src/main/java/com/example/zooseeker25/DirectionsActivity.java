@@ -44,6 +44,12 @@ public class DirectionsActivity extends AppCompatActivity {
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
 
+        List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
+        Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
+        exitRoute.generateDirections();
+        list.add(exitRoute);
+        this.routeList = list.toArray(new Route[0]);
+
         updateUI();
     }
 
@@ -69,7 +75,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     private void setSkipBtn() {
-        if (this.currentExhibitCounter == this.routeList.length-1) {
+        if (this.currentExhibitCounter >= this.routeList.length-2) {
             this.skipBtn.setVisibility(View.INVISIBLE);
         } else {
             this.skipBtn.setVisibility(View.VISIBLE);
