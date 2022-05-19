@@ -1,9 +1,11 @@
 package com.example.zooseeker25;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -116,7 +118,19 @@ public class DirectionsActivity extends AppCompatActivity {
         this.routeList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, routeList[currentExhibitCounter].end, routeList[currentExhibitCounter+1].end);
         Route.prevExhibit = currRoute.exhibit;
         this.routeList[currentExhibitCounter+1].generateDirections();
-        // update UI
-        updateUI();
+
+        this.currentExhibitCounter++;
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Next Exhibit")
+                .setMessage(this.routeList[currentExhibitCounter].exhibit + "\n" + (int) this.routeList[currentExhibitCounter].totalDistance + " m")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        updateUI();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 }
