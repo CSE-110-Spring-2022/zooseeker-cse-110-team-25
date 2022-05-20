@@ -27,12 +27,6 @@ public class SearchPageTest {
 
     @Test
     public void searchPageTest() {
-        ViewInteraction button = onView(
-                allOf(withId(R.id.view_route_btn), withText("VIEW ROUTE"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
         ViewInteraction textView = onView(
                 allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
                         withParent(withParent(withId(android.R.id.content))),

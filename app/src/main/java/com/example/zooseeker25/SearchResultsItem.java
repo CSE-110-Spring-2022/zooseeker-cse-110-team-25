@@ -11,5 +11,4 @@ public class SearchResultsItem {
         this.name = name;
         this.selected = selected;
     }
-
 }
