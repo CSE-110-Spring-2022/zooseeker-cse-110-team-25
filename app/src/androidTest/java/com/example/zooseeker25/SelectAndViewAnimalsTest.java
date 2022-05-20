@@ -73,7 +73,7 @@ public class SelectAndViewAnimalsTest {
         materialTextView.perform(click());
 
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.view_route_btn), withText("View Route"),
+                allOf(withId(R.id.view_route_btn), withText("View Selected"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -131,7 +131,7 @@ public class SelectAndViewAnimalsTest {
         materialTextView2.perform(click());
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.view_route_btn), withText("View Route"),
+                allOf(withId(R.id.view_route_btn), withText("View Selected"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

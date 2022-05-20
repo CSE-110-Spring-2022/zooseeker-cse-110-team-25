@@ -26,10 +26,19 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button prevBtn;
     private Button nextBtn;
 
+    private int detailedDirections = 0;
+
+    //temp behavior
+    private TextView tempText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
+
+        //temp behavior
+        tempText = (TextView) findViewById(R.id.tempText);
+        tempText.setText("Brief");
 
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
@@ -92,5 +101,28 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onPrevExhibitClicked(View view) {
         this.currentExhibitCounter--;
         updateUI();
+    }
+
+    //passes the currently selected detailedDirections value to the new activity
+    //and asks for a result
+    public void onSettingsClicked(View view) {
+        Intent intent = new Intent(this, Settings.class);
+        intent.putExtra("detailedDirections", detailedDirections);
+        startActivityForResult(intent, detailedDirections);
+    }
+
+    //getting the result from the closed settings activity
+    //resultCode stores the new value for detailedDirections
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        detailedDirections = resultCode;
+
+        //temporary example for how to use the results
+        if (resultCode == 0) {
+            tempText.setText("Brief");
+        } else {
+            tempText.setText("Detailed");
+        }
     }
 }
