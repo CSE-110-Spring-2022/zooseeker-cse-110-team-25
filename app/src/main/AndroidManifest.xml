@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zooseeker25">
         <activity
+            android:name=".OverViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ListOfAnimalsActivity"
             android:exported="false" />
         <activity
