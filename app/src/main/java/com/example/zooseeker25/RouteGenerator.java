@@ -22,6 +22,12 @@ public class RouteGenerator {
     public static List<List<Route>> routeData = new ArrayList<List<Route>>();
     private static String prevExhibit = "";
 
+    public static void resetRoute() {
+        RouteGenerator.nodeLookup = new HashMap<>();
+        RouteGenerator.integerLookup = new HashMap<>();
+        RouteGenerator.routeData = new ArrayList<List<Route>>();
+    }
+
     public static void populateRouteData (List<String> exhibits, Context context) {
         int i = 1;
         RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
