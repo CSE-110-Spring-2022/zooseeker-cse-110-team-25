@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -91,6 +89,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText =
                     nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+            this.routeList[this.currentExhibitCounter+1].directions = this.routeList[this.currentExhibitCounter+1].nextDirections;
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
@@ -113,6 +112,10 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onPrevExhibitClicked(View view) {
+        if (this.routeList[this.currentExhibitCounter-1].prevDirections.size() == 0) {
+            this.routeList[this.currentExhibitCounter-1].generatePrevDirections(this.currRoute);
+        }
+        this.routeList[this.currentExhibitCounter-1].directions = this.routeList[this.currentExhibitCounter-1].prevDirections;
         this.currentExhibitCounter--;
         updateUI();
     }
@@ -128,6 +131,12 @@ public class DirectionsActivity extends AppCompatActivity {
         this.routeList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, routeList[currentExhibitCounter].end, routeList[currentExhibitCounter+1].end);
         Route.prevExhibit = currRoute.exhibit;
         this.routeList[currentExhibitCounter+1].generateDirections();
+
+
+        // TODO: update once previous exhibit route once skip button is clicked.
+        // All done before the currentExhibitCounter is incremented
+        // reset the this.route[currentExhibitCounter].nextExhibit
+        // update it with this.route[currentExhibitCounter].prevDirections = generate prevDirections by passing in the next exhibit
 
         this.currentExhibitCounter++;
 
