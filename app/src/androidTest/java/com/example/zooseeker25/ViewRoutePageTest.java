@@ -36,7 +36,7 @@ public class ViewRoutePageTest {
     @Test
     public void viewRoutePageTest() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.view_route_btn), withText("View Route"),
+                allOf(withId(R.id.view_route_btn), withText("View Selected"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ListOfAnimalsActivity">
 
-    //app:layout_constraintTop_toBottomOf="@id/listCounterPlaceHolder"
+    app:layout_constraintTop_toBottomOf="@id/listCounterPlaceHolder"
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -31,10 +31,10 @@
         android:layout_marginBottom="668dp"
         android:onClick="onGoBackClicked"
         android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/plan_route_btn"
