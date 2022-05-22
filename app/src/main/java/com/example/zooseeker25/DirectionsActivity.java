@@ -116,27 +116,40 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    public void checkSkip(boolean didSkip, Route[] newRouteList) {
+        if (didSkip) {
+            this.routeList = newRouteList;
+            Route.prevExhibit = currRoute.exhibit;
+            this.routeList[currentExhibitCounter + 1].generateDirections();
+            this.currentExhibitCounter++;
+            updateUI();
+        }
+    }
+
     public void onSkipNextBtnClicked(View view) {
         // convert routeList array to a list
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         // remove the next exhibit
         list.remove(currentExhibitCounter+1);
         // convert list back to array
-        this.routeList = list.toArray(new Route[0]);
+        Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
-        this.routeList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, routeList[currentExhibitCounter].end, routeList[currentExhibitCounter+1].end);
-        Route.prevExhibit = currRoute.exhibit;
-        this.routeList[currentExhibitCounter+1].generateDirections();
-
-        this.currentExhibitCounter++;
+        newRouteList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle("Next Exhibit")
-                .setMessage(this.routeList[currentExhibitCounter].exhibit + "\n" + (int) this.routeList[currentExhibitCounter].totalDistance + " m")
+                .setMessage(this.routeList[currentExhibitCounter+2].exhibit + "\n" + (int) this.routeList[currentExhibitCounter+2].totalDistance + " m")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        checkSkip(true, newRouteList);
                         updateUI();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
                     }
                 });
         AlertDialog alert = alertBuilder.create();
