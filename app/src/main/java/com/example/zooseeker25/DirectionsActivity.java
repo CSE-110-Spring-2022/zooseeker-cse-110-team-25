@@ -95,7 +95,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText =
-                    "Next:" + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+                    "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
@@ -146,8 +146,8 @@ public class DirectionsActivity extends AppCompatActivity {
         newRouteList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
-                .setTitle("Next Exhibit")
-                .setMessage(this.routeList[currentExhibitCounter+2].exhibit + "\n" + (int) this.routeList[currentExhibitCounter+2].totalDistance + " m")
+                .setTitle("Skipping Next Exhibit:")
+                .setMessage(this.routeList[currentExhibitCounter+1].exhibit + "\n" + (int) this.routeList[currentExhibitCounter+1].totalDistance + " m")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
