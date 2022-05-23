@@ -95,7 +95,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText =
-                    nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+                    "Next:" + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
