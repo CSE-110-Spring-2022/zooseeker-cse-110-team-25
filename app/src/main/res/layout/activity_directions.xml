@@ -63,19 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="invisible" />
-
-    <Button
-        android:id="@+id/skip_next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginBottom="32dp"
-        android:onClick="onSkipNextBtnClicked"
-        android:text="Skip Next"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next_button"
-        app:layout_constraintStart_toEndOf="@+id/prev_button" />
+  
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"

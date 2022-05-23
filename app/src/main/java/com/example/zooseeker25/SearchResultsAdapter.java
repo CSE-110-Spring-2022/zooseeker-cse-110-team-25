@@ -75,8 +75,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         //text in the textView of an individual search_list_item
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
-            this.textView.setText(dao.getNameFromId(searchResultsItem.name));
-            if (searchResultsItem.selected) {
+            textView.setText(dao.getNameFromId(searchResultsItem.name));
+            if (this.searchResultsItem.selected) {
                 textView.setBackgroundColor(Color.LTGRAY);
             } else {
                 textView.setBackgroundColor(Color.WHITE);

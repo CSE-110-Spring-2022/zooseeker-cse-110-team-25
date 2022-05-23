@@ -12,6 +12,9 @@
         <activity
             android:name=".OverViewActivity"
             android:exported="false" />
+      <activity
+            android:name=".Settings"
+            android:exported="false" />
         <activity
             android:name=".ListOfAnimalsActivity"
             android:exported="false" />
