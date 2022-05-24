@@ -23,7 +23,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/direction_exhibit_counter" />
@@ -31,22 +31,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/directions_list_view"
         android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/next_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/direction_exhibit_title"
-        app:layout_constraintVertical_bias="0.092" />
+        app:layout_constraintVertical_bias="0.58000004"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:onClick="onNextExhibitClicked"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/skip_next_button" />
 
     <Button
         android:id="@+id/prev_button"
@@ -55,10 +59,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="32dp"
         android:onClick="onPrevExhibitClicked"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="invisible" />
-
+  
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"

@@ -71,7 +71,7 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
         RouteGenerator.populateRouteData(exhibits, this);
         routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
-        Intent intent = new Intent(this, DirectionsActivity.class);
+        Intent intent = new Intent(this, OverViewActivity.class);
         intent.putExtra("route_list", routeList.toArray());
         startActivity(intent);
     }
