@@ -15,6 +15,7 @@ import java.util.List;
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
     private Route[] selectedExhibits;
+    int totalDistance = 0;
 
     public OverviewAdapter(Object[] temp) {
         this.selectedExhibits = Arrays.copyOf(temp, temp.length, Route[].class);
@@ -31,7 +32,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setSelectedExhibit((position + 1) + ") "  + selectedExhibits[position].exhibit + " : " + (int)selectedExhibits[position].totalDistance +  " Ft.");
+        totalDistance += (int)selectedExhibits[position].totalDistance;
+        holder.setSelectedExhibit((position + 1) + ") "  + selectedExhibits[position].exhibit + " : " + totalDistance +  " Ft.");
     }
 
     @Override
