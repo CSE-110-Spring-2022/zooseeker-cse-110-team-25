@@ -79,7 +79,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
             Route prevExhibit = routeList[currentExhibitCounter-1];
             String prevBtnText =
-                    prevExhibit.exhibit + "\n" + (int) prevExhibit.totalDistance + " m";
+                    "Previous:\n" + prevExhibit.exhibit + "\n" + (int) prevExhibit.totalDistance + " m";
             this.prevBtn.setText(prevBtnText);
         } else {
             this.prevBtn.setVisibility(View.INVISIBLE);
