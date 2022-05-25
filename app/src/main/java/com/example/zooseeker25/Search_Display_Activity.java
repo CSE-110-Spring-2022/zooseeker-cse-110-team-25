@@ -1,5 +1,6 @@
 package com.example.zooseeker25;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -114,16 +116,28 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
                 return true;
             }
         });
-
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
-
-
     }
     @Override
     protected void onResume(){
         super.onResume();
-        loadSearchStorage();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Load Previous Instance?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        loadSearchStorage();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
@@ -179,6 +193,11 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         String namesstring = preferences.getString("storenames",null);
         String idsstring = preferences.getString("storeids",null);
+
+        if (namesstring == null || idsstring == null) {
+            return;
+        }
+
         String[] names = namesstring.split("#");
         String[] ids = idsstring.split("#");
 
