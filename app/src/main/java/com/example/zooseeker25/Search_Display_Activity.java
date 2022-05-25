@@ -123,7 +123,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     protected void onResume(){
         super.onResume();
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
-                .setTitle("Load Previous Instance?")
+                .setTitle("Load Previous Session?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
