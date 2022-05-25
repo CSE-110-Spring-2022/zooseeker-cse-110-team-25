@@ -125,7 +125,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void onPrevExhibitClicked(View view) {
         if (this.routeList[this.currentExhibitCounter-1].prevDirections.size() == 0) {
-            this.routeList[this.currentExhibitCounter-1].generatePrevDirections(this.currRoute);
+            this.routeList[this.currentExhibitCounter-1].generatePrevDirections(this.currRoute, this.routeList[currentExhibitCounter+1].exhibit);
         }
         this.routeList[this.currentExhibitCounter-1].directions = this.routeList[this.currentExhibitCounter-1].prevDirections;
         this.currentExhibitCounter--;
@@ -137,6 +137,7 @@ public class DirectionsActivity extends AppCompatActivity {
             this.routeList = newRouteList;
             Route.prevExhibit = currRoute.exhibit;
             this.routeList[currentExhibitCounter + 1].generateDirections();
+            this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
             this.currentExhibitCounter++;
             updateUI();
         }
@@ -151,14 +152,7 @@ public class DirectionsActivity extends AppCompatActivity {
         Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
 
-        // TODO: update once previous exhibit route once skip button is clicked.
-        // All done before the currentExhibitCounter is incremented
-        // reset the this.route[currentExhibitCounter].nextExhibit
-        // update it with this.route[currentExhibitCounter].prevDirections = generate prevDirections by passing in the next exhibit
-
-        this.currentExhibitCounter++;
-
-        newRouteList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
+        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle("Skipping Next Exhibit:")

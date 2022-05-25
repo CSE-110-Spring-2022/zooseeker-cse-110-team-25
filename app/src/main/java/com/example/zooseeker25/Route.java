@@ -52,9 +52,12 @@ public class Route implements Serializable {
         this.directions = this.nextDirections;
     }
 
-    public void generatePrevDirections(Route route) {
+    public void generatePrevDirections(Route route, String startExhibit) {
         String source = "";
         String target = "";
+        this.nextExhibit = startExhibit;
+        this.prevDirections.clear();
+
         for (int i = route.routeDirections.size()-1; i >= 0; i--) {
             List<String> direction = route.routeDirections.get(i);
             source = direction.get(1);
