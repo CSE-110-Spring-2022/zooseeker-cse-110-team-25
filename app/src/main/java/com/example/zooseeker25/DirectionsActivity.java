@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -96,13 +97,8 @@ public class DirectionsActivity extends AppCompatActivity {
     private void setNextBtn() {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
-            String nextBtnText =
-<<<<<<< HEAD
-                    nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+            String nextBtnText = "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
             this.routeList[this.currentExhibitCounter+1].directions = this.routeList[this.currentExhibitCounter+1].nextDirections;
-=======
-                    "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
->>>>>>> origin/main
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
