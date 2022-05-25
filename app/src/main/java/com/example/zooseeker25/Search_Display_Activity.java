@@ -142,12 +142,9 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         }
     }
 
-    protected void onPause(){
-
+    protected void onPause() {
         super.onPause();
         saveSearchStorage();
-
-
     }
     public void saveSearchStorage(){
         SharedPreferences preferences = getSharedPreferences("test",MODE_PRIVATE);
@@ -168,7 +165,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             namesstring = namesstring.substring(0,namesstring.length()-1);
             idsstring = idsstring.substring(0,idsstring.length()-1);
         }
-        System.out.println(namesstring);
 
         editor.putString("storenames",namesstring);
         editor.putString("storeids",idsstring);
@@ -183,11 +179,9 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         String namesstring = preferences.getString("storenames",null);
         String idsstring = preferences.getString("storeids",null);
-        System.out.println("XXX"+namesstring+"XXX");
         String[] names = namesstring.split("#");
         String[] ids = idsstring.split("#");
 
-        System.out.println("X" + names.length);
         for(int i=0; i<names.length; i++){
             searchStorage.addSelectedAnimal(names[i],ids[i]);
         }
