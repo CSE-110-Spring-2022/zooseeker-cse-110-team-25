@@ -27,10 +27,19 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button nextBtn;
     private Button skipBtn;
 
+    private int detailedDirections = 0;
+
+    //temp behavior
+    private TextView tempText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
+
+        //temp behavior
+        tempText = (TextView) findViewById(R.id.tempText);
+        tempText.setText("Brief");
 
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
@@ -88,8 +97,12 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText =
+<<<<<<< HEAD
                     nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
             this.routeList[this.currentExhibitCounter+1].directions = this.routeList[this.currentExhibitCounter+1].nextDirections;
+=======
+                    "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+>>>>>>> origin/main
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
@@ -108,7 +121,10 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             this.currentExhibitCounter++;
             updateUI();
-        } else { finish(); }
+        } else {
+            RouteGenerator.resetRoute();
+            finish();
+        }
     }
 
     public void onPrevExhibitClicked(View view) {
@@ -120,18 +136,24 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    public void checkSkip(boolean didSkip, Route[] newRouteList) {
+        if (didSkip) {
+            this.routeList = newRouteList;
+            Route.prevExhibit = currRoute.exhibit;
+            this.routeList[currentExhibitCounter + 1].generateDirections();
+            this.currentExhibitCounter++;
+            updateUI();
+        }
+    }
+
     public void onSkipNextBtnClicked(View view) {
         // convert routeList array to a list
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         // remove the next exhibit
         list.remove(currentExhibitCounter+1);
         // convert list back to array
-        this.routeList = list.toArray(new Route[0]);
+        Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
-        this.routeList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, routeList[currentExhibitCounter].end, routeList[currentExhibitCounter+1].end);
-        Route.prevExhibit = currRoute.exhibit;
-        this.routeList[currentExhibitCounter+1].generateDirections();
-
 
         // TODO: update once previous exhibit route once skip button is clicked.
         // All done before the currentExhibitCounter is incremented
@@ -140,16 +162,48 @@ public class DirectionsActivity extends AppCompatActivity {
 
         this.currentExhibitCounter++;
 
+        newRouteList[currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
+
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
-                .setTitle("Next Exhibit")
-                .setMessage(this.routeList[currentExhibitCounter].exhibit + "\n" + (int) this.routeList[currentExhibitCounter].totalDistance + " m")
+                .setTitle("Skipping Next Exhibit:")
+                .setMessage(this.routeList[currentExhibitCounter+1].exhibit + "\n" + (int) this.routeList[currentExhibitCounter+1].totalDistance + " m")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        checkSkip(true, newRouteList);
                         updateUI();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
                     }
                 });
         AlertDialog alert = alertBuilder.create();
         alert.show();
+    }
+  
+    //passes the currently selected detailedDirections value to the new activity
+    //and asks for a result
+    public void onSettingsClicked(View view) {
+        Intent intent = new Intent(this, Settings.class);
+        intent.putExtra("detailedDirections", detailedDirections);
+        startActivityForResult(intent, detailedDirections);
+    }
+
+    //getting the result from the closed settings activity
+    //resultCode stores the new value for detailedDirections
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        detailedDirections = resultCode;
+
+        //temporary example for how to use the results
+        if (resultCode == 0) {
+            tempText.setText("Brief");
+        } else {
+            tempText.setText("Detailed");
+        }
     }
 }

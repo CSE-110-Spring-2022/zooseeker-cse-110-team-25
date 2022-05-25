@@ -31,23 +31,27 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/directions_list_view"
         android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/next_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/direction_exhibit_title"
-        app:layout_constraintVertical_bias="0.092" />
+        app:layout_constraintVertical_bias="0.58000004"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:maxWidth = "50sp"
+        android:maxWidth="50sp"
         android:onClick="onNextExhibitClicked"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/skip_next_button" />
 
     <Button
         android:id="@+id/prev_button"
@@ -56,11 +60,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="32dp"
         android:maxWidth = "50sp"
+        android:textSize="10sp"
         android:onClick="onPrevExhibitClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="invisible" />
-
+  
     <Button
         android:id="@+id/skip_next_button"
         android:layout_width="wrap_content"
@@ -70,8 +75,30 @@
         android:layout_marginBottom="32dp"
         android:onClick="onSkipNextBtnClicked"
         android:text="Skip Next"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/next_button"
         app:layout_constraintStart_toEndOf="@+id/prev_button" />
+  
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="onSettingsClicked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+    <TextView
+        android:id="@+id/tempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/settingsButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
