@@ -70,7 +70,7 @@ public abstract class ItemDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             List<NodeItem> nodes = NodeItem
-                                    .loadJSON(context, "sample_node_info.json");
+                                    .loadJSON(context, "sample_vertex_info.json");
                             getSingleton(context).nodeInfoDao().insertAll(nodes);
                         });
                     }
