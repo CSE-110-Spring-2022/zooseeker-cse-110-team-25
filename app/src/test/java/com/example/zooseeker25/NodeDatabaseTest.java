@@ -179,6 +179,7 @@ public class NodeDatabaseTest {
         List<String> res = s.searchAllCategory();
 
         List<String> expected = new ArrayList<>();
+        expected.add("entrance_exit_gate");
         expected.add("gators");
         assertEquals(expected, res);
     }
