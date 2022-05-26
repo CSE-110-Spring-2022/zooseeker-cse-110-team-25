@@ -24,10 +24,8 @@ public class Search {
     private void searchID(){
         List<NodeItem> items = nodedao.findId(keyword);
         for (NodeItem item : items){
-            if (item.kind == NodeItem.Kind.EXHIBIT){
-                if (!this.animalNames.contains(item.id)){
-                    this.animalNames.add(item.id);
-                }
+            if (!this.animalNames.contains(item.id)){
+                this.animalNames.add(item.id);
             }
         }
     }
@@ -35,10 +33,8 @@ public class Search {
     private void searchKind(){
         List<NodeItem> items = nodedao.findKind(keyword);
         for (NodeItem item : items){
-            if (item.kind == NodeItem.Kind.EXHIBIT){
-                if (!this.animalNames.contains(item.id)){
-                    this.animalNames.add(item.id);
-                }
+            if (!this.animalNames.contains(item.id)){
+                this.animalNames.add(item.id);
             }
         }
     }
@@ -46,10 +42,8 @@ public class Search {
     private void searchName(){
         List<NodeItem> items = nodedao.findName(keyword);
         for (NodeItem item : items){
-            if (item.kind == NodeItem.Kind.EXHIBIT){
-                if (!this.animalNames.contains(item.id)){
-                    this.animalNames.add(item.id);
-                }
+            if (!this.animalNames.contains(item.id)){
+                this.animalNames.add(item.id);
             }
         }
     }
@@ -57,10 +51,8 @@ public class Search {
     private void searchTag(){
         List<NodeItem> items = nodedao.findTag(keyword);
         for (NodeItem item : items){
-            if (item.kind == NodeItem.Kind.EXHIBIT){
-                if (!this.animalNames.contains(item.id)){
-                    this.animalNames.add(item.id);
-                }
+            if (!this.animalNames.contains(item.id)){
+                this.animalNames.add(item.id);
             }
         }
     }

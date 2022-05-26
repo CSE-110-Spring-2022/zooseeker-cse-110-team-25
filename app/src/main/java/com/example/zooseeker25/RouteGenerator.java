@@ -59,7 +59,6 @@ public class RouteGenerator {
         List<Route> fullRoute = new ArrayList<>();
         visitedExhibits.add("entrance_exit_gate");
         String currentExhibit = "entrance_exit_gate";
-
         while (visitedExhibits.size() != exhibits.size()+1) {
             Route closestExhibit = null;
 
@@ -67,12 +66,11 @@ public class RouteGenerator {
                 if (currentExhibit.compareTo(exhibit) == 0) { continue; }
                 if (visitedExhibits.contains(exhibit)) { continue; }
                 Route route = routeData.get(node_lookup.get(currentExhibit)).get(node_lookup.get(exhibit));
-                if (closestExhibit == null) {
-                    closestExhibit = route;
-                } else if (closestExhibit.totalDistance > route.totalDistance) {
+                if (closestExhibit == null || closestExhibit.totalDistance > route.totalDistance) {
                     closestExhibit = route;
                 }
             }
+            if (closestExhibit == null) { break; }
             fullRoute.add(closestExhibit);
             closestExhibit.generateDirections();
             visitedExhibits.add(closestExhibit.end);
