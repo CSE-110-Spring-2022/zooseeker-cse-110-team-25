@@ -40,5 +40,9 @@ public class OverViewActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onBackClicked(View view) {
+        finish();
+    }
+
 
 }
