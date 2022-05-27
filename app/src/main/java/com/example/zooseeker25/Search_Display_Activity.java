@@ -133,7 +133,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
+                        searchStorage.resetSearchStorage();
+
                     }
                 });
         AlertDialog alert = alertBuilder.create();
