@@ -26,6 +26,7 @@ public class RouteGenerator {
         RouteGenerator.nodeLookup = new HashMap<>();
         RouteGenerator.integerLookup = new HashMap<>();
         RouteGenerator.routeData = new ArrayList<List<Route>>();
+        RouteGenerator.prevExhibit = "";
     }
 
     public static void populateRouteData (List<String> exhibits, Context context) {
