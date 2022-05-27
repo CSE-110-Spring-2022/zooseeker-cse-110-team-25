@@ -25,13 +25,20 @@ public class Route implements Serializable {
     }
 
     public void generateDirections() {
+        generateDetailedDirections();
+        generateBriefDirections();
+    }
+
+    private void generateDetailedDirections() {
         String source = "";
         String target = "";
         for (List<String> direction: this.routeDirections) {
             source = direction.get(0);
             target = direction.get(1);
 
-            if (Route.prevExhibit.compareTo("") != 0) {
+            if (Route.prevExhibit.compareTo("") == 0) {
+                Route.prevExhibit = target;
+            } else if (Route.prevExhibit.compareTo(target) == 0) {
                 String temp = target;
                 target = source;
                 source = temp;
@@ -48,20 +55,28 @@ public class Route implements Serializable {
 
             this.detailedDirections.add(d);
         }
+    }
+
+    private void generateBriefDirections() {
+        String source = "";
+        String target = "";
 
         Route.prevExhibit = "";
         int totalDistance = 0;
-        String prevRoad = "";
+        String prevRoad = routeDirections.get(0).get(3);
         for (List<String> direction: this.routeDirections) {
             source = direction.get(0);
             target = direction.get(1);
 
             if (Route.prevExhibit.compareTo("") == 0) {
+                Route.prevExhibit = target;
+            } else if (Route.prevExhibit.compareTo(target) == 0) {
                 String temp = target;
                 target = source;
                 source = temp;
             }
             Route.prevExhibit = target;
+
             totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
             if (direction.get(3).compareTo(prevRoad) != 0) {
                 String b = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
@@ -76,4 +91,5 @@ public class Route implements Serializable {
             }
         }
     }
+
 }

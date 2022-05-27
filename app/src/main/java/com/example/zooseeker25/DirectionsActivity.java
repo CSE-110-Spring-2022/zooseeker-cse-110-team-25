@@ -29,7 +29,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button nextBtn;
     private Button skipBtn;
 
-    private int detailedDirections = 0;
+    private int detailedDirections = 0; //0 for brief, 1 for detailed
 
     //temp behavior
     private TextView tempText;
