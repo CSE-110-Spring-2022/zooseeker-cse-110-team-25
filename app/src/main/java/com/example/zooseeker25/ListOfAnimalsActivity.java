@@ -21,7 +21,8 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     private SearchResultsViewModel viewModel;
     private RecyclerView recyclerView;
     private String[] selectedAnimalsNameStorage;
-    private List<Route> routeList;
+    private List<Route> detailedRouteList;
+    private List<Route> briefRouteList;
     private List<String> exhibits;
     private String[] animalIds;
     ListOfAnimalsAdapter adapter;
@@ -70,9 +71,9 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     public void onRouteGeneratedClicked(View view) {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
         RouteGenerator.populateRouteData(exhibits, this);
-        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
+        detailedRouteList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
         Intent intent = new Intent(this, OverViewActivity.class);
-        intent.putExtra("route_list", routeList.toArray());
+        intent.putExtra("route_list", detailedRouteList.toArray());
         startActivity(intent);
     }
 }

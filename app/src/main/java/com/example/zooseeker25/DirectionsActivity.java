@@ -39,10 +39,6 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        //temp behavior
-        tempText = (TextView) findViewById(R.id.tempText);
-        tempText.setText("Brief");
-
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
         this.skipBtn = (Button) findViewById(R.id.skip_next_button);
@@ -104,7 +100,11 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private void setAdapter() {
         DirectionsAdapter adapter = new DirectionsAdapter();
-        adapter.setDirectionsList(this.currRoute.directions);
+        if (detailedDirections == 0) {
+            adapter.setDirectionsList(this.currRoute.briefDirections);
+        } else {
+            adapter.setDirectionsList(this.currRoute.detailedDirections);
+        }
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(adapter);
@@ -179,12 +179,6 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         detailedDirections = resultCode;
-
-        //temporary example for how to use the results
-        if (resultCode == 0) {
-            tempText.setText("Brief");
-        } else {
-            tempText.setText("Detailed");
-        }
+        updateUI();
     }
 }

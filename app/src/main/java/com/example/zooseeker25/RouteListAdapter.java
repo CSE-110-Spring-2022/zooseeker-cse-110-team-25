@@ -32,7 +32,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull RouteListAdapter.ViewHolder holder, int position) {
         String route = routeList.get(position).intro;
-        String direction = routeList.get(position).directions.get(0);
+        String direction = routeList.get(position).detailedDirections.get(0);
 
         holder.routeText.setText(route);
         holder.directionText.setText(direction);
