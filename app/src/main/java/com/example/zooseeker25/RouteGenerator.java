@@ -26,6 +26,7 @@ public class RouteGenerator {
         RouteGenerator.nodeLookup = new HashMap<>();
         RouteGenerator.integerLookup = new HashMap<>();
         RouteGenerator.routeData = new ArrayList<List<Route>>();
+        RouteGenerator.prevExhibit = "";
     }
 
     public static void populateRouteData (List<String> exhibits, Context context) {
@@ -72,7 +73,7 @@ public class RouteGenerator {
             }
             if (closestExhibit == null) { break; }
             fullRoute.add(closestExhibit);
-            closestExhibit.generateDirections();
+            //closestExhibit.generateDirections();
             visitedExhibits.add(closestExhibit.end);
             currentExhibit = closestExhibit.end;
         }
@@ -107,6 +108,6 @@ public class RouteGenerator {
             totalDistance += edgeWeight;
         }
 
-        return new Route(start, end, totalDistance, routeDirections, intro, vInfo.get(end).name);
+        return new Route(routeDirections, start, end, totalDistance, intro, vInfo.get(end).name);
     }
 }

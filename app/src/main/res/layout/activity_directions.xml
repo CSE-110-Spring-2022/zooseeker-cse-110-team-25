@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="32dp"
+        android:maxWidth = "50sp"
         android:textSize="10sp"
         android:onClick="onPrevExhibitClicked"
         app:layout_constraintBottom_toBottomOf="parent"
