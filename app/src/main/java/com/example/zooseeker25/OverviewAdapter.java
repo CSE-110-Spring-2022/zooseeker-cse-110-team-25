@@ -33,7 +33,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         totalDistance += (int)selectedExhibits[position].totalDistance;
-        holder.setSelectedExhibit((position + 1) + ") "  + selectedExhibits[position].exhibit + " : " + totalDistance +  " Ft.");
+        holder.setSelectedExhibit((position + 1) + ") "  + selectedExhibits[position].exhibit + " : " + totalDistance +  " meters");
     }
 
     @Override
