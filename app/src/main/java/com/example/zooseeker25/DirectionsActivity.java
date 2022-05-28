@@ -21,13 +21,13 @@ public class DirectionsActivity extends AppCompatActivity {
     private int currentExhibitCounter = 0;
     private Route currRoute;
     private List<String> directions;
-
     private RecyclerView recyclerView;
     private TextView exhibitTitleText;
     private TextView exhibitCounterText;
     private Button prevBtn;
     private Button nextBtn;
     private Button skipBtn;
+    private boolean fromPrev = false; //false if the current directions didn't come from pressing previous
 
     private int detailedDirections = 0; //0 for brief, 1 for detailed
 
@@ -58,12 +58,13 @@ public class DirectionsActivity extends AppCompatActivity {
 
         directions = new ArrayList<>();
 
+        this.currRoute = routeList[currentExhibitCounter];
+        Route.prevExhibit = currRoute.exhibit;
         updateUI();
     }
 
 
     private void updateUI() {
-        this.currRoute = routeList[currentExhibitCounter];
         this.exhibitCounterText.setText(String.valueOf(routeList.length-currentExhibitCounter-1));
         this.exhibitTitleText.setText(this.currRoute.exhibit);
 
@@ -104,18 +105,21 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
+        //FIX
         DirectionsAdapter adapter = new DirectionsAdapter();
-        adapter.setDirectionsList(directions);
+        adapter.setDirectionsList(currRoute.getDirections());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(adapter);
     }
 
     public void onNextExhibitClicked(View view) {
+        fromPrev = false;
         if (this.currentExhibitCounter < this.routeList.length-1) {
+            Route.prevExhibit = currRoute.exhibit;
             this.currentExhibitCounter++;
+            this.currRoute = routeList[currentExhibitCounter];
             currRoute.genNextDirections(detailedDirections);
-            directions = currRoute.getDirections();
             updateUI();
         } else {
             RouteGenerator.resetRoute();
@@ -124,26 +128,12 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onPrevExhibitClicked(View view) {
-//        if (this.routeList[this.currentExhibitCounter-1].prevDirections.size() == 0) {
-//            this.routeList[this.currentExhibitCounter-1].generatePrevDirections(this.currRoute, this.routeList[currentExhibitCounter+1].exhibit);
-//        }
-//        this.routeList[this.currentExhibitCounter-1].directions = this.routeList[this.currentExhibitCounter-1].prevDirections;
+        fromPrev = true;
         this.currentExhibitCounter--;
-        currRoute.genPrevDirections(detailedDirections, currRoute, this.routeList[currentExhibitCounter+1].exhibit);
-        directions = currRoute.getDirections();
+        this.currRoute = routeList[currentExhibitCounter];
+        currRoute.genPrevDirections(detailedDirections, routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
         updateUI();
     }
-
-//    public void checkSkip(boolean didSkip, Route[] newRouteList) {
-//        if (didSkip) {
-////            this.routeList = newRouteList;
-////            Route.prevExhibit = currRoute.exhibit;
-////            this.routeList[currentExhibitCounter + 1].generateDirections();
-////            this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
-//            this.currentExhibitCounter++;
-//            updateUI();
-//        }
-//    }
 
     public void onSkipNextBtnClicked(View view) {
         // convert routeList array to a list
@@ -161,9 +151,11 @@ public class DirectionsActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        routeList = newRouteList;
+                        Route.prevExhibit = currRoute.exhibit;
                         currentExhibitCounter++;
+                        currRoute = routeList[currentExhibitCounter];
                         currRoute.genNextDirections(detailedDirections);
-                        directions = currRoute.getDirections();
                         updateUI();
                     }
                 })
@@ -191,6 +183,14 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         detailedDirections = resultCode;
+        if (currentExhibitCounter > 0) {
+            Route.prevExhibit = routeList[currentExhibitCounter - 1].exhibit;
+        }
+        if (!fromPrev) {
+            currRoute.genNextDirections(detailedDirections);
+        } else {
+            currRoute.genPrevDirections(detailedDirections, routeList[currentExhibitCounter+1], routeList[currentExhibitCounter+1].exhibit);
+        }
         updateUI();
     }
 }

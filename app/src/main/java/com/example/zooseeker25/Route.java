@@ -16,7 +16,7 @@ public class Route implements Serializable {
 //    public List<String> detailedDirections = new ArrayList<>();
 //    public List<String> briefDirections = new ArrayList<>();
     private List<String> directions = new ArrayList<>();
-    private static String prevExhibit = "";
+    public static String prevExhibit = "";
     private String nextExhibit = "";
     boolean detailedDirections;
 
@@ -27,6 +27,8 @@ public class Route implements Serializable {
         this.totalDistance = totalDistance;
         this.intro = intro;
         this.exhibit = exhibit;
+
+        generateBriefDirections();
     }
 
     public void genNextDirections(int detailed) {
@@ -69,7 +71,7 @@ public class Route implements Serializable {
             Route.prevExhibit = target;
 
             String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
-                    direction.get(2),
+                    direction.get(2).substring(0, direction.get(2).length()-2),
                     direction.get(3),
                     source,
                     target
@@ -112,6 +114,7 @@ public class Route implements Serializable {
                 totalDistance = 0;
                 prevRoad = direction.get(3);
             }
+
         }
     }
 
@@ -134,7 +137,7 @@ public class Route implements Serializable {
             this.nextExhibit = target;
 
             String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
-                    direction.get(2),
+                    direction.get(2).substring(0, direction.get(2).length()-2),
                     direction.get(3),
                     source,
                     target
