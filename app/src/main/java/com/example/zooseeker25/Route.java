@@ -13,10 +13,6 @@ public class Route implements Serializable {
     public String exhibit;
     public double totalDistance;
     public List<List<String>> routeDirections;
-//    public List<String> nextDirections = new ArrayList<>();
-//    public List<String> prevDirections = new ArrayList<>();
-//    public List<String> detailedDirections = new ArrayList<>();
-//    public List<String> briefDirections = new ArrayList<>();
     private List<String> directions = new ArrayList<>();
     public static String prevExhibit = "";
     private String nextExhibit = "";
@@ -113,7 +109,6 @@ public class Route implements Serializable {
 
             if (direction.get(3).compareTo(prevRoad) == 0) {
                 totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
-                //direction.set(0, startSource);
                 if (i == routeDirections.size()-1) {
                     String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                             totalDistance,
