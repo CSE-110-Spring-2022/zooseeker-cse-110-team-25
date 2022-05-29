@@ -87,9 +87,11 @@ public class Route implements Serializable {
         this.directions.clear();
 
         Route.prevExhibit = "";
-        int totalDistance = 0;
+        int totalDistance = Integer.parseInt(routeDirections.get(0).get(2).substring(0, routeDirections.get(0).get(2).length()-2));
         String prevRoad = routeDirections.get(0).get(3);
-        for (List<String> direction: this.routeDirections) {
+        String startSource = routeDirections.get(0).get(1);
+        for (int i = 1; i < routeDirections.size(); i++) {
+            List<String> direction = routeDirections.get(i);
             source = direction.get(0);
             target = direction.get(1);
 
@@ -102,19 +104,25 @@ public class Route implements Serializable {
             }
             Route.prevExhibit = target;
 
-            totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
-            if (direction.get(3).compareTo(prevRoad) != 0) {
-                String b = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+            if (direction.get(3).compareTo(prevRoad) == 0) {
+                totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
+                direction.set(0, startSource);
+            } else {
+                String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                         totalDistance,
                         prevRoad,
-                        source,
-                        target
+                        startSource,
+                        source
                 );
-                this.directions.add(b);
-                totalDistance = 0;
+                directions.add(d);
+                totalDistance = Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
+                startSource = source;
                 prevRoad = direction.get(3);
             }
 
+            if (i == routeDirections.size()-1) {
+
+            }
         }
     }
 
