@@ -98,6 +98,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText = "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
+            this.routeList[this.currentExhibitCounter+1].directions = this.routeList[this.currentExhibitCounter+1].nextDirections;
             this.nextBtn.setText(nextBtnText);
         } else {
             this.nextBtn.setText("Finish");
@@ -135,6 +136,17 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    public void checkSkip(boolean didSkip, Route[] newRouteList) {
+        if (didSkip) {
+            this.routeList = newRouteList;
+            Route.prevExhibit = currRoute.exhibit;
+            this.routeList[currentExhibitCounter + 1].generateDirections();
+            this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
+            this.currentExhibitCounter++;
+            updateUI();
+        }
+    }
+
     public void onSkipNextBtnClicked(View view) {
         // convert routeList array to a list
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
@@ -143,6 +155,7 @@ public class DirectionsActivity extends AppCompatActivity {
         // convert list back to array
         Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
+
         newRouteList[this.currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
