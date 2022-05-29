@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -68,23 +69,19 @@ public class DirectionsActivity extends AppCompatActivity {
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
 
+        onResume();
         updateUI();
         //setting up permissions
         {
             if (permissionsChecker.ensurePermissions()) return;
-//            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
-//            var provider = LocationManager.GPS_PROVIDER;
-//            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//                return;
-//            }
-//            Log.d( "ZooSeeker", String.format( "Location changeddd: %s", locationManager.getLastKnownLocation( provider ) ) );
+            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
+            var provider = LocationManager.GPS_PROVIDER;
+            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                return;
+            }
+            Log.d( "ZooSeeker", String.format( "Location changed: %s", locationManager.getLastKnownLocation( provider ) ) );
         }
 
         //listen for location updates
@@ -131,6 +128,25 @@ public class DirectionsActivity extends AppCompatActivity {
         setAdapter();
     }
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+        saveCurrentExhibitCounter();
+    }
+
+    public void loadCurrentExhibitCounter(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+    }
+
+    public void saveCurrentExhibitCounter(){
+        Log.d("DirectionsActivity", Integer.toString(currentExhibitCounter));
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
+        editor.apply();
+    }
+
     private void setPrevBtn() {
         if (currentExhibitCounter != 0) {
             this.prevBtn.setVisibility(View.VISIBLE);
@@ -161,6 +177,12 @@ public class DirectionsActivity extends AppCompatActivity {
         } else {
             this.nextBtn.setText("Finish");
         }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadCurrentExhibitCounter();
     }
 
     private void setAdapter() {
