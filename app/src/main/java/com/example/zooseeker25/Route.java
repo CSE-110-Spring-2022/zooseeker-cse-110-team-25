@@ -167,16 +167,15 @@ public class Route implements Serializable {
                     source,
                     target
             );
-            this.nextDirections.add(d);
+            this.directions.add(d);
         }
-        this.directions = this.nextDirections;
     }
 
     public void generatePrevDirections(Route route, String startExhibit) {
         String source = "";
         String target = "";
         this.nextExhibit = startExhibit;
-        this.prevDirections.clear();
+        this.directions.clear();
 
         for (int i = route.routeDirections.size()-1; i >= 0; i--) {
             List<String> direction = route.routeDirections.get(i);
@@ -196,7 +195,7 @@ public class Route implements Serializable {
                     source,
                     target
             );
-            this.prevDirections.add(d);
+            this.directions.add(d);
         }
     }
 
