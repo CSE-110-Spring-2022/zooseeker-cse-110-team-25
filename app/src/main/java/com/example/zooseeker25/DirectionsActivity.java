@@ -69,7 +69,7 @@ public class DirectionsActivity extends AppCompatActivity {
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
 
-        onResume();
+        //onResume();
         updateUI();
         //setting up permissions
         {
@@ -128,24 +128,24 @@ public class DirectionsActivity extends AppCompatActivity {
         setAdapter();
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        saveCurrentExhibitCounter();
-    }
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        saveCurrentExhibitCounter();
+//    }
 
-    public void loadCurrentExhibitCounter(){
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
-    }
+//    public void loadCurrentExhibitCounter(){
+//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//        currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+//    }
 
-    public void saveCurrentExhibitCounter(){
-        Log.d("DirectionsActivity", Integer.toString(currentExhibitCounter));
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
-        editor.apply();
-    }
+//    public void saveCurrentExhibitCounter(){
+//        Log.d("DirectionsActivity", Integer.toString(currentExhibitCounter));
+//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
+//        editor.apply();
+//    }
 
     private void setPrevBtn() {
         if (currentExhibitCounter != 0) {
@@ -179,11 +179,11 @@ public class DirectionsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        loadCurrentExhibitCounter();
-    }
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        loadCurrentExhibitCounter();
+//    }
 
     private void setAdapter() {
         DirectionsAdapter adapter = new DirectionsAdapter();
