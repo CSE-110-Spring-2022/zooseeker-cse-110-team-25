@@ -50,4 +50,11 @@ public class SearchStorage extends Observable implements Serializable {
         selectedAnimalsIDs.add(id);
         observer.update(this, Integer.toString(selectedAnimals.size()));
     }
+
+    public void resetSearchStorage(){
+        selectedAnimals.clear();
+        selectedAnimalsIDs.clear();
+        resultsList.clear();
+        observer.update(this, Integer.toString(0));
+    }
 }
