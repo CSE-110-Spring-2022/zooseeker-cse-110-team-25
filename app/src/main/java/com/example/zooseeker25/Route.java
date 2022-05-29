@@ -80,6 +80,9 @@ public class Route implements Serializable {
     }
 
     private void generateBriefDirections() {
+        if (routeDirections == null || routeDirections.size() == 0) {
+            return;
+        }
         String source = "";
         String target = "";
         this.directions.clear();
