@@ -1,13 +1,22 @@
 package com.example.zooseeker25;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +38,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button skipBtn;
 
     private int detailedDirections = 0;
+    private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker( this );
 
     //temp behavior
     private TextView tempText;
@@ -59,6 +69,54 @@ public class DirectionsActivity extends AppCompatActivity {
         this.routeList = list.toArray(new Route[0]);
 
         updateUI();
+        //setting up permissions
+        {
+            if (permissionsChecker.ensurePermissions()) return;
+//            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
+//            var provider = LocationManager.GPS_PROVIDER;
+//            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//                return;
+//            }
+//            Log.d( "ZooSeeker", String.format( "Location changeddd: %s", locationManager.getLastKnownLocation( provider ) ) );
+        }
+
+        //listen for location updates
+        {
+            var provider = LocationManager.GPS_PROVIDER;
+            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
+            var locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    Log.d( "ZooSeeker", String.format( "Location changed: %s", location ) );
+
+//                    var marker = new MarkerOptions()
+//                            .position( new LatLng(
+//                                    location.getLatitude(),
+//                                    location.getLongitude()
+//                            ) )
+//                            .title( "Navigation Step" );
+//                    map.addMarker( marker );
+                }
+            };
+            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates( provider, 0, 0f, locationListener );
+        }
     }
 
 
