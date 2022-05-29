@@ -1,5 +1,7 @@
 package com.example.zooseeker25;
 
+import static java.util.List.copyOf;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +88,15 @@ public class Route implements Serializable {
         String target = "";
         this.directions.clear();
 
-        Route.prevExhibit = "";
         int totalDistance = Integer.parseInt(routeDirections.get(0).get(2).substring(0, routeDirections.get(0).get(2).length()-2));
         String prevRoad = routeDirections.get(0).get(3);
-        String startSource = routeDirections.get(0).get(1);
+        String startSource = routeDirections.get(0).get(0);
+        if (Route.prevExhibit.compareTo("") == 0) {
+            Route.prevExhibit = routeDirections.get(0).get(1);
+        } else if (Route.prevExhibit.compareTo(routeDirections.get(0).get(1)) == 0) {
+            startSource = routeDirections.get(0).get(1);
+            Route.prevExhibit = routeDirections.get(0).get(0);
+        }
         for (int i = 1; i < routeDirections.size(); i++) {
             List<String> direction = routeDirections.get(i);
             source = direction.get(0);
@@ -106,7 +113,16 @@ public class Route implements Serializable {
 
             if (direction.get(3).compareTo(prevRoad) == 0) {
                 totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
-                direction.set(0, startSource);
+                //direction.set(0, startSource);
+                if (i == routeDirections.size()-1) {
+                    String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+                            totalDistance,
+                            prevRoad,
+                            startSource,
+                            target
+                    );
+                    directions.add(d);
+                }
             } else {
                 String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                         totalDistance,
@@ -118,10 +134,15 @@ public class Route implements Serializable {
                 totalDistance = Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
                 startSource = source;
                 prevRoad = direction.get(3);
-            }
-
-            if (i == routeDirections.size()-1) {
-
+                if (i == routeDirections.size()-1) {
+                    d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+                            direction.get(2).substring(0, direction.get(2).length()-2),
+                            direction.get(3),
+                            source,
+                            target
+                    );
+                    directions.add(d);
+                }
             }
         }
     }
@@ -160,10 +181,16 @@ public class Route implements Serializable {
         this.nextExhibit = startExhibit;
         this.directions.clear();
 
-        Route.prevExhibit = "";
-        int totalDistance = 0;
-        String prevRoad = routeDirections.get(0).get(3);
-        for (int i = route.routeDirections.size()-1; i >= 0; i--) {
+        int totalDistance = Integer.parseInt(route.routeDirections.get(route.routeDirections.size()-1).get(2).substring(0, route.routeDirections.get(route.routeDirections.size()-1).get(2).length()-2));
+        String prevRoad = route.routeDirections.get(route.routeDirections.size()-1).get(3);
+        String startSource = route.routeDirections.get(route.routeDirections.size()-1).get(0);
+        if (Route.prevExhibit.compareTo("") == 0) {
+            Route.prevExhibit = route.routeDirections.get(route.routeDirections.size()-1).get(1);
+        } else if (Route.prevExhibit.compareTo(route.routeDirections.get(route.routeDirections.size()-1).get(1)) == 0) {
+            startSource = route.routeDirections.get(route.routeDirections.size()-1).get(1);
+            Route.prevExhibit = route.routeDirections.get(route.routeDirections.size()-1).get(0);
+        }
+        for (int i = route.routeDirections.size()-2; i >= 0; i--) {
             List<String> direction = route.routeDirections.get(i);
             source = direction.get(1);
             target = direction.get(0);
@@ -176,17 +203,37 @@ public class Route implements Serializable {
             this.nextExhibit = target;
             Route.prevExhibit = target;
 
-            totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
-            if (direction.get(3).compareTo(prevRoad) != 0) {
-                String b = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+            if (direction.get(3).compareTo(prevRoad) == 0) {
+                totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
+                if (i == 0) {
+                    String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+                            totalDistance,
+                            prevRoad,
+                            startSource,
+                            target
+                    );
+                    directions.add(d);
+                }
+            } else {
+                String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                         totalDistance,
                         prevRoad,
-                        source,
-                        target
+                        startSource,
+                        source
                 );
-                this.directions.add(b);
-                totalDistance = 0;
+                directions.add(d);
+                totalDistance = Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
+                startSource = source;
                 prevRoad = direction.get(3);
+                if (i == 0) {
+                    d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
+                            direction.get(2).substring(0, direction.get(2).length()-2),
+                            direction.get(3),
+                            source,
+                            target
+                    );
+                    directions.add(d);
+                }
             }
         }
     }
