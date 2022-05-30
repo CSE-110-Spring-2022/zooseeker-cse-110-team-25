@@ -25,7 +25,7 @@ import java.util.Observer;
 import java.util.Set;
 
 public class Search_Display_Activity extends AppCompatActivity implements Observer {
-    private final static String DATA_PATH = "sample_node_info.json";
+    private final static String DATA_PATH = "sample_vertex_info.json";
 
     private SearchResultsViewModel viewModel;
     public RecyclerView recyclerView;
