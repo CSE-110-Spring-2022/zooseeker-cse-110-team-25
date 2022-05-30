@@ -130,19 +130,9 @@ public class DirectionsActivity extends AppCompatActivity {
         fromPrev = true;
         this.currentExhibitCounter--;
         this.currRoute = routeList[currentExhibitCounter];
+        Route.prevExhibit = currRoute.exhibit;
         currRoute.genPrevDirections(detailedDirections, routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
         updateUI();
-    }
-
-    public void checkSkip(boolean didSkip, Route[] newRouteList) {
-        if (didSkip) {
-            this.routeList = newRouteList;
-            Route.prevExhibit = currRoute.exhibit;
-            this.routeList[currentExhibitCounter + 1].genNextDirections(detailedDirections);
-            this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
-            this.currentExhibitCounter++;
-            updateUI();
-        }
     }
 
     public void onSkipNextBtnClicked(View view) {
