@@ -1,9 +1,11 @@
 package com.example.zooseeker25;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,34 +27,37 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class DirectionsActivity extends AppCompatActivity {
-    private Route[] routeList;
     private int currentExhibitCounter = 0;
+    private int detailedDirections = 0;
+    private final String EXTRA_USE_MOCK_LOCATION = "use_mock_location";
+    public boolean useMockLocation;
     private Route currRoute;
+    private Route[] routeList;
+    private LocationModel locationModel;
 
     private RecyclerView recyclerView;
     private TextView exhibitTitleText;
+    private TextView tempText;
     private TextView exhibitCounterText;
     private Button prevBtn;
     private Button nextBtn;
     private Button skipBtn;
 
-    private int detailedDirections = 0;
-    private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker( this );
-
-    //temp behavior
-    private TextView tempText;
+    private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        //temp behavior
+        useMockLocation = getIntent().getBooleanExtra(EXTRA_USE_MOCK_LOCATION, false);
+        useMockLocation = true;
         tempText = (TextView) findViewById(R.id.tempText);
         tempText.setText("Brief");
-
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
         this.skipBtn = (Button) findViewById(R.id.skip_next_button);
@@ -60,62 +65,42 @@ public class DirectionsActivity extends AppCompatActivity {
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
 
+        updateRouteList();
+        updateUI();
+        setLocationServices();
+    }
+
+    private void updateRouteList() {
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
 
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
-        Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
+        Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size() - 1).end, "entrance_exit_gate");
         exitRoute.generateDirections();
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
-
-        //onResume();
-        updateUI();
-        //setting up permissions
-        {
-            if (permissionsChecker.ensurePermissions()) return;
-            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
-            var provider = LocationManager.GPS_PROVIDER;
-            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                return;
-            }
-            Log.d( "ZooSeeker", String.format( "Location changed: %s", locationManager.getLastKnownLocation( provider ) ) );
-        }
-
-        //listen for location updates
-        {
-            var provider = LocationManager.GPS_PROVIDER;
-            var locationManager = (LocationManager) this.getSystemService( Context.LOCATION_SERVICE );
-            var locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    Log.d( "ZooSeeker", String.format( "Location changed: %s", location ) );
-
-//                    var marker = new MarkerOptions()
-//                            .position( new LatLng(
-//                                    location.getLatitude(),
-//                                    location.getLongitude()
-//                            ) )
-//                            .title( "Navigation Step" );
-//                    map.addMarker( marker );
-                }
-            };
-            if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            locationManager.requestLocationUpdates( provider, 0, 0f, locationListener );
-        }
     }
 
+    private void setLocationServices() {
+        locationModel = new ViewModelProvider(this).get(LocationModel.class);
+
+        if (useMockLocation) return;
+        if (permissionsChecker.ensurePermissions()) return;
+
+        var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        var provider = LocationManager.GPS_PROVIDER;
+        locationModel.addLocationProviderSource(locationManager, provider);
+    }
+
+    @VisibleForTesting
+    public void mockLocation(Coord coords) {
+        locationModel.mockLocation(coords);
+    }
+
+    @VisibleForTesting
+    public Future<?> mockRoute(List<Coord> route, long delay, TimeUnit unit) {
+        return locationModel.mockRoute(route, delay, unit);
+    }
 
     private void updateUI() {
         this.currRoute = routeList[currentExhibitCounter];
