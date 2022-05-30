@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class OverViewActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_over_view );
         Object[] selectedExhibits = (Object[]) getIntent().getSerializableExtra("route_list");
+        Route[] e  = Arrays.copyOf(selectedExhibits, selectedExhibits.length, Route[].class);
+        Log.d("OverViewActivity", e[0].exhibit.toString());
         adapter = new OverviewAdapter(selectedExhibits);
         adapter.setHasStableIds(true);
         recyclerView = findViewById(R.id.Overview_recyclerView);

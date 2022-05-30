@@ -1,6 +1,7 @@
 package com.example.zooseeker25;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,39 +30,30 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ListOfAnimalsActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_animals);
         Object[] animalNames = (Object[])getIntent().getSerializableExtra("selected_list_names");
+
         Object[] tempIds = (Object[])getIntent().getSerializableExtra("selected_list_ids");
         selectedAnimalsNameStorage = Arrays.copyOf(animalNames, animalNames.length, String[].class);
+        Log.d("ListOfAnimalsActivity", selectedAnimalsNameStorage[0]);
+
+        //viewModel = new ViewModelProvider(this).get(ListOfAnimalsViewModel.class);
+
         adapter = new ListOfAnimalsAdapter(selectedAnimalsNameStorage);
         adapter.setHasStableIds(true);
+        //adapter.setOnTextEditedHandler(viewModel::updateText);
+
         animalIds = Arrays.copyOf(tempIds, tempIds.length, String[].class);
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        updateUI();
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        saveProfile();
-    }
+    private void updateUI(){
 
-
-    public void saveProfile(){
-        //TODO - data persistence once app is closed
-//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//
-//        TextView nameView = (TextView) findViewById(R.id.name_textview);
-//        TextView statusView = (TextView) findViewById(R.id.status_textview);
-//
-//
-//        editor.putString("key_name", nameView.getText().toString());
-//        editor.putString("key_status", statusView.getText().toString());
-//
-//        editor.apply();
     }
 
     public void onGoBackClicked(View view) {
@@ -69,10 +62,12 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
     public void onRouteGeneratedClicked(View view) {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
+        Log.d("ListOfAnimalsActivity Clicked",exhibits.get(0));
         RouteGenerator.populateRouteData(exhibits, this);
         routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
         Intent intent = new Intent(this, OverViewActivity.class);
         intent.putExtra("route_list", routeList.toArray());
+
         startActivity(intent);
     }
 }

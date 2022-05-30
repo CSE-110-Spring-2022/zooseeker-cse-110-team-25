@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -51,12 +53,15 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
+        Log.d("DirectionsActivity routeList", routeList[0].exhibit);
 
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
         exitRoute.generateDirections();
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
+
+        onResume();
 
         updateUI();
     }
@@ -95,6 +100,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     private void setNextBtn() {
+        Log.d("DirectionsActivity", "setNextBtn()");
         if (this.currentExhibitCounter < this.routeList.length-1) {
             Route nextExhibit = routeList[currentExhibitCounter+1];
             String nextBtnText = "Next: " + "\n" + nextExhibit.exhibit + "\n" + (int) nextExhibit.totalDistance + " m";
@@ -114,11 +120,14 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onNextExhibitClicked(View view) {
+        Log.d("DirectionsActivity","onNextExhibitClicked");
         if (this.currentExhibitCounter < this.routeList.length-1) {
             this.currentExhibitCounter++;
             updateUI();
         } else {
             RouteGenerator.resetRoute();
+            this.currentExhibitCounter = 0;
+            Log.d("DirectionsActivity","finish()");
             finish();
         }
     }
@@ -144,7 +153,9 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onSkipNextBtnClicked(View view) {
+
         // convert routeList array to a list
+        //this.currentExhibitCounter++;
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         // remove the next exhibit
         list.remove(currentExhibitCounter+1);
@@ -152,11 +163,13 @@ public class DirectionsActivity extends AppCompatActivity {
         Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
 
-        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
+        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.
+                generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle("Skipping Next Exhibit:")
-                .setMessage(this.routeList[currentExhibitCounter+1].exhibit + "\n" + (int) this.routeList[currentExhibitCounter+1].totalDistance + " m")
+                .setMessage(this.routeList[currentExhibitCounter+1].exhibit + "\n" +
+                        (int) this.routeList[currentExhibitCounter+1].totalDistance + " m")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -171,6 +184,7 @@ public class DirectionsActivity extends AppCompatActivity {
                     }
                 });
         AlertDialog alert = alertBuilder.create();
+
         alert.show();
     }
   
@@ -196,4 +210,40 @@ public class DirectionsActivity extends AppCompatActivity {
             tempText.setText("Detailed");
         }
     }
+
+    public void onClearRouteClick(View view){
+        currentExhibitCounter = 0;
+        Intent intent = new Intent(this, Search_Display_Activity.class);
+        intent.putExtra("status", "clear");
+
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadCurrentExhibitCounter();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        saveCurrentExhibitCounter();
+    }
+
+    public void loadCurrentExhibitCounter(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+        Log.d("DirectionsActivity load", Integer.toString(currentExhibitCounter));
+    }
+
+    public void saveCurrentExhibitCounter(){
+        Log.d("DirectionsActivity", Integer.toString(currentExhibitCounter));
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
+        Log.d("DirectionsActivity save", Integer.toString(currentExhibitCounter));
+        editor.apply();
+    }
+
 }

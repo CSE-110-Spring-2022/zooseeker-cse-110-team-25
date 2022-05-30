@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = new Intent(this, Search_Display_Activity.class);
+        intent.putExtra("status","new");
         startActivity(intent);
     }
 

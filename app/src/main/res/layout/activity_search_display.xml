@@ -46,13 +46,13 @@
         android:id="@+id/search_results"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="84dp"
+        android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listCounterPlaceHolder"
-        android:scrollbarStyle="outsideOverlay"/>
+        app:layout_constraintTop_toBottomOf="@id/listCounterPlaceHolder" />
 
     <Button
         android:id="@+id/view_route_btn"
@@ -68,6 +68,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/clear_all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onViewClearClicked"
+        android:text="Clear ALL Animals"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.752"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
