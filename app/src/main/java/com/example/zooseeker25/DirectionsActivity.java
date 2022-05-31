@@ -43,26 +43,19 @@ public class DirectionsActivity extends AppCompatActivity {
     private List<String> directions;
     private RecyclerView recyclerView;
     private TextView exhibitTitleText;
-    private TextView tempText;
     private TextView exhibitCounterText;
     private Button prevBtn;
     private Button nextBtn;
     private Button skipBtn;
     private boolean fromPrev = false; //false if the current directions didn't come from pressing previous
 
-    private int detailedDirections = 0; //0 for brief, 1 for detailed
-
     private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker(this);
-    //temp behavior
-    private TextView tempText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
         useMockLocation = getIntent().getBooleanExtra(EXTRA_USE_MOCK_LOCATION, false);
-        tempText = (TextView) findViewById(R.id.tempText);
-        tempText.setText("Brief");
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
         this.skipBtn = (Button) findViewById(R.id.skip_next_button);
@@ -80,8 +73,6 @@ public class DirectionsActivity extends AppCompatActivity {
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
 
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
-        Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size() - 1).end, "entrance_exit_gate");
-        exitRoute.generateDirections();
         Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
         exitRoute.genNextDirections(detailedDirections);
         list.add(exitRoute);
