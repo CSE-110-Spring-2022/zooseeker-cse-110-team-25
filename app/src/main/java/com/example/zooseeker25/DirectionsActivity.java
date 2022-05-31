@@ -20,13 +20,9 @@ import java.util.List;
 
 public class DirectionsActivity extends AppCompatActivity {
     private Route[] routeList;
-
     private int currentExhibitCounter = 0;
     private Route currRoute;
-
     private List<Integer> skippedIndex = new ArrayList<>();
-
-
     private List<String> directions;
 
     private RecyclerView recyclerView;
@@ -38,7 +34,6 @@ public class DirectionsActivity extends AppCompatActivity {
     private boolean fromPrev = false; //false if the current directions didn't come from pressing previous
 
     private int detailedDirections = 0; //0 for brief, 1 for detailed
-
 
     //temp behavior
     private TextView tempText;
@@ -52,7 +47,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
-        Log.d("DirectionsActivity routeList", routeList[0].exhibit);
 
         addExitToRoute();
 
@@ -83,8 +77,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
         this.currRoute = routeList[currentExhibitCounter];
         Route.prevExhibit = currRoute.exhibit;
-        updateUI();
-
     }
 
 
@@ -167,15 +159,13 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
-    public void checkSkip(boolean didSkip, Route[] newRouteList) {
-        if (didSkip) {
-            this.routeList = newRouteList;
-            //Route.prevExhibit = currRoute.exhibit;
-            this.routeList[currentExhibitCounter + 1].generateDirections();
-            this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
-            this.currentExhibitCounter++;
-            updateUI();
-        }
+    public void checkSkip(Route[] newRouteList) {
+        routeList = newRouteList;
+        Route.prevExhibit = currRoute.exhibit;
+        currentExhibitCounter++;
+        currRoute = routeList[currentExhibitCounter];
+        currRoute.genNextDirections(detailedDirections);
+        updateUI();
     }
 
     public void recordSkippedIndex(int i){
@@ -300,7 +290,7 @@ public class DirectionsActivity extends AppCompatActivity {
             //this.skippedIndex.add(Integer.parseInt(indexString[i]));
             currentExhibitCounter = Integer.parseInt(indexString[i]);
             Route[] newRouteList = skippedRoute();
-            checkSkip(true, newRouteList);
+            checkSkip(newRouteList);
             Log.d("DirectionsActivity skip index", indexString[i]);
         }
 
