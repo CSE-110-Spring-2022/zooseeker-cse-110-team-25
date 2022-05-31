@@ -92,6 +92,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
+
     <TextView
         android:id="@+id/tempText"
         android:layout_width="wrap_content"

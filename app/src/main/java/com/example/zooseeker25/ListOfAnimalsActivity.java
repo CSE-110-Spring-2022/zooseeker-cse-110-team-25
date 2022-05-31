@@ -23,7 +23,8 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     private SearchResultsViewModel viewModel;
     private RecyclerView recyclerView;
     private String[] selectedAnimalsNameStorage;
-    private List<Route> routeList;
+    private List<Route> detailedRouteList;
+    private List<Route> briefRouteList;
     private List<String> exhibits;
     private String[] animalIds;
     private ListOfAnimalsAdapter adapter;
@@ -45,7 +46,6 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     public void initializeAnimalStorage(){
         Object[] animalNames = (Object[])getIntent().getSerializableExtra("selected_list_names");
         selectedAnimalsNameStorage = Arrays.copyOf(animalNames, animalNames.length, String[].class);
-        Log.d("ListOfAnimalsActivity", selectedAnimalsNameStorage[0]);
     }
 
     public void initializeAnimalIds(){
@@ -65,9 +65,6 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     }
 
     public void onGoBackClicked(View view) {
-        //adapter.clear();
-        //recyclerView.setAdapter(null);
-
         finish();
     }
 
@@ -75,11 +72,10 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
         Log.d("ListOfAnimalsActivity Clicked",exhibits.get(0));
         RouteGenerator.populateRouteData(exhibits, this);
-        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
-        RouteGenerator.resetRoute();
-        Log.d("ListOfAnimalsActivity Clicked", routeList.get(0).exhibit);
+
+        detailedRouteList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
         Intent intent = new Intent(this, OverViewActivity.class);
-        intent.putExtra("route_list", routeList.toArray());
+        intent.putExtra("route_list", detailedRouteList.toArray());
 
         startActivity(intent);
     }

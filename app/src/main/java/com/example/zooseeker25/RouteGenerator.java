@@ -63,7 +63,6 @@ public class RouteGenerator {
         List<Route> fullRoute = new ArrayList<>();
         visitedExhibits.add("entrance_exit_gate");
         String currentExhibit = "entrance_exit_gate";
-
         while (visitedExhibits.size() != exhibits.size()+1) {
             Route closestExhibit = null;
 
@@ -71,14 +70,13 @@ public class RouteGenerator {
                 if (currentExhibit.compareTo(exhibit) == 0) { continue; }
                 if (visitedExhibits.contains(exhibit)) { continue; }
                 Route route = routeData.get(node_lookup.get(currentExhibit)).get(node_lookup.get(exhibit));
-                if (closestExhibit == null) {
-                    closestExhibit = route;
-                } else if (closestExhibit.totalDistance > route.totalDistance) {
+                if (closestExhibit == null || closestExhibit.totalDistance > route.totalDistance) {
                     closestExhibit = route;
                 }
             }
+            if (closestExhibit == null) { break; }
             fullRoute.add(closestExhibit);
-            closestExhibit.generateDirections();
+            //closestExhibit.generateDirections();
             visitedExhibits.add(closestExhibit.end);
             currentExhibit = closestExhibit.end;
         }
@@ -92,7 +90,7 @@ public class RouteGenerator {
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, end);
 
         // 2. Load the information about our nodes and edges...
-        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_vertex_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
 
         String intro = String.format("The shortest path from '%s' to '%s' is:\n", start, end);
@@ -113,6 +111,6 @@ public class RouteGenerator {
             totalDistance += edgeWeight;
         }
 
-        return new Route(start, end, totalDistance, routeDirections, intro, vInfo.get(end).name);
+        return new Route(routeDirections, start, end, totalDistance, intro, vInfo.get(end).name);
     }
 }
