@@ -32,19 +32,19 @@ public class RouteGeneratorTest {
             List<Route> routeList = new ArrayList<>();
             List<List<String>> directions = new ArrayList<List<String>>();
             routeList.add(null);
-            routeList.add(new Route("entrance_exit_gate", "li", 10,  directions, "", ""));
-            routeList.add(new Route("entrance_exit_gate", "ga", 30,  directions, "", ""));
+            routeList.add(new Route(directions,"entrance_exit_gate", "li", 10, "", ""));
+            routeList.add(new Route(directions,"entrance_exit_gate", "ga", 30, "", ""));
             routeData.add(routeList);
 
             List<Route> routeList2 = new ArrayList<>();
-            routeList2.add(new Route("li", "entrance_exit_gate", 10,  directions, "", ""));
+            routeList2.add(new Route(directions,"li", "entrance_exit_gate", 10,   "", ""));
             routeList2.add(null);
-            routeList2.add(new Route("li", "ga", 20,  directions, "", ""));
+            routeList2.add(new Route( directions,"li", "ga", 20,  "", ""));
             routeData.add(routeList2);
 
             List<Route> routeList3 = new ArrayList<>();
-            routeList3.add(new Route("ga", "entrance_exit_gate", 30,  directions, "", ""));
-            routeList3.add(new Route("ga", "li", 20,  directions, "", ""));
+            routeList3.add(new Route(directions,"ga", "entrance_exit_gate", 30,   "", ""));
+            routeList3.add(new Route(directions, "ga", "li", 20, "", ""));
             routeList3.add(null);
             routeData.add(routeList3);
 

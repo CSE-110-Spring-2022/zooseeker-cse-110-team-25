@@ -92,13 +92,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
-    <TextView
-        android:id="@+id/tempText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toEndOf="@+id/settingsButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
