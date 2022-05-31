@@ -56,9 +56,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private int detailedDirections = 0; //0 for brief, 1 for detailed
 
-    //temp behavior
-    private TextView tempText;
-
     private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker(this);
 
 
@@ -78,10 +75,6 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void initializeTextView(){
-        //temp behavior
-        tempText = (TextView) findViewById(R.id.tempText);
-        tempText.setText("Brief");
-
         useMockLocation = getIntent().getBooleanExtra(EXTRA_USE_MOCK_LOCATION, false);
 
         this.prevBtn = (Button) findViewById(R.id.prev_button);
@@ -181,6 +174,7 @@ public class DirectionsActivity extends AppCompatActivity {
         } else {
             this.prevBtn.setVisibility(View.INVISIBLE);
         }
+
     }
 
     private void setSkipBtn() {
