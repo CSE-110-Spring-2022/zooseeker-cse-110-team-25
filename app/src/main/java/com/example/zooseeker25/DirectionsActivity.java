@@ -34,6 +34,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private int currentExhibitCounter = 0;
     private int detailedDirections = 0;
     private final String EXTRA_USE_MOCK_LOCATION = "use_mock_location";
+    private final String MOCK_ROUTE = "mockRouteLocations.json";
     public boolean useMockLocation;
     private Route currRoute;
     private Route[] routeList;
@@ -83,9 +84,15 @@ public class DirectionsActivity extends AppCompatActivity {
     private void setLocationServices() {
         locationModel = new ViewModelProvider(this).get(LocationModel.class);
 
-        if (useMockLocation) return;
-        if (permissionsChecker.ensurePermissions()) return;
+        if (useMockLocation){
+            //read a sequence of locations from a JSON file
+            List<Coord> route = Coord.loadJSON(this, MOCK_ROUTE);
+            mockRoute( route, 2000, TimeUnit.MILLISECONDS);
+            //call mock route here?
+            return;
+        }
 
+        if (permissionsChecker.ensurePermissions()) return;
         var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         var provider = LocationManager.GPS_PROVIDER;
         locationModel.addLocationProviderSource(locationManager, provider);

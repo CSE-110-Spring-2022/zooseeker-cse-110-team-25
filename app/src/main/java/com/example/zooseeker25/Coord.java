@@ -1,11 +1,21 @@
 package com.example.zooseeker25;
 
+import android.content.Context;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class Coord{
@@ -45,6 +55,20 @@ public class Coord{
 //    public int hashCode() {
 //        return Objects.hashCode(lat, lng);
 //    }
+
+    public static List<Coord> loadJSON(Context context, String path){
+        try{
+            InputStream input = context.getAssets().open(path);
+            Reader reader = new InputStreamReader(input);
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Coord>>(){}.getType();
+            return gson.fromJson(reader, type);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 
     @NonNull
     @Override

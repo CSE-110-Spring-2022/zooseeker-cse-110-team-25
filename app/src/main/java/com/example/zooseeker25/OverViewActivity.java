@@ -36,7 +36,6 @@ public class OverViewActivity extends AppCompatActivity {
     }
 
     //you want to get each route that is passed over and display the exhibit and totalDistance;
-
     public void onDirectionsClicked(View view) {
 
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
@@ -47,7 +46,6 @@ public class OverViewActivity extends AppCompatActivity {
 
 
     }
-
 
     //Checking user location mock or live
     public void setIsMock(){
