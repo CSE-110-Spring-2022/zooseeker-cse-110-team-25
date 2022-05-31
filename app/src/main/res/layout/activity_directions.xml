@@ -92,4 +92,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
+    <Button
+        android:id="@+id/mock_location_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Mock Location"
+        android:onClick="onMockLocationClicked"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="126dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

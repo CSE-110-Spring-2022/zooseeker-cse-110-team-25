@@ -36,7 +36,7 @@ public class LocationModel extends AndroidViewModel {
     }
 
     public LiveData<Coord> getLastKnownCoords() {
-        return lastKnownCoords;
+        return mockSource;
     }
 
     /**

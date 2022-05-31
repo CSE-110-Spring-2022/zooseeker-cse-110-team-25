@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -263,5 +265,30 @@ public class DirectionsActivity extends AppCompatActivity {
             currRoute.genPrevDirections(detailedDirections, routeList[currentExhibitCounter+1], routeList[currentExhibitCounter+1].exhibit);
         }
         updateUI();
+    }
+
+    public void onMockLocationClicked(View view) {
+        EditText coordsText = new EditText(this);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Mock Route")
+                .setMessage("Enter coord in the format lat, long")
+                .setView(coordsText)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String text = coordsText.getText().toString();
+                        String[] coords = text.split(",");
+                        mockLocation(new Coord(Double.parseDouble(coords[0]), Double.parseDouble(coords[1])));
+                        RoutePathChecker.checkOnPath(locationModel);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 }
