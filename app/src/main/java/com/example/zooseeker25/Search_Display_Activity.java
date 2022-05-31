@@ -62,9 +62,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         searchStorage = new SearchStorage(this);
 
-
-
-
         //getting all of the elements on the UI
         simpleSearchView = findViewById(R.id.searchView);
         titleText = findViewById(R.id.title_text);
@@ -121,19 +118,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         });
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
-
-        /*this.clearStatus = (int) getIntent().getSerializableExtra("status");
-        Log.d("Search", Integer.toString(this.clearStatus));*/
     }
 
-    /*public void clear(){
-        if (this.clearStatus==1){
-            Log.d("Search","in clear()");
-            searchStorage.resetSearchStorage();
-            viewRouteBtn.setVisibility(View.INVISIBLE);
-        }
-        this.clearStatus = 0;
-    }*/
 
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
