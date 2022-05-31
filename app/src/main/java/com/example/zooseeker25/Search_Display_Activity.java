@@ -171,6 +171,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         if (names.size()==0){
             editor.putString("names", null);
+
         }
         else {
             String resName = "";
@@ -184,6 +185,21 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         if (ids.size() == 0){
             editor.putString("ids", null);
         }
+
+        }
+        else {
+            String resName = "";
+            for (String name : names){
+                resName += name + ",";
+            }
+            resName = resName.substring(0,resName.length()-1);
+            editor.putString("names", resName);
+        }
+
+        if (ids.size() == 0){
+            editor.putString("ids", null);
+        }
+
         else{
             String resIds = "";
             for (String id : ids){

@@ -1,13 +1,25 @@
 package com.example.zooseeker25;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,12 +29,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class DirectionsActivity extends AppCompatActivity {
-    private Route[] routeList;
     private int currentExhibitCounter = 0;
+    private int detailedDirections = 0;
+    private final String EXTRA_USE_MOCK_LOCATION = "use_mock_location";
+    private final String MOCK_ROUTE = "mockRouteLocations.json";
+    public boolean useMockLocation;
     private Route currRoute;
+
     private List<Integer> skippedIndex = new ArrayList<>();
+
+    private Route[] routeList;
+    private LocationModel locationModel;
+
     private List<String> directions;
 
     private RecyclerView recyclerView;
@@ -37,6 +59,9 @@ public class DirectionsActivity extends AppCompatActivity {
 
     //temp behavior
     private TextView tempText;
+
+    private final LocationPermissionChecker permissionsChecker = new LocationPermissionChecker(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +83,8 @@ public class DirectionsActivity extends AppCompatActivity {
         tempText = (TextView) findViewById(R.id.tempText);
         tempText.setText("Brief");
 
+        useMockLocation = getIntent().getBooleanExtra(EXTRA_USE_MOCK_LOCATION, false);
+
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
         this.skipBtn = (Button) findViewById(R.id.skip_next_button);
@@ -66,19 +93,55 @@ public class DirectionsActivity extends AppCompatActivity {
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
     }
 
+
     public void addExitToRoute(){
+
+        updateRouteList();
+        updateUI();
+        setLocationServices();
+    }
+
+    private void updateRouteList() {
+        Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
+        this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
+
+
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
         exitRoute.genNextDirections(detailedDirections);
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
-
         directions = new ArrayList<>();
-
         this.currRoute = routeList[currentExhibitCounter];
         Route.prevExhibit = currRoute.exhibit;
     }
 
+    private void setLocationServices() {
+        locationModel = new ViewModelProvider(this).get(LocationModel.class);
+
+        if (useMockLocation){
+            //read a sequence of locations from a JSON file
+            List<Coord> route = Coord.loadJSON(this, MOCK_ROUTE);
+            mockRoute( route, 2000, TimeUnit.MILLISECONDS);
+            //call mock route here?
+            return;
+        }
+
+        if (permissionsChecker.ensurePermissions()) return;
+        var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        var provider = LocationManager.GPS_PROVIDER;
+        locationModel.addLocationProviderSource(locationManager, provider);
+    }
+
+    @VisibleForTesting
+    public void mockLocation(Coord coords) {
+        locationModel.mockLocation(coords);
+    }
+
+    @VisibleForTesting
+    public Future<?> mockRoute(List<Coord> route, long delay, TimeUnit unit) {
+        return locationModel.mockRoute(route, delay, unit);
+    }
 
     private void updateUI() {
         this.exhibitCounterText.setText(String.valueOf(routeList.length-currentExhibitCounter-1));
@@ -89,6 +152,25 @@ public class DirectionsActivity extends AppCompatActivity {
         setSkipBtn();
         setAdapter();
     }
+
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        saveCurrentExhibitCounter();
+//    }
+
+//    public void loadCurrentExhibitCounter(){
+//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//        currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+//    }
+
+//    public void saveCurrentExhibitCounter(){
+//        Log.d("DirectionsActivity", Integer.toString(currentExhibitCounter));
+//        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
+//        editor.apply();
+//    }
 
     private void setPrevBtn() {
         if (currentExhibitCounter != 0) {
@@ -120,6 +202,12 @@ public class DirectionsActivity extends AppCompatActivity {
             this.nextBtn.setText("Finish");
         }
     }
+
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        loadCurrentExhibitCounter();
+//    }
 
     private void setAdapter() {
         DirectionsAdapter adapter = new DirectionsAdapter();
@@ -321,3 +409,5 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
 }
+
+
