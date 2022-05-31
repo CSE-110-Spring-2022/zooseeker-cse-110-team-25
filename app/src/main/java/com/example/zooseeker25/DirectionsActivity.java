@@ -77,6 +77,9 @@ public class DirectionsActivity extends AppCompatActivity {
         exitRoute.genNextDirections(detailedDirections);
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
+        directions = new ArrayList<>();
+        this.currRoute = routeList[currentExhibitCounter];
+        Route.prevExhibit = currRoute.exhibit;
     }
 
     private void setLocationServices() {
@@ -94,11 +97,6 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         var provider = LocationManager.GPS_PROVIDER;
         locationModel.addLocationProviderSource(locationManager, provider);
-
-        directions = new ArrayList<>();
-        this.currRoute = routeList[currentExhibitCounter];
-        Route.prevExhibit = currRoute.exhibit;
-        updateUI();
     }
 
     @VisibleForTesting
