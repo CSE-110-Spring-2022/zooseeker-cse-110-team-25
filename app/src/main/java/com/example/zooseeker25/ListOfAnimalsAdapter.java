@@ -21,7 +21,6 @@ import java.util.function.BiConsumer;
 
 public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdapter.ViewHolder>{
     private List<String> selectedAnimals = Collections.emptyList();
-    private BiConsumer<String, String> onTextEditedHandler;
 
     public ListOfAnimalsAdapter(String[] newSelectedAnimals) {
         this.selectedAnimals.clear();
@@ -47,9 +46,6 @@ public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdap
         Log.d("ListOfAnimalsAdapter", selectedAnimals.get(position));
     }
 
-    public void setOnTextEditedHandler(BiConsumer<String, String> onTextEdited) {
-        this.onTextEditedHandler = onTextEdited;
-    }
 
     @Override
     public int getItemCount() {
@@ -65,12 +61,6 @@ public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.selected_animal_name);
-
-            this.textView.setOnFocusChangeListener((view, hasFocus) -> {
-                if (!hasFocus) {
-                    onTextEditedHandler.accept(animalName, textView.getText().toString());
-                }
-            });
         }
 
 
@@ -78,6 +68,10 @@ public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdap
             this.animalName = s;
             textView.setText(s);
         }
+    }
+
+    public void clear(){
+        this.selectedAnimals.clear();
     }
 
 

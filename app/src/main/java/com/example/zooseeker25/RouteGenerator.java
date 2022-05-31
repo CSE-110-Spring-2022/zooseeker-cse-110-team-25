@@ -30,6 +30,7 @@ public class RouteGenerator {
     }
 
     public static void populateRouteData (List<String> exhibits, Context context) {
+        Log.d("RouteGenerator", exhibits.get(0));
         int i = 1;
         RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
         RouteGenerator.integerLookup.put("entrance_exit_gate", 0);
@@ -56,6 +57,8 @@ public class RouteGenerator {
     }
 
     public static List<Route> generateFullRoute(List<String> exhibits, List<List<Route>> routeData, Map<String, Integer> node_lookup) {
+        Log.d("RouteGenerator", exhibits.get(0));
+
         Set<String> visitedExhibits = new HashSet<String>();
         List<Route> fullRoute = new ArrayList<>();
         visitedExhibits.add("entrance_exit_gate");

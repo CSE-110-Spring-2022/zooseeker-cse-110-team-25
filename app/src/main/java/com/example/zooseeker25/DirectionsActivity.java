@@ -20,8 +20,10 @@ import java.util.List;
 
 public class DirectionsActivity extends AppCompatActivity {
     private Route[] routeList;
+
     private int currentExhibitCounter = 0;
     private Route currRoute;
+    private List<Integer> skippedIndex = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private TextView exhibitTitleText;
@@ -40,6 +42,18 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
+        initializeTextView();
+
+        Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
+        this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
+        Log.d("DirectionsActivity routeList", routeList[0].exhibit);
+
+        addExitToRoute();
+
+        updateUI();
+    }
+
+    public void initializeTextView(){
         //temp behavior
         tempText = (TextView) findViewById(R.id.tempText);
         tempText.setText("Brief");
@@ -50,20 +64,14 @@ public class DirectionsActivity extends AppCompatActivity {
         this.exhibitCounterText = (TextView) findViewById(R.id.direction_exhibit_counter);
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
+    }
 
-        Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
-        this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
-        Log.d("DirectionsActivity routeList", routeList[0].exhibit);
-
+    public void addExitToRoute(){
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         Route exitRoute = RouteGenerator.generateRoute(this, list.get(list.size()-1).end, "entrance_exit_gate");
         exitRoute.generateDirections();
         list.add(exitRoute);
         this.routeList = list.toArray(new Route[0]);
-
-        onResume();
-
-        updateUI();
     }
 
 
@@ -127,7 +135,10 @@ public class DirectionsActivity extends AppCompatActivity {
         } else {
             RouteGenerator.resetRoute();
             this.currentExhibitCounter = 0;
+            this.skippedIndex = new ArrayList<>();
             Log.d("DirectionsActivity","finish()");
+            onPause();
+
             finish();
         }
     }
@@ -144,7 +155,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public void checkSkip(boolean didSkip, Route[] newRouteList) {
         if (didSkip) {
             this.routeList = newRouteList;
-            Route.prevExhibit = currRoute.exhibit;
+            //Route.prevExhibit = currRoute.exhibit;
             this.routeList[currentExhibitCounter + 1].generateDirections();
             this.routeList[currentExhibitCounter].generatePrevDirections(this.routeList[currentExhibitCounter+1], this.routeList[currentExhibitCounter+1].exhibit);
             this.currentExhibitCounter++;
@@ -152,19 +163,15 @@ public class DirectionsActivity extends AppCompatActivity {
         }
     }
 
+    public void recordSkippedIndex(int i){
+        skippedIndex.add(i);
+        Log.d("DirectionsActivity recordSkippedIndex", Integer.toString(i));
+    }
+
     public void onSkipNextBtnClicked(View view) {
+        recordSkippedIndex(this.currentExhibitCounter);
 
-        // convert routeList array to a list
-        //this.currentExhibitCounter++;
-        List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
-        // remove the next exhibit
-        list.remove(currentExhibitCounter+1);
-        // convert list back to array
-        Route[] newRouteList = list.toArray(new Route[0]);
-        // generate directions from current exhibit to next exhibit
-
-        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.
-                generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
+        Route[] newRouteList = skippedRoute();
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle("Skipping Next Exhibit:")
@@ -183,9 +190,27 @@ public class DirectionsActivity extends AppCompatActivity {
                         dialogInterface.cancel();
                     }
                 });
+
         AlertDialog alert = alertBuilder.create();
 
         alert.show();
+
+    }
+
+    public Route[] skippedRoute(){
+        Log.d("DirectionsActivity", "skippedRoute()");
+        // convert routeList array to a list
+        List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
+        // remove the next exhibit
+        list.remove(currentExhibitCounter+1);
+        Log.d("DirectionsActivity remove", list.get(0).exhibit);
+        // convert list back to array
+        Route[] newRouteList = list.toArray(new Route[0]);
+        // generate directions from current exhibit to next exhibit
+
+        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.
+                generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
+        return newRouteList;
     }
   
     //passes the currently selected detailedDirections value to the new activity
@@ -193,7 +218,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onSettingsClicked(View view) {
         Intent intent = new Intent(this, Settings.class);
         intent.putExtra("detailedDirections", detailedDirections);
-        startActivityForResult(intent, detailedDirections);
+        startActivity(intent);
     }
 
     //getting the result from the closed settings activity
@@ -213,10 +238,16 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void onClearRouteClick(View view){
         currentExhibitCounter = 0;
-        Intent intent = new Intent(this, Search_Display_Activity.class);
-        intent.putExtra("status", "clear");
+        this.skippedIndex = new ArrayList<>();
+        Log.d("DirectionsActivity","finish()");
+        onPause();
 
-        startActivity(intent);
+        /*Intent intent = new Intent(this, Search_Display_Activity.class);
+        intent.putExtra("status", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);*/
+
+        finish();
     }
 
     @Override
@@ -232,8 +263,28 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void loadCurrentExhibitCounter(){
+        Log.d("DirectionsActivity", "in loadCurrentExhibitCounter");
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+
+        String index = preferences.getString("skippedIndex", null);
+
+        if (index == null){
+            currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+            return;
+        }
+        Log.d("DirectionsActivity load", index);
+        String[] indexString = index.split("\\s*,\\s*");
+
+        for (int i = 0; i < indexString.length; i++){
+            //this.skippedIndex.add(Integer.parseInt(indexString[i]));
+            currentExhibitCounter = Integer.parseInt(indexString[i]);
+            Route[] newRouteList = skippedRoute();
+            checkSkip(true, newRouteList);
+            Log.d("DirectionsActivity skip index", indexString[i]);
+        }
+
         currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+
         Log.d("DirectionsActivity load", Integer.toString(currentExhibitCounter));
     }
 
@@ -243,6 +294,20 @@ public class DirectionsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("CurrentExhibitCounter", currentExhibitCounter);
         Log.d("DirectionsActivity save", Integer.toString(currentExhibitCounter));
+
+        if (this.skippedIndex.size() == 0){
+            editor.putString("skippedIndex", null);
+        }
+        else{
+            String index = "";
+            for (int ind : this.skippedIndex){
+                index += ind + ",";
+            }
+            index = index.substring(0, index.length()-1);
+            editor.putString("skippedIndex", index);
+            Log.d("DirectionsActivity skippedIndex", index);
+        }
+
         editor.apply();
     }
 

@@ -33,7 +33,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     private NodeInfoDao dao;
     private ItemDatabase db;
     private Search search;
-    private String status;
+    //private int clearStatus = 0;
     SearchView simpleSearchView;
     TextView titleText;
     TextView listCounter;
@@ -61,6 +61,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         dao.insertAll(todos);
 
         searchStorage = new SearchStorage(this);
+
+
 
 
         //getting all of the elements on the UI
@@ -119,31 +121,18 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         });
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
-        this.status = (String) getIntent().getSerializableExtra("status");
-        Log.d("Search_Display_Activity", this.status);
+
+        /*this.clearStatus = (int) getIntent().getSerializableExtra("status");
+        Log.d("Search", Integer.toString(this.clearStatus));*/
     }
 
-/*
-    @Override
-    protected void onResume(){
-        super.onResume();
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
-                .setTitle("Load Previous Session?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        loadSearchStorage();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        searchStorage.resetSearchStorage();
-
-                    }
-                });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
+    /*public void clear(){
+        if (this.clearStatus==1){
+            Log.d("Search","in clear()");
+            searchStorage.resetSearchStorage();
+            viewRouteBtn.setVisibility(View.INVISIBLE);
+        }
+        this.clearStatus = 0;
     }*/
 
     public void onViewRouteClicked(View view) {
@@ -155,6 +144,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         intent.putExtra("selected_list_ids", tempIDs.toArray());
         startActivity(intent);
     }
+
 
     public void onViewClearClicked (View view){
         Log.d("Search_Display", "onViewClearClicked");
@@ -180,15 +170,9 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     protected void onResume(){
         Log.d("Search_Display_Activity", "onResume");
         super.onResume();
-        if (this.status.equals("clear")){
-            searchStorage.resetSearchStorage();
-            this.status = "new";
-            Log.d("Search_Display_Activity", "onResume clear");
-            return;
-        }
         loadSearchStorage();
+        //clear();
     }
-
 
     public void saveSearchStorage(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
