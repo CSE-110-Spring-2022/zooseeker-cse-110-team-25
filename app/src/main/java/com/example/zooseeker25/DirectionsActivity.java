@@ -55,7 +55,6 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
 
         useMockLocation = getIntent().getBooleanExtra(EXTRA_USE_MOCK_LOCATION, false);
-        useMockLocation = true;
         tempText = (TextView) findViewById(R.id.tempText);
         tempText.setText("Brief");
         this.prevBtn = (Button) findViewById(R.id.prev_button);
