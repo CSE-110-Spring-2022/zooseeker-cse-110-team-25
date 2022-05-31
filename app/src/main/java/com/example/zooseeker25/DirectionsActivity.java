@@ -212,7 +212,6 @@ public class DirectionsActivity extends AppCompatActivity {
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         // remove the next exhibit
         list.remove(currentExhibitCounter+1);
-        Log.d("DirectionsActivity remove", list.get(0).exhibit);
         // convert list back to array
         Route[] newRouteList = list.toArray(new Route[0]);
         // generate directions from current exhibit to next exhibit
@@ -291,7 +290,6 @@ public class DirectionsActivity extends AppCompatActivity {
             currentExhibitCounter = Integer.parseInt(indexString[i]);
             Route[] newRouteList = skippedRoute();
             checkSkip(newRouteList);
-            Log.d("DirectionsActivity skip index", indexString[i]);
         }
 
         currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);

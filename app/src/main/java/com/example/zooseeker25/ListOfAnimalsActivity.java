@@ -70,7 +70,6 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
 
     public void onRouteGeneratedClicked(View view) {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
-        Log.d("ListOfAnimalsActivity Clicked",exhibits.get(0));
         RouteGenerator.populateRouteData(exhibits, this);
 
         detailedRouteList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);

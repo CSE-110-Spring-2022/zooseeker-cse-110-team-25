@@ -139,7 +139,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
         ArrayList<String> tempNames = new ArrayList<>(searchStorage.getSelectedAnimalsNames());
         intent.putExtra("selected_list_names", tempNames.toArray());
-        Log.d("Search_Display_Activity", tempNames.get(0));
         ArrayList<String> tempIDs = new ArrayList<>(searchStorage.getSelectedAnimalsIDs());
         intent.putExtra("selected_list_ids", tempIDs.toArray());
         startActivity(intent);

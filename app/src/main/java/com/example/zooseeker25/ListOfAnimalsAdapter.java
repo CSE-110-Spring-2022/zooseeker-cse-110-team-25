@@ -26,7 +26,6 @@ public class ListOfAnimalsAdapter extends RecyclerView.Adapter<ListOfAnimalsAdap
         this.selectedAnimals.clear();
         selectedAnimals = new ArrayList<>(Arrays.asList(newSelectedAnimals));
         notifyDataSetChanged();
-        Log.d("ListOfAnimalsAdapter", selectedAnimals.get(0));
     }
 
     @NonNull

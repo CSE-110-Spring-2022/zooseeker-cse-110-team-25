@@ -31,7 +31,6 @@ public class OverViewActivity extends AppCompatActivity {
         setContentView( R.layout.activity_over_view );
         Object[] selectedExhibits = (Object[]) getIntent().getSerializableExtra("route_list");
         Route[] e  = Arrays.copyOf(selectedExhibits, selectedExhibits.length, Route[].class);
-        Log.d("OverViewActivity", e[0].exhibit);
         adapter = new OverviewAdapter(selectedExhibits);
         adapter.setHasStableIds(true);
         recyclerView = findViewById(R.id.Overview_recyclerView);
