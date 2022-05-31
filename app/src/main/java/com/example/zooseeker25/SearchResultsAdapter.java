@@ -30,6 +30,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyDataSetChanged();
     }
 
+    //handles when an animal in the search is clicked
     public void setOnAnimalClickedHandler(Consumer<SearchResultsItem> onAnimalItemClicked){
         this.onAnimalItemClicked = onAnimalItemClicked;
     }
@@ -63,6 +64,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             textView = itemView.findViewById(R.id.search_item_text);
 
+            //adds the selected item to the search storage and calls the given Consumer
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
                 onAnimalItemClicked.accept(searchResultsItem);
@@ -72,7 +74,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         }
 
         //gets the name of the searchResultsItems and set it as the
-        //text in the textView of an individual search_list_item
+        //text in the textView of an individual search_list_item, and updates the color
         public void setSearchItem(SearchResultsItem searchResultsItem) {
             this.searchResultsItem = searchResultsItem;
             textView.setText(dao.getNameFromId(searchResultsItem.name));

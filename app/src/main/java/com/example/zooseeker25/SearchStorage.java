@@ -10,6 +10,7 @@ import java.util.Observer;
 import java.util.Set;
 import java.util.TreeSet;
 
+//Stores the list of animals to display under the search bar, and the selected animals
 public class SearchStorage extends Observable implements Serializable {
     private List<SearchResultsItem> resultsList;
     private Set<String> selectedAnimals;
@@ -23,10 +24,12 @@ public class SearchStorage extends Observable implements Serializable {
         resultsList = new ArrayList<>();
     }
 
+    //returns the list of animals to be displayed
     public List<SearchResultsItem> getResultsList() {
         return resultsList;
     }
 
+    //updates the list of animals to be displayed
     public void updateResultsList(List<String> newList) {
         //clear previous resultsList
         resultsList.removeAll(resultsList);
@@ -37,20 +40,24 @@ public class SearchStorage extends Observable implements Serializable {
         }
     }
 
+    //returns the names of the selected animals
     public Set<String> getSelectedAnimalsNames(){
         return selectedAnimals;
     }
 
+    //returns the ids of the selected animals
     public Set<String> getSelectedAnimalsIDs(){
         return selectedAnimalsIDs;
     }
 
+    //adds the name and id of a newly selected animal to their respective sets and updates the list counter
     public void addSelectedAnimal(String name, String id) {
         selectedAnimals.add(name);
         selectedAnimalsIDs.add(id);
         observer.update(this, Integer.toString(selectedAnimals.size()));
     }
 
+    //clears all lists to reset
     public void resetSearchStorage(){
         selectedAnimals.clear();
         selectedAnimalsIDs.clear();

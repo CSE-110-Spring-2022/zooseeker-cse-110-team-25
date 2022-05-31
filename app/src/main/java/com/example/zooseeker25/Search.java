@@ -21,6 +21,7 @@ public class Search {
         this.nodedao = dao;
     }
 
+    //searches for related ids and appends to animalNames
     private void searchID(){
         List<NodeItem> items = nodedao.findId(keyword);
         for (NodeItem item : items){
@@ -32,6 +33,7 @@ public class Search {
         }
     }
 
+    //searches for related kinds and appends to animalNames
     private void searchKind(){
         List<NodeItem> items = nodedao.findKind(keyword);
         for (NodeItem item : items){
@@ -43,6 +45,7 @@ public class Search {
         }
     }
 
+    //searches for related names and appends to animalNames
     private void searchName(){
         List<NodeItem> items = nodedao.findName(keyword);
         for (NodeItem item : items){
@@ -54,6 +57,7 @@ public class Search {
         }
     }
 
+    //searches for related tags and appends to animalNames
     private void searchTag(){
         List<NodeItem> items = nodedao.findTag(keyword);
         for (NodeItem item : items){

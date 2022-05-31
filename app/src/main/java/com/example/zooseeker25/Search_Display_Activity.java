@@ -24,6 +24,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+//handles the display of the search screen
 public class Search_Display_Activity extends AppCompatActivity implements Observer {
     private final static String DATA_PATH = "sample_vertex_info.json";
 
@@ -33,7 +34,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
     private NodeInfoDao dao;
     private ItemDatabase db;
     private Search search;
-    //private int clearStatus = 0;
     SearchView simpleSearchView;
     TextView titleText;
     TextView listCounter;
@@ -120,7 +120,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         listCounter.setText("0");
     }
 
-
+    //passes the selected animal's names and ids to the following activity, ListOfAnimalsActivity
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
         ArrayList<String> tempNames = new ArrayList<>(searchStorage.getSelectedAnimalsNames());
@@ -130,13 +130,14 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         startActivity(intent);
     }
 
-
+    //Clears the selected animals
     public void onViewClearClicked (View view){
         Log.d("Search_Display", "onViewClearClicked");
         searchStorage.resetSearchStorage();
         viewRouteBtn.setVisibility(View.INVISIBLE);
     }
 
+    //Updates the list counter whenever searchstorage is updated
     @Override
     public void update(Observable observable, Object o) {
         listCounter.setText((String)o);
@@ -145,20 +146,22 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         }
     }
 
+    //Saves the selected animals
     @Override
     protected void onPause() {
         super.onPause();
         saveSearchStorage();
     }
 
+    //Loads the selected animals
     @Override
     protected void onResume(){
         Log.d("Search_Display_Activity", "onResume");
         super.onResume();
         loadSearchStorage();
-        //clear();
     }
 
+    //compresses the selected list of animals into a stream and saves them using sharedpreferences
     public void saveSearchStorage(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -210,6 +213,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         editor.apply();
     }
 
+    //fetches and decompresses the saved string of selected animals
     public void loadSearchStorage(){
         Log.d("Search_Display_Activity", "loadSearchStorage");
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);

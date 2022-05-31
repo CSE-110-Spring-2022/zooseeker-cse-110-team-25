@@ -23,12 +23,12 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
     private SearchResultsViewModel viewModel;
     private RecyclerView recyclerView;
     private String[] selectedAnimalsNameStorage;
-    private List<Route> detailedRouteList;
-    private List<Route> briefRouteList;
+    private List<Route> routeList;
     private List<String> exhibits;
     private String[] animalIds;
     private ListOfAnimalsAdapter adapter;
 
+    //reads the passed information from the previous activity and initializes relevant objects
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("ListOfAnimalsActivity", "onCreate");
@@ -58,6 +58,7 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         adapter.setHasStableIds(true);
     }
 
+    //sets the adapter for the recycler view
     public void setRecyclerView(){
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,13 +69,14 @@ public class ListOfAnimalsActivity extends AppCompatActivity {
         finish();
     }
 
+    //generates a route and passes it to the next activity OverViewActivity
     public void onRouteGeneratedClicked(View view) {
         exhibits = new ArrayList<>(Arrays.asList(animalIds));
         RouteGenerator.populateRouteData(exhibits, this);
 
-        detailedRouteList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
+        routeList = RouteGenerator.generateFullRoute(exhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
         Intent intent = new Intent(this, OverViewActivity.class);
-        intent.putExtra("route_list", detailedRouteList.toArray());
+        intent.putExtra("route_list", routeList.toArray());
 
         startActivity(intent);
     }
