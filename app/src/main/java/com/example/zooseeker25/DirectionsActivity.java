@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 
 public class DirectionsActivity extends AppCompatActivity {
     private int currentExhibitCounter = 0;
-    private int detailedDirections = 0;
     private final String EXTRA_USE_MOCK_LOCATION = "use_mock_location";
     private final String MOCK_ROUTE = "mockRouteLocations.json";
     public boolean useMockLocation;

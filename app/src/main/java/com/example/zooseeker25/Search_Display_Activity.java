@@ -185,8 +185,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         if (ids.size() == 0){
             editor.putString("ids", null);
         }
-
-        }
         else {
             String resName = "";
             for (String name : names){

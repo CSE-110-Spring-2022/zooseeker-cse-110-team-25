@@ -60,8 +60,6 @@ public class OverViewActivity extends AppCompatActivity {
         //Log.d("OverViewActivity", temp
 
 
-        Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
-        Intent intent = new Intent(this, DirectionsActivity.class);
         intent.putExtra("route_list", temp);
         intent.putExtra( "use_mock_location", isMock );
 
