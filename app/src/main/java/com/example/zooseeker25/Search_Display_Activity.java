@@ -162,48 +162,65 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         saveSearchStorage();
     }
     public void saveSearchStorage(){
-        SharedPreferences preferences = getSharedPreferences("test",MODE_PRIVATE);
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+
+        // Store selectedAnimalsNameStorage as a String, then put it into editor
+        // Because SharedPreferences can only work with primitive type
 
         Set<String> names = searchStorage.getSelectedAnimalsNames();
         Set<String> ids = searchStorage.getSelectedAnimalsIDs();
 
-        String namesstring ="",idsstring = "";
-        for(String s : names){
-            namesstring = s+"#"+namesstring;
+        if (names.size()==0){
+            editor.putString("names", null);
+        }
+        else {
+            String resName = "";
+            for (String name : names){
+                resName += name + ",";
+            }
+            resName = resName.substring(0,resName.length()-1);
+            editor.putString("names", resName);
+        }
 
+        if (ids.size() == 0){
+            editor.putString("ids", null);
         }
-        for(String t : ids){
-            idsstring = t+"#"+namesstring;
-        }
-        if(namesstring.length()!=0){
-            namesstring = namesstring.substring(0,namesstring.length()-1);
-            idsstring = idsstring.substring(0,idsstring.length()-1);
+        else{
+            String resIds = "";
+            for (String id : ids){
+                resIds += id + ",";
+            }
+            resIds = resIds.substring(0, resIds.length()-1);
+            editor.putString("ids", resIds);
         }
 
-        editor.putString("storenames",namesstring);
-        editor.putString("storeids",idsstring);
         editor.apply();
-        Log.i("close",preferences.getString("storenames","none"));
     }
 
     public void loadSearchStorage(){
-        Log.i(".","starting load");
-        SharedPreferences preferences = getSharedPreferences("test",MODE_PRIVATE);
-        Log.i("starting",preferences.getString("storenames","cant find") + "::::");
+        Log.d("Search_Display_Activity", "loadSearchStorage");
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
-        String namesstring = preferences.getString("storenames",null);
-        String idsstring = preferences.getString("storeids",null);
-
-        if (namesstring == null || idsstring == null) {
+        String resName = preferences.getString("names", null);
+        //Log.d("Search_Display_Activity", resName);
+        if (resName == null){
             return;
         }
+        String[] names = resName.split("\\s*,\\s*");
+        Log.d("Search_Display_Activity", Integer.toString(names.length));
 
-        String[] names = namesstring.split("#");
-        String[] ids = idsstring.split("#");
+        String resIds = preferences.getString("ids", null);
+        if (resIds == null){
+            return;
+        }
+        String[] ids = resIds.split("\\s*,\\s*");
+        Log.d("Search_Display_Activity", Integer.toString(ids.length));
+
 
         for(int i=0; i<names.length; i++){
             searchStorage.addSelectedAnimal(names[i],ids[i]);
+            Log.d("Search_Display_Activity","addSelected");
         }
     }
 }
