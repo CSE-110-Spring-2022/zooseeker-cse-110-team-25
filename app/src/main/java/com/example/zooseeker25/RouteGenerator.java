@@ -30,6 +30,7 @@ public class RouteGenerator {
     }
 
     public static void populateRouteData (List<String> exhibits, Context context) {
+        resetRoute();
         int i = 1;
         RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
         RouteGenerator.integerLookup.put("entrance_exit_gate", 0);
