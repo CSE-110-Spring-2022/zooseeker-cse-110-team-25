@@ -51,6 +51,16 @@ public class ViewDirectionsPagesTest {
                         isDisplayed()));
         appCompatImageView.perform(click());
 
+        ViewInteraction materialButton123 = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton123.perform(click());
+
         ViewInteraction searchAutoComplete = onView(
                 allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
                         childAtPosition(
@@ -60,27 +70,7 @@ public class ViewDirectionsPagesTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete.perform(replaceText("e"), closeSoftKeyboard());
-
-        ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.search_item_text), withText("Elephant Odyssey"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.search_results),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialTextView.perform(click());
-
-        ViewInteraction materialTextView2 = onView(
-                allOf(withId(R.id.search_item_text), withText("Arctic Foxes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.search_results),
-                                        1),
-                                0),
-                        isDisplayed()));
-        materialTextView2.perform(click());
+        searchAutoComplete.perform(replaceText("g"), closeSoftKeyboard());
 
         ViewInteraction materialTextView3 = onView(
                 allOf(withId(R.id.search_item_text), withText("Gorillas"),

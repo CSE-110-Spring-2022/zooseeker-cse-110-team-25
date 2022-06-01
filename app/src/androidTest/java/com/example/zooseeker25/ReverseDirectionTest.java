@@ -60,6 +60,16 @@ public class ReverseDirectionTest {
                         isDisplayed()));
         appCompatImageView.perform(click());
 
+        ViewInteraction materialButton123 = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton123.perform(click());
+
         ViewInteraction searchAutoComplete = onView(
                 allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
                         childAtPosition(
@@ -155,7 +165,7 @@ public class ReverseDirectionTest {
                         withParent(allOf(withId(R.id.direction_list_item),
                                 withParent(withId(R.id.directions_list_view)))),
                         isDisplayed()));
-        textView.check(matches(withText("Walk 50 meters along Orangutan Trail from 'Orangutans' to 'Parker Aviary'. ")));
+        textView.check(matches(withText("Walk 50 meters along Orangutan Trail from 'Orangutans' to 'Parker Aviary'.\n")));
     }
 
     private static Matcher<View> childAtPosition(
