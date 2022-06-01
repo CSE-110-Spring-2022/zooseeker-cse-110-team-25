@@ -34,14 +34,34 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class viewOrderRouteTest {
+public class OrderedRouteTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>( MainActivity.class );
 
     @Test
-    public void viewOrderRouteTest() {
+    public void orderedRouteTest() {
+        ViewInteraction materialButton = onView(
+                allOf( withId( R.id.clear_all_button ), withText( "Clear Selected" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( android.R.id.content ),
+                                        0 ),
+                                5 ),
+                        isDisplayed() ) );
+        materialButton.perform( click() );
+
+        ViewInteraction materialButton2 = onView(
+                allOf( withId( R.id.clear_all_button ), withText( "Clear Selected" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( android.R.id.content ),
+                                        0 ),
+                                5 ),
+                        isDisplayed() ) );
+        materialButton2.perform( click() );
+
         ViewInteraction appCompatImageView = onView(
                 allOf( withClassName( is( "androidx.appcompat.widget.AppCompatImageView" ) ), withContentDescription( "Search" ),
                         childAtPosition(
@@ -65,16 +85,6 @@ public class viewOrderRouteTest {
         searchAutoComplete.perform( replaceText( "a" ), closeSoftKeyboard() );
 
         ViewInteraction materialTextView = onView(
-                allOf( withId( R.id.search_item_text ), withText( "Orangutans" ),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId( R.id.search_results ),
-                                        4 ),
-                                0 ),
-                        isDisplayed() ) );
-        materialTextView.perform( click() );
-
-        ViewInteraction materialTextView2 = onView(
                 allOf( withId( R.id.search_item_text ), withText( "Gorillas" ),
                         childAtPosition(
                                 childAtPosition(
@@ -82,9 +92,19 @@ public class viewOrderRouteTest {
                                         3 ),
                                 0 ),
                         isDisplayed() ) );
+        materialTextView.perform( click() );
+
+        ViewInteraction materialTextView2 = onView(
+                allOf( withId( R.id.search_item_text ), withText( "Flamingos" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.search_results ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
         materialTextView2.perform( click() );
 
-        ViewInteraction materialButton = onView(
+        ViewInteraction materialButton3 = onView(
                 allOf( withId( R.id.view_route_btn ), withText( "View Selected" ),
                         childAtPosition(
                                 childAtPosition(
@@ -92,9 +112,9 @@ public class viewOrderRouteTest {
                                         0 ),
                                 4 ),
                         isDisplayed() ) );
-        materialButton.perform( click() );
+        materialButton3.perform( click() );
 
-        ViewInteraction materialButton2 = onView(
+        ViewInteraction materialButton4 = onView(
                 allOf( withId( R.id.plan_route_btn ), withText( "Plan Route" ),
                         childAtPosition(
                                 childAtPosition(
@@ -102,28 +122,28 @@ public class viewOrderRouteTest {
                                         0 ),
                                 2 ),
                         isDisplayed() ) );
-        materialButton2.perform( click() );
+        materialButton4.perform( click() );
 
-        ViewInteraction materialButton3 = onView(
+        ViewInteraction materialButton5 = onView(
                 allOf( withId( android.R.id.button2 ), withText( "No" ),
                         childAtPosition(
                                 childAtPosition(
                                         withId( androidx.appcompat.R.id.buttonPanel ),
                                         0 ),
                                 2 ) ) );
-        materialButton3.perform( scrollTo(), click() );
+        materialButton5.perform( scrollTo(), click() );
 
         ViewInteraction textView = onView(
-                allOf( withId( R.id.selected_exhibit_name ), withText( "1) Orangutans : 135 meters" ),
+                allOf( withId( R.id.selected_exhibit_name ), withText( "1) Flamingos : 90 meters" ),
                         withParent( withParent( withId( R.id.Overview_recyclerView ) ) ),
                         isDisplayed() ) );
-        textView.check( matches( withText( "1) Orangutans : 135 meters" ) ) );
+        textView.check( matches( withText( "1) Flamingos : 90 meters" ) ) );
 
         ViewInteraction textView2 = onView(
-                allOf( withId( R.id.selected_exhibit_name ), withText( "2) Gorillas : 315 meters" ),
+                allOf( withId( R.id.selected_exhibit_name ), withText( "2) Gorillas : 420 meters" ),
                         withParent( withParent( withId( R.id.Overview_recyclerView ) ) ),
                         isDisplayed() ) );
-        textView2.check( matches( withText( "2) Gorillas : 315 meters" ) ) );
+        textView2.check( matches( withText( "2) Gorillas : 420 meters" ) ) );
     }
 
     private static Matcher<View> childAtPosition(

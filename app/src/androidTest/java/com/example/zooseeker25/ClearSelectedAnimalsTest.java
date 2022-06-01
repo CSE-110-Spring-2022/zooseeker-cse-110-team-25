@@ -40,7 +40,7 @@ public class ClearSelectedAnimalsTest {
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void clearSelectedAnimalsTest() {
+    public void clearSelectedAnimalTest() {
         ViewInteraction appCompatImageView = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
                         childAtPosition(
@@ -64,16 +64,6 @@ public class ClearSelectedAnimalsTest {
         searchAutoComplete.perform(replaceText("g"), closeSoftKeyboard());
 
         ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.search_item_text), withText("Orangutans"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.search_results),
-                                        3),
-                                0),
-                        isDisplayed()));
-        materialTextView.perform(click());
-
-        ViewInteraction materialTextView2 = onView(
                 allOf(withId(R.id.search_item_text), withText("Gorillas"),
                         childAtPosition(
                                 childAtPosition(
@@ -81,17 +71,33 @@ public class ClearSelectedAnimalsTest {
                                         2),
                                 0),
                         isDisplayed()));
-        materialTextView2.perform(click());
+        materialTextView.perform(click());
 
-        ViewInteraction materialTextView3 = onView(
-                allOf(withId(R.id.search_item_text), withText("Flamingos"),
+        ViewInteraction materialTextView2 = onView(
+                allOf(withId(R.id.search_item_text), withText("Orangutans"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.search_results),
-                                        1),
+                                        3),
+                                0),
+                        isDisplayed()));
+        materialTextView2.perform(click());
+
+        ViewInteraction materialTextView3 = onView(
+                allOf(withId(R.id.search_item_text), withText("Siamangs"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.search_results),
+                                        4),
                                 0),
                         isDisplayed()));
         materialTextView3.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.listCounterPlaceHolder), withText("3"),
+                        withParent(withParent(withId(android.R.id.content))),
+                        isDisplayed()));
+        textView.check(matches(withText("3")));
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
@@ -103,11 +109,11 @@ public class ClearSelectedAnimalsTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-        ViewInteraction textView = onView(
+        ViewInteraction textView2 = onView(
                 allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("0")));
+        textView2.check(matches(withText("0")));
     }
 
     private static Matcher<View> childAtPosition(
