@@ -55,6 +55,19 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return searchResults.size();
     }
 
+    //prevents the recyclerview from repeating results
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    //prevents the recyclerview from repeating results
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
@@ -67,9 +80,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             //adds the selected item to the search storage and calls the given Consumer
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
-                onAnimalItemClicked.accept(searchResultsItem);
+                if (dao.getIDFromName((String) textView.getText()) != null) {
+                    onAnimalItemClicked.accept(searchResultsItem);
+                    searchStorage.addSelectedAnimal((String) textView.getText(), dao.getIDFromName((String) textView.getText()));
+                }
                 setSearchItem(searchResultsItem);
-                searchStorage.addSelectedAnimal((String) textView.getText(), dao.getIDFromName((String) textView.getText()));
             });
         }
 
