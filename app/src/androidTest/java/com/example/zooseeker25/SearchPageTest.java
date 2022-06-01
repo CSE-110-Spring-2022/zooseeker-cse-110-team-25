@@ -28,10 +28,10 @@ public class SearchPageTest {
     @Test
     public void searchPageTest() {
         ViewInteraction textView = onView(
-                allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
+                allOf(withId(R.id.listCounterPlaceHolder),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("0")));
+        textView.check(matches(isDisplayed()));
 
         ViewInteraction searchView = onView(
                 allOf(withId(R.id.searchView),
