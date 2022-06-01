@@ -21,11 +21,7 @@ public class RouteGenerator {
     public static Map<String, Integer> integerLookup = new HashMap<>();
     public static List<List<Route>> routeData = new ArrayList<List<Route>>();
     private static String prevExhibit = "";
-    private static String initExhibit;
-
-    public RouteGenerator() {
-        initExhibit = "entrance_exit_gate";
-    }
+    private static String initExhibit = "entrance_exit_gate";
 
     public static void setInit(String init) {
         initExhibit = init;
