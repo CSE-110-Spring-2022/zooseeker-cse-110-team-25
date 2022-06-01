@@ -35,6 +35,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * Switch from brief direction to detailed directions
+ * Check detailed directions
+ */
 public class DetailedDirectionsTest {
 
     @Rule

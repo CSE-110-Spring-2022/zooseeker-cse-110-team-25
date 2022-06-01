@@ -35,6 +35,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * Testing BriefDirection
+ * making sure each direction matched our expected brief direction
+ */
 public class BriefDirectionTest {
 
     @Rule

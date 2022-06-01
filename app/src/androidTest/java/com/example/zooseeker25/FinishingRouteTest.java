@@ -35,6 +35,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * added animals names and navigate through all the directions
+ * till we finish all the directions, getting to the page that calls plan route
+ */
 public class FinishingRouteTest {
 
     @Rule

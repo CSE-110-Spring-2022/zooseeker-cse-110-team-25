@@ -36,16 +36,6 @@ public class NodeDatabaseTest {
         dao.insertAll(todos);
     }
 
-    /*@Test
-    public void example() {
-        final ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-
-
-        scenario.onActivity(activity -> {
-
-        });
-    }*/
-
     @Test
     public void testid() {
         Search s = new Search("elephant_odyssey", dao);
