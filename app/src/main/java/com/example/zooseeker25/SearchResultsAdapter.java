@@ -67,9 +67,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             //adds the selected item to the search storage and calls the given Consumer
             this.textView.setOnClickListener(view -> {
                 if(onAnimalItemClicked == null) return;
-                onAnimalItemClicked.accept(searchResultsItem);
+                if (dao.getIDFromName((String) textView.getText()) != null) {
+                    onAnimalItemClicked.accept(searchResultsItem);
+                    searchStorage.addSelectedAnimal((String) textView.getText(), dao.getIDFromName((String) textView.getText()));
+                }
                 setSearchItem(searchResultsItem);
-                searchStorage.addSelectedAnimal((String) textView.getText(), dao.getIDFromName((String) textView.getText()));
             });
         }
 

@@ -94,7 +94,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             public boolean onQueryTextChange(String newText) {
                 search = new Search(newText, dao);
                 searchStorage.updateResultsList(search.searchAllCategory());
-                adapter.setSearchListItems(searchStorage.getResultsList());
+                adapter.setSearchListItems(new ArrayList<SearchResultsItem>(searchStorage.getResultsList()));
 
                 if (newText.equals("")) {
                     titleText.setVisibility(View.VISIBLE);
