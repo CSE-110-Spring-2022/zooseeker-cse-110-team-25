@@ -21,7 +21,13 @@ public class RouteGenerator {
     public static Map<String, Integer> integerLookup = new HashMap<>();
     public static List<List<Route>> routeData = new ArrayList<List<Route>>();
     private static String prevExhibit = "";
+    private static String initExhibit = "entrance_exit_gate";
 
+    public static void setInit(String init) {
+        initExhibit = init;
+    }
+
+    //clears the hashmaps to reset the route
     public static void resetRoute() {
         RouteGenerator.nodeLookup = new HashMap<>();
         RouteGenerator.integerLookup = new HashMap<>();
@@ -29,10 +35,12 @@ public class RouteGenerator {
         RouteGenerator.prevExhibit = "";
     }
 
+    //populates routeData with a series of directions to the various exhibits
     public static void populateRouteData (List<String> exhibits, Context context) {
+        resetRoute();
         int i = 1;
-        RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
-        RouteGenerator.integerLookup.put("entrance_exit_gate", 0);
+        RouteGenerator.nodeLookup.put(0, initExhibit);
+        RouteGenerator.integerLookup.put(initExhibit, 0);
         for (String exhibit: exhibits) {
             RouteGenerator.nodeLookup.put(i, exhibit);
             RouteGenerator.integerLookup.put(exhibit, i);
@@ -55,11 +63,12 @@ public class RouteGenerator {
         }
     }
 
+    //generates the individual routes from one exhibit to the next
     public static List<Route> generateFullRoute(List<String> exhibits, List<List<Route>> routeData, Map<String, Integer> node_lookup) {
         Set<String> visitedExhibits = new HashSet<String>();
         List<Route> fullRoute = new ArrayList<>();
-        visitedExhibits.add("entrance_exit_gate");
-        String currentExhibit = "entrance_exit_gate";
+        visitedExhibits.add(initExhibit);
+        String currentExhibit = initExhibit;
         while (visitedExhibits.size() != exhibits.size()+1) {
             Route closestExhibit = null;
 
@@ -81,6 +90,7 @@ public class RouteGenerator {
         return fullRoute;
     }
 
+    //generates a route object to hold information about a route
     public static Route generateRoute(Context context, @NonNull String start, @NonNull String end) {
         // 1. Load the graph...
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");

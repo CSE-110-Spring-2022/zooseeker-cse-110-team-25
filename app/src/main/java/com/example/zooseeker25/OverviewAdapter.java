@@ -54,4 +54,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         }
 
     }
+
+    public void clear(){
+        selectedExhibits = null;
+        totalDistance = 0;
+    }
 }

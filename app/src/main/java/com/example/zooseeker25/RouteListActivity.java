@@ -31,6 +31,7 @@ public class RouteListActivity extends AppCompatActivity {
         setAdapter();
     }
 
+    //initializes the adapter with the corresponding recyclerview
     private void setAdapter() {
         RouteListAdapter adapter = new RouteListAdapter();
         adapter.setRouteList(routeList);
@@ -39,6 +40,7 @@ public class RouteListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    //is this used???
     private void setRouteListInfo() {
         List<String> exhibits = new ArrayList<>();
         exhibits.add("gorillas");

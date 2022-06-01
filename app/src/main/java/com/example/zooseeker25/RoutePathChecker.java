@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 public class RoutePathChecker {
-    public static boolean checkOffPath(LocationModel locationModel, Route[] routeList, Route currExhibit) {
+    public static Route checkOffPath(LocationModel locationModel, Route[] routeList, Route currExhibit) {
         Coord currentLocation = locationModel.getLastKnownCoords().getValue();
         Coord exhibitCoords = Coords.coordLookup.get(currExhibit.exhibit);
 
@@ -19,9 +19,9 @@ public class RoutePathChecker {
 
             if (distance < currDistance) {
                 Log.i("closerLocation", route.exhibit);
-                return true;
+                return route;
             }
         }
-        return false;
+        return null;
     }
 }

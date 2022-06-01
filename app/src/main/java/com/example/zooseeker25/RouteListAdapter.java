@@ -14,6 +14,7 @@ import java.util.List;
 public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.ViewHolder> {
     private List<Route> routeList = new ArrayList();
 
+    //updates the routelist
     public void setRouteList(List<Route> routeList) {
         this.routeList = routeList;
         notifyDataSetChanged();
@@ -46,6 +47,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.View
         private TextView routeText;
         private TextView directionText;
 
+        //sets the route and direction text of a given route
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             routeText = itemView.findViewById(R.id.route_name);

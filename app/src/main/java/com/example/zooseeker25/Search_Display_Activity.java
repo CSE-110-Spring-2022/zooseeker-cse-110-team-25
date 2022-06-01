@@ -24,6 +24,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+//handles the display of the search screen
 public class Search_Display_Activity extends AppCompatActivity implements Observer {
     private final static String DATA_PATH = "sample_vertex_info.json";
 
@@ -42,6 +43,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Search_Display_Activity", "onCreate");
 
         super.onCreate(savedInstanceState);
 
@@ -59,7 +61,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         dao.insertAll(todos);
 
         searchStorage = new SearchStorage(this);
-
 
         //getting all of the elements on the UI
         simpleSearchView = findViewById(R.id.searchView);
@@ -79,7 +80,6 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         recyclerView.setAdapter(adapter);
 
 
-
         //handling changes to search bar query
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -94,7 +94,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
             public boolean onQueryTextChange(String newText) {
                 search = new Search(newText, dao);
                 searchStorage.updateResultsList(search.searchAllCategory());
-                adapter.setSearchListItems(searchStorage.getResultsList());
+                adapter.setSearchListItems(new ArrayList<SearchResultsItem>(searchStorage.getResultsList()));
 
                 if (newText.equals("")) {
                     titleText.setVisibility(View.VISIBLE);
@@ -119,27 +119,8 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
     }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
-                .setTitle("Load Previous Session?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        loadSearchStorage();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        searchStorage.resetSearchStorage();
 
-                    }
-                });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
+    //passes the selected animal's names and ids to the following activity, ListOfAnimalsActivity
     public void onViewRouteClicked(View view) {
         Intent intent = new Intent(this, ListOfAnimalsActivity.class);
         ArrayList<String> tempNames = new ArrayList<>(searchStorage.getSelectedAnimalsNames());
@@ -149,6 +130,14 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         startActivity(intent);
     }
 
+    //Clears the selected animals
+    public void onViewClearClicked (View view){
+        Log.d("Search_Display", "onViewClearClicked");
+        searchStorage.resetSearchStorage();
+        viewRouteBtn.setVisibility(View.INVISIBLE);
+    }
+
+    //Updates the list counter whenever searchstorage is updated
     @Override
     public void update(Observable observable, Object o) {
         listCounter.setText((String)o);
@@ -157,10 +146,22 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         }
     }
 
+    //Saves the selected animals
+    @Override
     protected void onPause() {
         super.onPause();
         saveSearchStorage();
     }
+
+    //Loads the selected animals
+    @Override
+    protected void onResume(){
+        Log.d("Search_Display_Activity", "onResume");
+        super.onResume();
+        loadSearchStorage();
+    }
+
+    //compresses the selected list of animals into a stream and saves them using sharedpreferences
     public void saveSearchStorage(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -173,6 +174,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
 
         if (names.size()==0){
             editor.putString("names", null);
+
         }
         else {
             String resName = "";
@@ -186,6 +188,19 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         if (ids.size() == 0){
             editor.putString("ids", null);
         }
+        else {
+            String resName = "";
+            for (String name : names){
+                resName += name + ",";
+            }
+            resName = resName.substring(0,resName.length()-1);
+            editor.putString("names", resName);
+        }
+
+        if (ids.size() == 0){
+            editor.putString("ids", null);
+        }
+
         else{
             String resIds = "";
             for (String id : ids){
@@ -198,6 +213,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         editor.apply();
     }
 
+    //fetches and decompresses the saved string of selected animals
     public void loadSearchStorage(){
         Log.d("Search_Display_Activity", "loadSearchStorage");
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
