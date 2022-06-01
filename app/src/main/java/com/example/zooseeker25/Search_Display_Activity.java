@@ -52,13 +52,7 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
                 .get(SearchResultsViewModel.class);
 
         //initializing dao
-        db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
-                .allowMainThreadQueries()
-                .build();
-        ItemDatabase.injectTestDatabase(db);
-        List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
-        dao = db.nodeInfoDao();
-        dao.insertAll(todos);
+        initializeDao();
 
         searchStorage = new SearchStorage(this);
 
@@ -118,6 +112,16 @@ public class Search_Display_Activity extends AppCompatActivity implements Observ
         });
         this.animalItem = this.findViewById(R.id.search_item_text);
         listCounter.setText("0");
+    }
+
+    private void initializeDao() {
+        db = Room.inMemoryDatabaseBuilder(this, ItemDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        ItemDatabase.injectTestDatabase(db);
+        List<NodeItem> todos = NodeItem.loadJSON(this, DATA_PATH);
+        dao = db.nodeInfoDao();
+        dao.insertAll(todos);
     }
 
     //passes the selected animal's names and ids to the following activity, ListOfAnimalsActivity
