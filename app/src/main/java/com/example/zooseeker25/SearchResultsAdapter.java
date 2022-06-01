@@ -55,6 +55,19 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return searchResults.size();
     }
 
+    //prevents the recyclerview from repeating results
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    //prevents the recyclerview from repeating results
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
