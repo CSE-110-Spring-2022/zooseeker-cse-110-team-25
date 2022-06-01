@@ -33,6 +33,9 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * A list of Search results according to our input
+ */
 public class ViewSearchResultsTest {
 
     @Rule

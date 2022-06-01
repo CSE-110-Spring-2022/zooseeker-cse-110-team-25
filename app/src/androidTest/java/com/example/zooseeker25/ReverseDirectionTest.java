@@ -35,6 +35,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * When we want to revisit the exhibits,
+ * We want to reverse the directions of route
+ */
 public class ReverseDirectionTest {
 
     @Rule
