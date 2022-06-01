@@ -34,6 +34,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * Selected several exhibits
+ * We want to see the order of exhibits in the overView Page
+ */
 public class OrderedRouteTest {
 
     @Rule

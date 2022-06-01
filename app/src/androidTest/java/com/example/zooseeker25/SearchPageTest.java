@@ -20,6 +20,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * Searching for animals using substring,
+ * Exhibit type, and animal type
+ */
 public class SearchPageTest {
 
     @Rule
