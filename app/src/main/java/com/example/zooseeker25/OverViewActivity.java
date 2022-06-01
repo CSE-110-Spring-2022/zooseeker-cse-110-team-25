@@ -64,8 +64,6 @@ public class OverViewActivity extends AppCompatActivity {
         intent.putExtra( "use_mock_location", isMock );
 
         startActivity(intent);
-
-
     }
 
     //Checking user location mock or live
@@ -95,7 +93,6 @@ public class OverViewActivity extends AppCompatActivity {
     public void onBackClicked(View view) {
         adapter.clear();
         recyclerView.setAdapter(null);
-
         finish();
     }
 

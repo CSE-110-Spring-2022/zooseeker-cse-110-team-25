@@ -52,6 +52,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button prevBtn;
     private Button nextBtn;
     private Button skipBtn;
+    private Button clearRouteBtn;
     private boolean fromPrev = false; //false if the current directions didn't come from pressing previous
 
     private int detailedDirections = 0; //0 for brief, 1 for detailed
@@ -61,17 +62,23 @@ public class DirectionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("DirectionsActivity", "0");
         super.onCreate(savedInstanceState);
+        Log.d("DirectionsActivity", "1");
         setContentView(R.layout.activity_directions);
 
         initializeTextView();
 
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
-
+        Log.d("DirectionsActivity", this.routeList[0].exhibit);
+        Log.d("DirectionsActivity", Integer.toString(this.routeList.length));
         addExitToRoute();
-
+        Log.d("DirectionsActivity", Integer.toString(this.routeList.length));
+        Log.d("DirectionsActivity", "2");
         updateUI();
+        Log.d("DirectionsActivity", "3");
     }
 
     //initializes all textviews
@@ -81,6 +88,7 @@ public class DirectionsActivity extends AppCompatActivity {
         this.prevBtn = (Button) findViewById(R.id.prev_button);
         this.nextBtn = (Button) findViewById(R.id.next_button);
         this.skipBtn = (Button) findViewById(R.id.skip_next_button);
+        this.clearRouteBtn = (Button) findViewById(R.id.clearbutton);
         this.exhibitCounterText = (TextView) findViewById(R.id.direction_exhibit_counter);
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
@@ -90,7 +98,7 @@ public class DirectionsActivity extends AppCompatActivity {
     //initializes UI and location services
     public void addExitToRoute(){
         updateRouteList();
-        updateUI();
+        //updateUI();
         setLocationServices();
     }
 
@@ -200,6 +208,7 @@ public class DirectionsActivity extends AppCompatActivity {
             this.currentExhibitCounter++;
             this.currRoute = routeList[currentExhibitCounter];
             currRoute.genNextDirections(detailedDirections);
+            Log.d("DirectionsActivity", currRoute.exhibit);
             updateUI();
         } else {
             //resets the route and closes
@@ -322,6 +331,7 @@ public class DirectionsActivity extends AppCompatActivity {
         currentExhibitCounter = 0;
         this.skippedIndex = new ArrayList<>();
         Log.d("DirectionsActivity","finish()");
+        onPause();
         finish();
     }
 
@@ -346,6 +356,10 @@ public class DirectionsActivity extends AppCompatActivity {
 
         if (index == null){
             currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
+            Log.d("DirectionsActivity skipped null", Integer.toString(currentExhibitCounter));
+            this.currRoute = routeList[currentExhibitCounter];
+            Route.prevExhibit = currRoute.exhibit;
+            updateUI();
             return;
         }
         Log.d("DirectionsActivity load", index);
@@ -358,7 +372,8 @@ public class DirectionsActivity extends AppCompatActivity {
         }
 
         currentExhibitCounter = preferences.getInt("CurrentExhibitCounter", 0);
-
+        this.currRoute = routeList[currentExhibitCounter];
+        Route.prevExhibit = currRoute.exhibit;
         Log.d("DirectionsActivity load", Integer.toString(currentExhibitCounter));
     }
 
@@ -382,7 +397,6 @@ public class DirectionsActivity extends AppCompatActivity {
             editor.putString("skippedIndex", index);
             Log.d("DirectionsActivity skippedIndex", index);
         }
-
         editor.apply();
     }
 
