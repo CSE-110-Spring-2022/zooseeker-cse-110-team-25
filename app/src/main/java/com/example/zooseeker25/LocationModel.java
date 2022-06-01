@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class LocationModel extends AndroidViewModel {
     private final String TAG = "FOOBAR";
     private final MediatorLiveData<Coord> lastKnownCoords;
+    public DirectionsActivity activity;
 
     private LiveData<Coord> locationProviderSource = null;
     private MutableLiveData<Coord> mockSource = null;
@@ -59,7 +60,8 @@ public class LocationModel extends AndroidViewModel {
             public void onLocationChanged(@NonNull Location location) {
                 Coord coord = Coord.fromLocation(location);
                 Log.i(TAG, String.format("Model received GPS location update: %s", coord));
-                providerSource.postValue(coord);
+                mockSource.setValue(coord);
+                activity.wentOffRoute();
             }
         };
         // Register for updates.

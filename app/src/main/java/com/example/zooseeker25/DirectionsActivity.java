@@ -88,6 +88,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private void setLocationServices() {
         locationModel = new ViewModelProvider(this).get(LocationModel.class);
+        locationModel.activity = this;
 
         if (useMockLocation){
             //read a sequence of locations from a JSON file
@@ -273,15 +274,12 @@ public class DirectionsActivity extends AppCompatActivity {
         // when there are more than one exhibit left
         if (currentExhibitCounter < routeList.length-2) {
             List<Route> routes = Arrays.asList(routeList);
-            routes = routes.subList(currentExhibitCounter+1, routeList.length);
+            routes = routes.subList(currentExhibitCounter+1, routeList.length-1);
             Route[] newRouteList = routes.toArray(new Route[0]);
-            boolean isOffRoute = RoutePathChecker.checkOffPath(locationModel, routeList, currRoute);
+            boolean isOffRoute = RoutePathChecker.checkOffPath(locationModel, newRouteList, currRoute);
             if (isOffRoute) {
                 showReplanAlert();
             }
-        } else {
-            // when there is less than or equal to one exhibit left
-            // just update directions to the exhibit
         }
     }
 
