@@ -62,8 +62,6 @@ public class BriefDirectionTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-
-
         appCompatImageView.perform(click());
 
         ViewInteraction materialButton123 = onView(
