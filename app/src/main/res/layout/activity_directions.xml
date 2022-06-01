@@ -95,6 +95,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
+    <Button
+        android:id="@+id/mock_location_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="4dp"
+        android:onClick="onMockLocationClicked"
+        android:text="ML"
+        app:layout_constraintStart_toEndOf="@+id/settingsButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/clearbutton"

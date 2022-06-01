@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,9 +22,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
+import android.telephony.data.RouteSelectionDescriptor;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,6 +56,8 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button nextBtn;
     private Button skipBtn;
     private Button clearRouteBtn;
+
+    private Route closeExhibit;
     private boolean fromPrev = false; //false if the current directions didn't come from pressing previous
 
     private int detailedDirections = 0; //0 for brief, 1 for detailed
@@ -69,6 +74,7 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
 
         initializeTextView();
+        Coords.populateCoordLookup(this);
 
         Object[] temp = (Object[]) getIntent().getSerializableExtra("route_list");
         this.routeList = Arrays.copyOf(temp, temp.length, Route[].class);
@@ -119,6 +125,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private void setLocationServices() {
         locationModel = new ViewModelProvider(this).get(LocationModel.class);
+        locationModel.activity = this;
 
         if (useMockLocation){
             //read a sequence of locations from a JSON file
@@ -296,18 +303,18 @@ public class DirectionsActivity extends AppCompatActivity {
         List<Route> visited = list.subList(0, currentExhibitCounter);
         List<Route> future = list.subList(currentExhibitCounter, list.size());
 
-        visited.addAll(recalculateRoute(future));
+        RouteGenerator.setInit(future.get(0).end);
+        List<String> newExhibits = new ArrayList<>();
+        for (Route r : future) {
+            newExhibits.add(r.end);
+        }
+        visited.addAll(recalculateRoute(newExhibits));
         routeList = visited.toArray(new Route[visited.size()]);
         return routeList;
     }
 
-    public List<Route> recalculateRoute(List<Route> newRouteList) {
+    public List<Route> recalculateRoute(List<String> newExhibits) {
         RouteGenerator.resetRoute();
-        List<String> newExhibits = new ArrayList<>();
-        for (Route r : newRouteList) {
-            newExhibits.add(r.end);
-        }
-        RouteGenerator.setInit(newRouteList.get(0).end);
         RouteGenerator.populateRouteData(newExhibits, this);
         List<Route> newRoute = RouteGenerator.generateFullRoute(newExhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
         newRoute.add(RouteGenerator.generateRoute(this, newRoute.get(newRoute.size()-1).end, "entrance_exit_gate"));
@@ -337,6 +344,103 @@ public class DirectionsActivity extends AppCompatActivity {
             currRoute.genPrevDirections(detailedDirections, routeList[currentExhibitCounter+1], routeList[currentExhibitCounter+1].exhibit);
         }
         updateUI();
+    }
+
+    public void wentOffRoute() {
+        // when there are more than one exhibit left
+        if (currentExhibitCounter < routeList.length-2) {
+            List<Route> routes = Arrays.asList(routeList);
+            routes = routes.subList(currentExhibitCounter+1, routeList.length-1);
+            Route[] newRouteList = routes.toArray(new Route[0]);
+            Route closestRoute = RoutePathChecker.checkOffPath(locationModel, newRouteList, currRoute);
+            if (closestRoute != null) {
+                closeExhibit = closestRoute;
+                showReplanAlert();
+            }
+        }
+    }
+
+    public void generateNewRoute() {
+        List<Route> newRoutes = Arrays.asList(routeList);
+        List<Route> newRouteList = new ArrayList<>();
+        List<String> newExhibits = new ArrayList<>();
+
+        if (currentExhibitCounter-1 == -1) {
+            RouteGenerator.setInit(closeExhibit.end);
+            // generate route from begin to closest route
+            newRouteList.add(RouteGenerator.generateRoute(this, "entrance_exit_gate", closeExhibit.end));
+
+            // add current route to route list and remove the closest exhibit from the route list
+            for (Route route: newRoutes.subList(0, newRoutes.size()-1)) {
+                if (route.end.compareTo(closeExhibit.end) != 0 ) {
+                    newExhibits.add(route.end);
+                }
+            }
+        } else {
+            RouteGenerator.setInit(closeExhibit.end);
+            newRouteList.addAll(newRoutes.subList(0, currentExhibitCounter));
+            // generate route from the start of current route to the closest route
+            newRouteList.add(RouteGenerator.generateRoute(this, currRoute.start, closeExhibit.end));
+
+            // add current route to route list but remove the closest exhibit
+            newExhibits.add(currRoute.end);
+            for (Route route: newRoutes.subList(currentExhibitCounter, routeList.length-1)) {
+                if (route.end.compareTo(closeExhibit.end) != 0) {
+                    newExhibits.add(route.end);
+                }
+            }
+        }
+        newRouteList.addAll(recalculateRoute(newExhibits));
+        this.routeList = newRouteList.toArray(new Route[0]);
+        directions = new ArrayList<>();
+        this.currRoute = routeList[currentExhibitCounter];
+        Route.prevExhibit = currRoute.exhibit;
+        updateUI();
+    }
+
+    public void showReplanAlert() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Replan?")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // call replan function here
+                        generateNewRoute();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
+    }
+
+    public void onMockLocationClicked(View view) {
+        EditText coordsText = new EditText(this);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Mock Route")
+                .setMessage("Enter coord in the format lat,long")
+                .setView(coordsText)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String text = coordsText.getText().toString();
+                        String[] coords = text.split(",");
+                        mockLocation(new Coord(Double.parseDouble(coords[0]), Double.parseDouble(coords[1])));
+                        wentOffRoute();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 
     public void onClearRouteClick(View view){
@@ -411,7 +515,6 @@ public class DirectionsActivity extends AppCompatActivity {
         }
         editor.apply();
     }
-
 }
 
 
