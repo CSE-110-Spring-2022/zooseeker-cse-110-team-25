@@ -286,20 +286,32 @@ public class DirectionsActivity extends AppCompatActivity {
 
     }
 
-    //generates a new route that excludes the next exhibit
+    //recalculates a new route that excludes the next exhibit
     public Route[] skippedRoute(){
         Log.d("DirectionsActivity", "skippedRoute()");
         // convert routeList array to a list
         List<Route> list = new ArrayList<>(Arrays.asList(this.routeList));
         // remove the next exhibit
         list.remove(currentExhibitCounter+1);
-        // convert list back to array
-        Route[] newRouteList = list.toArray(new Route[0]);
-        // generate directions from current exhibit to next exhibit
+        List<Route> visited = list.subList(0, currentExhibitCounter);
+        List<Route> future = list.subList(currentExhibitCounter, list.size());
 
-        newRouteList[this.currentExhibitCounter+1] = RouteGenerator.
-                generateRoute(this, newRouteList[currentExhibitCounter].end, newRouteList[currentExhibitCounter+1].end);
-        return newRouteList;
+        visited.addAll(recalculateRoute(future));
+        routeList = visited.toArray(new Route[visited.size()]);
+        return routeList;
+    }
+
+    public List<Route> recalculateRoute(List<Route> newRouteList) {
+        RouteGenerator.resetRoute();
+        List<String> newExhibits = new ArrayList<>();
+        for (Route r : newRouteList) {
+            newExhibits.add(r.end);
+        }
+        RouteGenerator.setInit(newRouteList.get(0).end);
+        RouteGenerator.populateRouteData(newExhibits, this);
+        List<Route> newRoute = RouteGenerator.generateFullRoute(newExhibits, RouteGenerator.routeData, RouteGenerator.integerLookup);
+        newRoute.add(RouteGenerator.generateRoute(this, newRoute.get(newRoute.size()-1).end, "entrance_exit_gate"));
+        return newRoute;
     }
   
     //passes the currently selected detailedDirections value to the new activity

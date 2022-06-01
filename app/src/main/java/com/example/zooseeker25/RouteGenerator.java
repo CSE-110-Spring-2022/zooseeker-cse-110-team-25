@@ -21,6 +21,15 @@ public class RouteGenerator {
     public static Map<String, Integer> integerLookup = new HashMap<>();
     public static List<List<Route>> routeData = new ArrayList<List<Route>>();
     private static String prevExhibit = "";
+    private static String initExhibit;
+
+    public RouteGenerator() {
+        initExhibit = "entrance_exit_gate";
+    }
+
+    public static void setInit(String init) {
+        initExhibit = init;
+    }
 
     //clears the hashmaps to reset the route
     public static void resetRoute() {
@@ -34,8 +43,8 @@ public class RouteGenerator {
     public static void populateRouteData (List<String> exhibits, Context context) {
         resetRoute();
         int i = 1;
-        RouteGenerator.nodeLookup.put(0, "entrance_exit_gate");
-        RouteGenerator.integerLookup.put("entrance_exit_gate", 0);
+        RouteGenerator.nodeLookup.put(0, initExhibit);
+        RouteGenerator.integerLookup.put(initExhibit, 0);
         for (String exhibit: exhibits) {
             RouteGenerator.nodeLookup.put(i, exhibit);
             RouteGenerator.integerLookup.put(exhibit, i);
@@ -62,8 +71,8 @@ public class RouteGenerator {
     public static List<Route> generateFullRoute(List<String> exhibits, List<List<Route>> routeData, Map<String, Integer> node_lookup) {
         Set<String> visitedExhibits = new HashSet<String>();
         List<Route> fullRoute = new ArrayList<>();
-        visitedExhibits.add("entrance_exit_gate");
-        String currentExhibit = "entrance_exit_gate";
+        visitedExhibits.add(initExhibit);
+        String currentExhibit = initExhibit;
         while (visitedExhibits.size() != exhibits.size()+1) {
             Route closestExhibit = null;
 
