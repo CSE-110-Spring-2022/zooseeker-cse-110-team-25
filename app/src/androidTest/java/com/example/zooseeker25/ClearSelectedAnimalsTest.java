@@ -33,6 +33,10 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+/**
+ * Added Animal names, check the counter index
+ * Click clear animal names, check the counter--> should be 0
+ */
 public class ClearSelectedAnimalsTest {
 
     @Rule
