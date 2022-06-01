@@ -98,7 +98,7 @@ public class DirectionsActivity extends AppCompatActivity {
     //initializes UI and location services
     public void addExitToRoute(){
         updateRouteList();
-        //updateUI();
+        updateUI();
         setLocationServices();
     }
 
