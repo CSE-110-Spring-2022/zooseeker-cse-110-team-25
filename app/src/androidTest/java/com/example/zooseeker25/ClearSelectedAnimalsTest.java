@@ -20,27 +20,31 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SelectElephantTest {
+/**
+ * Added Animal names, check the counter index
+ * Click clear animal names, check the counter--> should be 0
+ */
+public class ClearSelectedAnimalsTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void selectElephantTest() {
+    public void clearSelectedAnimalTest() {
         ViewInteraction appCompatImageView = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
                         childAtPosition(
@@ -61,35 +65,69 @@ public class SelectElephantTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete.perform(replaceText("elephant"), closeSoftKeyboard());
+        searchAutoComplete.perform(replaceText("g"), closeSoftKeyboard());
+
+        ViewInteraction materialButton123 = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton123.perform(click());
 
         ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.search_item_text), withText("Elephant Odyssey"),
+                allOf(withId(R.id.search_item_text), withText("Gorillas"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.search_results),
-                                        0),
+                                        2),
                                 0),
                         isDisplayed()));
         materialTextView.perform(click());
 
+        ViewInteraction materialTextView2 = onView(
+                allOf(withId(R.id.search_item_text), withText("Orangutans"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.search_results),
+                                        3),
+                                0),
+                        isDisplayed()));
+        materialTextView2.perform(click());
+
+        ViewInteraction materialTextView3 = onView(
+                allOf(withId(R.id.search_item_text), withText("Siamangs"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.search_results),
+                                        4),
+                                0),
+                        isDisplayed()));
+        materialTextView3.perform(click());
+
         ViewInteraction textView = onView(
-                allOf(withId(R.id.listCounterPlaceHolder), withText("1"),
+                allOf(withId(R.id.listCounterPlaceHolder), withText("3"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("1")));
+        textView.check(matches(withText("3")));
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton.perform(click());
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.search_item_text), withText("Elephant Odyssey"),
-                        withParent(withParent(withId(R.id.search_results))),
+                allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
+                        withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView2.check(matches(withText("Elephant Odyssey")));
-
-        ViewInteraction viewGroup = onView(
-                allOf(withParent(allOf(withId(R.id.search_results),
-                        withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
-                        isDisplayed()));
-        viewGroup.check(matches(isDisplayed()));
+        textView2.check(matches(withText("0")));
     }
 
     private static Matcher<View> childAtPosition(

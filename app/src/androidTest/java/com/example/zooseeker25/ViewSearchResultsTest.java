@@ -20,9 +20,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -33,18 +33,33 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SearchElephantTest {
+public class ViewSearchResultsTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void searchElephantTest() {
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
-                        withParent(withParent(withId(android.R.id.content))),
+    public void viewSearchResultsTest() {
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
                         isDisplayed()));
-        textView.check(matches(withText("0")));
+        materialButton.perform(click());
+
+        ViewInteraction materialButton123 = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton123.perform(click());
 
         ViewInteraction appCompatImageView = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
@@ -68,62 +83,17 @@ public class SearchElephantTest {
                         isDisplayed()));
         searchAutoComplete.perform(replaceText("e"), closeSoftKeyboard());
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView2.check(matches(withText("0")));
-
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.search_results),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
         recyclerView.check(matches(isDisplayed()));
 
-        ViewInteraction searchAutoComplete2 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("e"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete2.perform(click());
-
-        ViewInteraction searchAutoComplete3 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("e"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete3.perform(replaceText("el"));
-
-        ViewInteraction searchAutoComplete4 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("el"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete4.perform(closeSoftKeyboard());
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.search_item_text), withText("Elephant Odyssey"),
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.search_item_text), withText("Fern Canyon"),
                         withParent(withParent(withId(R.id.search_results))),
                         isDisplayed()));
-        textView3.check(matches(withText("Elephant Odyssey")));
-
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.listCounterPlaceHolder), withText("0"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView4.check(matches(withText("0")));
+        textView.check(matches(withText("Fern Canyon")));
     }
 
     private static Matcher<View> childAtPosition(
