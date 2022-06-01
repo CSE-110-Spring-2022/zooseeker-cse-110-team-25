@@ -29,7 +29,6 @@ import androidx.test.rule.GrantPermissionRule;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +48,7 @@ public class DetailedDirectionsTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void detailedDirectionsTest() {
+    public void mainActivityTest() {
         ViewInteraction appCompatImageView = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
                         childAtPosition(
@@ -70,10 +69,10 @@ public class DetailedDirectionsTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete.perform(replaceText("f"), closeSoftKeyboard());
+        searchAutoComplete.perform(replaceText("r"), closeSoftKeyboard());
 
         ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.search_item_text), withText("Capuchin Monkeys"),
+                allOf(withId(R.id.search_item_text), withText("Fern Canyon"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.search_results),
@@ -83,7 +82,7 @@ public class DetailedDirectionsTest {
         materialTextView.perform(click());
 
         ViewInteraction materialTextView2 = onView(
-                allOf(withId(R.id.search_item_text), withText("Fern Canyon"),
+                allOf(withId(R.id.search_item_text), withText("Orangutans"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.search_results),
@@ -91,26 +90,6 @@ public class DetailedDirectionsTest {
                                 0),
                         isDisplayed()));
         materialTextView2.perform(click());
-
-        ViewInteraction materialTextView3 = onView(
-                allOf(withId(R.id.search_item_text), withText("Flamingos"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.search_results),
-                                        1),
-                                0),
-                        isDisplayed()));
-        materialTextView3.perform(click());
-
-        ViewInteraction materialTextView4 = onView(
-                allOf(withId(R.id.search_item_text), withText("Koi Fish"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.search_results),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialTextView4.perform(click());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.view_route_btn), withText("View Selected"),
@@ -161,7 +140,17 @@ public class DetailedDirectionsTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        ViewInteraction materialTextView5 = onView(
+        ViewInteraction materialTextView3 = onView(
+                allOf(withId(R.id.directions_brief), withText("Brief"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialTextView3.perform(click());
+
+        ViewInteraction materialTextView4 = onView(
                 allOf(withId(R.id.directions_detailed), withText("Detailed"),
                         childAtPosition(
                                 childAtPosition(
@@ -169,7 +158,7 @@ public class DetailedDirectionsTest {
                                         0),
                                 3),
                         isDisplayed()));
-        materialTextView5.perform(click());
+        materialTextView4.perform(click());
 
         ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.exit_button), withText("x"),
@@ -181,40 +170,12 @@ public class DetailedDirectionsTest {
                         isDisplayed()));
         materialButton5.perform(click());
 
-        ViewInteraction viewGroup = onView(
-                allOf(withId(R.id.direction_list_item),
-                        withParent(allOf(withId(R.id.directions_list_view),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.direction_text), withText("Walk 10 meters along Gate Path from 'Entrance and Exit Gate' to 'Front Street / Treetops Way'.\n"),
+                        withParent(allOf(withId(R.id.direction_list_item),
+                                withParent(withId(R.id.directions_list_view)))),
                         isDisplayed()));
-        viewGroup.check(matches(isDisplayed()));
-
-        ViewInteraction viewGroup2 = onView(
-                allOf(withId(R.id.direction_list_item),
-                        withParent(allOf(withId(R.id.directions_list_view),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
-                        isDisplayed()));
-        viewGroup2.check(matches(isDisplayed()));
-
-        ViewInteraction viewGroup3 = onView(
-                allOf(withId(R.id.direction_list_item),
-                        withParent(allOf(withId(R.id.directions_list_view),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
-                        isDisplayed()));
-        viewGroup3.check(matches(isDisplayed()));
-
-        ViewInteraction viewGroup4 = onView(
-                allOf(withId(R.id.direction_list_item),
-                        withParent(allOf(withId(R.id.directions_list_view),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
-                        isDisplayed()));
-        viewGroup4.check(matches(isDisplayed()));
-
-        ViewInteraction viewGroup5 = onView(
-                allOf(withId(R.id.direction_list_item),
-                        withParent(allOf(withId(R.id.directions_list_view),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
-                        isDisplayed()));
-        viewGroup5.check(matches(isDisplayed()));
+        textView.check(matches(withText("Walk 10 meters along Gate Path from 'Entrance and Exit Gate' to 'Front Street / Treetops Way'.\n")));
     }
 
     private static Matcher<View> childAtPosition(
