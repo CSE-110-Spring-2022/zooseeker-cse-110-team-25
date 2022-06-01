@@ -63,6 +63,16 @@ public class ClearSelectedAnimalsTest {
                         isDisplayed()));
         searchAutoComplete.perform(replaceText("g"), closeSoftKeyboard());
 
+        ViewInteraction materialButton123 = onView(
+                allOf(withId(R.id.clear_all_button), withText("Clear Selected"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton123.perform(click());
+
         ViewInteraction materialTextView = onView(
                 allOf(withId(R.id.search_item_text), withText("Gorillas"),
                         childAtPosition(
