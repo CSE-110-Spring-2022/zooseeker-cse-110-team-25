@@ -101,6 +101,9 @@ public class Route implements Serializable {
             startSource = routeDirections.get(0).get(1);
             Route.prevExhibit = routeDirections.get(0).get(0);
         }
+        if (routeDirections.size() == 1) {
+            generateDetailedDirections();
+        }
         for (int i = 1; i < routeDirections.size(); i++) {
             List<String> direction = routeDirections.get(i);
             source = direction.get(0);
@@ -190,23 +193,26 @@ public class Route implements Serializable {
         //this.nextExhibit = startExhibit;
         this.directions.clear();
 
-        routeDirections = route.routeDirections;
+        List<List<String>> newRouteDirections = route.routeDirections;
+
+        if (newRouteDirections.size() == 1) {
+            generatePrevDetailedDirections(route, startExhibit);
+        }
 
         //iterates through the routeDirections and compresses the directions by road names
         //then flips the start and end to create directions back
-        int totalDistance = Integer.parseInt(routeDirections.get(0).get(2).substring(0, routeDirections.get(0).get(2).length()-2));
-        String prevRoad = routeDirections.get(0).get(3);
-        String startSource = routeDirections.get(0).get(0);
+        int totalDistance = Integer.parseInt(newRouteDirections.get(0).get(2).substring(0, newRouteDirections.get(0).get(2).length()-2));
+        String prevRoad = newRouteDirections.get(0).get(3);
+        String startSource = newRouteDirections.get(0).get(0);
         //setting up the flipping of prevExhibit
         if (Route.prevExhibit.compareTo("") == 0) {
-            Route.prevExhibit = routeDirections.get(0).get(1);
-        } else if (Route.prevExhibit.compareTo(routeDirections.get(0).get(1)) == 0) {
-            startSource = routeDirections.get(0).get(1);
-            Route.prevExhibit = routeDirections.get(0).get(0);
+            Route.prevExhibit = newRouteDirections.get(0).get(1);
+        } else if (Route.prevExhibit.compareTo(newRouteDirections.get(0).get(1)) == 0) {
+            startSource = newRouteDirections.get(0).get(1);
+            Route.prevExhibit = newRouteDirections.get(0).get(0);
         }
-
-        for (int i = 1; i < routeDirections.size(); i++) {
-            List<String> direction = routeDirections.get(i);
+        for (int i = 1; i < newRouteDirections.size(); i++) {
+            List<String> direction = newRouteDirections.get(i);
             source = direction.get(0);
             target = direction.get(1);
 
@@ -216,13 +222,13 @@ public class Route implements Serializable {
                 target = source;
                 source = temp;
             }
-            Route.prevExhibit = target;
+            Route.prevExhibit = source;
 
             //comparing the current road to the previous road
             if (direction.get(3).compareTo(prevRoad) == 0) {
                 totalDistance += Integer.parseInt(direction.get(2).substring(0, direction.get(2).length()-2));
                 //handles the case of the last direction
-                if (i == routeDirections.size()-1) {
+                if (i == newRouteDirections.size()-1) {
                     String d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                             totalDistance,
                             prevRoad,
@@ -243,7 +249,7 @@ public class Route implements Serializable {
                 startSource = source;
                 prevRoad = direction.get(3);
                 //handles the case of the last direction
-                if (i == routeDirections.size()-1) {
+                if (i == newRouteDirections.size()-1) {
                     d = String.format("Walk %s meters along %s from '%s' to '%s'.\n",
                             direction.get(2).substring(0, direction.get(2).length()-2),
                             direction.get(3),
