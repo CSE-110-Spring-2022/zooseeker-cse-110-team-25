@@ -84,6 +84,10 @@ public class Coords {
         return Coord.of((p1.lat + p2.lat) / 2, (p1.lng + p2.lng) / 2);
     }
 
+    public static Double distance(Coord p1, Coord p2) {
+        return Math.sqrt((p1.lat-p2.lat)*(p1.lat-p2.lat) + (p1.lng-p2.lng)*(p1.lng-p2.lng));
+    }
+
     /**
      * @param p1 start coordinate
      * @param p2 end coordinate

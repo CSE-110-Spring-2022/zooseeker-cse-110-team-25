@@ -20,6 +20,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.data.RouteSelectionDescriptor;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -65,6 +66,7 @@ public class DirectionsActivity extends AppCompatActivity {
         this.exhibitTitleText = (TextView) findViewById(R.id.direction_exhibit_title);
         this.recyclerView = (RecyclerView) findViewById(R.id.directions_list_view);
 
+        Coords.populateCoordLookup(this);
         updateRouteList();
         updateUI();
         setLocationServices();
@@ -267,11 +269,46 @@ public class DirectionsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    public void wentOffRoute() {
+        // when there are more than one exhibit left
+        if (currentExhibitCounter < routeList.length-2) {
+            List<Route> routes = Arrays.asList(routeList);
+            routes = routes.subList(currentExhibitCounter+1, routeList.length);
+            Route[] newRouteList = routes.toArray(new Route[0]);
+            boolean isOffRoute = RoutePathChecker.checkOffPath(locationModel, routeList, currRoute);
+            if (isOffRoute) {
+                showReplanAlert();
+            }
+        } else {
+            // when there is less than or equal to one exhibit left
+            // just update directions to the exhibit
+        }
+    }
+
+    public void showReplanAlert() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Replan?")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // call replan function here
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
+    }
+
     public void onMockLocationClicked(View view) {
         EditText coordsText = new EditText(this);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle("Mock Route")
-                .setMessage("Enter coord in the format lat, long")
+                .setMessage("Enter coord in the format lat,long")
                 .setView(coordsText)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -279,7 +316,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         String text = coordsText.getText().toString();
                         String[] coords = text.split(",");
                         mockLocation(new Coord(Double.parseDouble(coords[0]), Double.parseDouble(coords[1])));
-                        RoutePathChecker.checkOnPath(locationModel);
+                        wentOffRoute();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
