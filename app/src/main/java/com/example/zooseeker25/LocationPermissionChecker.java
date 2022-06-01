@@ -25,6 +25,7 @@ public class LocationPermissionChecker {
         });
     }
 
+    //prompts the user to give/deny permissions to track their location
     public boolean ensurePermissions() {
         String[] requiredPermissions = new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//The settings page that allows you to switch app functionality
 public class Settings extends AppCompatActivity {
     TextView detailedBtn;
     TextView briefBtn;
